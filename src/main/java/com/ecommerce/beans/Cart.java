@@ -17,10 +17,10 @@ import java.util.Locale;
  */
 public class Cart {
 
-    private int cartId;
-    private int userId;
-    private int productId;
-    private int quantity;
+   // private int cartId;
+//    private int userId;
+//    private int productId;
+//    private int quantity;
 
     private List<LineItem> items;
 
@@ -28,48 +28,48 @@ public class Cart {
         items = new ArrayList<>();
     }
 
-    public Cart(int cartId) {
-        this.cartId = cartId;
-    }
+//    public Cart(int cartId){
+//        this.cartId = cartId;
+//    }
 
-    public Cart(int cartId, int userId, int productId, int quantity) {
-        this.cartId = cartId;
-        this.userId = userId;
-        this.productId = productId;
-        this.quantity = quantity;
-    }
+//    public Cart(int cartId, int userId, int productId, int quantity) {
+//        this.cartId = cartId;
+//        this.userId = userId;
+//        this.productId = productId;
+//        this.quantity = quantity;
+//    }
 
-    public int getCartId() {
-        return cartId;
-    }
+//    public int getCartId() {
+//        return cartId;
+//    }
 
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
-    }
+//    public void setCartId(int cartId) {
+//        this.cartId = cartId;
+//    }
 
-    public int getUserId() {
-        return userId;
-    }
+//    public int getUserId() {
+//        return userId;
+//    }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+//    public void setUserId(int userId) {
+//        this.userId = userId;
+//    }
 
-    public int getProductId() {
-        return productId;
-    }
+//    public int getProductId() {
+//        return productId;
+//    }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
+//    public void setProductId(int productId) {
+//        this.productId = productId;
+//    }
 
-    public int getQuantity() {
-        return quantity;
-    }
+//    public int getQuantity() {
+//        return quantity;
+//    }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+//    public void setQuantity(int quantity) {
+//        this.quantity = quantity;
+//    }
 
     public List<LineItem> getItems() {
         return items;
