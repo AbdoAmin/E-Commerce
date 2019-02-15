@@ -9,6 +9,6 @@ package com.ecommerce.beans;
  *
  * @author Ashraf_R
  */
-public class Order_history {
+public class OrderHistory {
     
 }

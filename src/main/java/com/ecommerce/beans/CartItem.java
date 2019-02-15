@@ -8,22 +8,17 @@ package com.ecommerce.beans;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-
 /**
  * This entity represents a collection of products with a specified quantity.
  *
  * @author Tahoon
  */
-public class LineItem {
+public class CartItem {
 
-    private int lineItemId;
     private Product product;
     private int quantity = 1;
 
-    public LineItem() {}
-
-    public int getLineItemId() {
-        return lineItemId;
+    public CartItem() {
     }
 
     public Product getProduct() {
@@ -36,22 +31,17 @@ public class LineItem {
 
     //to know the total price of products in my catr
     public double getTotalPrice() {
-         return product.getPrice()* quantity; 
-      
+        return product.getPrice() * quantity;
     }
 
     /*
-   * this fucken lines in method getTotalPriceCurrencyFormat()
+   * this lines in method getTotalPriceCurrencyFormat()
    * to get price of all products and put a sign of dollar or sterlleng 
-   * or any fucken 3omla .. it just for decor man
+   * or any currency .. it just for decor man
      */
     public String getTotalPriceCurrencyFormat() {
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.UK);
         return currencyFormat.format(getTotalPrice());
-    }
-
-    public void setLineItemId(int lineItemId) {
-        this.lineItemId = lineItemId;
     }
 
     public void setProduct(Product product) {
@@ -60,6 +50,14 @@ public class LineItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public void incremantQuantity() {
+        this.quantity++;
+    }
+
+    public void decremantQuantity() {
+        this.quantity--;
     }
 
 }
