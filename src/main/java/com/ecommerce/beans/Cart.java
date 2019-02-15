@@ -11,87 +11,39 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * this class for Cart that customer can fill it or Remove line items from it.
- * 
+ * this class for Cart that customer can fill it or Remove line CartItems from it.
+ *
  * @author Ashraf_R
  */
 public class Cart {
 
-   // private int cartId;
-//    private int userId;
-//    private int productId;
-//    private int quantity;
-
-    private List<LineItem> items;
+    private List<CartItem> cartItems;
 
     public Cart() {
-        items = new ArrayList<>();
+        cartItems = new ArrayList<>();
     }
 
-//    public Cart(int cartId){
-//        this.cartId = cartId;
-//    }
-
-//    public Cart(int cartId, int userId, int productId, int quantity) {
-//        this.cartId = cartId;
-//        this.userId = userId;
-//        this.productId = productId;
-//        this.quantity = quantity;
-//    }
-
-//    public int getCartId() {
-//        return cartId;
-//    }
-
-//    public void setCartId(int cartId) {
-//        this.cartId = cartId;
-//    }
-
-//    public int getUserId() {
-//        return userId;
-//    }
-
-//    public void setUserId(int userId) {
-//        this.userId = userId;
-//    }
-
-//    public int getProductId() {
-//        return productId;
-//    }
-
-//    public void setProductId(int productId) {
-//        this.productId = productId;
-//    }
-
-//    public int getQuantity() {
-//        return quantity;
-//    }
-
-//    public void setQuantity(int quantity) {
-//        this.quantity = quantity;
-//    }
-
-    public List<LineItem> getItems() {
-        return items;
+    public List<CartItem> getItems() {
+        return cartItems;
     }
 
-    public void setItems(List<LineItem> items) {
-        this.items = items;
+    public void setItems(List<CartItem> items) {
+        this.cartItems = items;
     }
 
     /*
-     * @return The amount of LineItem objects in the cart
+     * @return The amount of CartItem objects in the cart
      */
     public int getSize() {
-        return items.size();
+        return cartItems.size();
     }
 
     /*
-     * @return The total price for the items in the cart
+     * @return The total price for the CartItems in the cart
      */
     public double getTotalPrice() {
         double total = 0.0;
-        for (LineItem i : items) {
+        for (CartItem i : cartItems) {
             total += i.getTotalPrice();
         }
 
@@ -100,9 +52,9 @@ public class Cart {
 
     /*
      * @return Formatted String which represents the total price for a cart
-     * this fucken lines in method getTotalPriceCurrencyFormat()
+     * this lines in method getTotalPriceCurrencyFormat()
      * to get price of all products and put a sign of dollar or sterlleng 
-     * or any fucken 3omla .. it just for decor man
+     * or any currency .. it just for decor man
      */
     public String getTotalPriceCurrencyFormat() {
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.UK);
@@ -116,31 +68,29 @@ public class Cart {
      *
      * @param lineItem The line item to be added to the cart
      */
-    public void addItem(LineItem lineItem) {
-        int itemCode = lineItem.getProduct().getProductId();
-        int quantities = lineItem.getQuantity();
+    public void addItem(CartItem item) {
+        int itemCode = item.getProduct().getProductId();
 
-        for (LineItem i : items) {
-            if (i.getProduct().getProductId()==itemCode) {
+        for (CartItem i : cartItems) {
+            if (i.getProduct().getProductId() == itemCode) {
                 // already exists man
-                i.setQuantity(quantities);
+                i.incremantQuantity();
                 return;
             }
         }
-
-        items.add(lineItem);
+        cartItems.add(item);
     }
 
     /*
-     * Removes items if it exists in the cart
+     * Removes CartItems if it exists in the cart
      *
      * @param lineItem The line item to be removed
      */
-    public void removeItem(LineItem lineItem) {
-        int itemCode = lineItem.getProduct().getProductId();
-        for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getProduct().getProductId()==itemCode) {
-                items.remove(i);
+    public void removeItem(CartItem cartItem) {
+        int itemCode = cartItem.getProduct().getProductId();
+        for (int i = 0; i < cartItems.size(); i++) {
+            if (cartItems.get(i).getProduct().getProductId() == itemCode) {
+                cartItems.remove(i);
                 return;
             }
         }

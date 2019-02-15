@@ -17,7 +17,7 @@ public class Product {
     private String productName;
     private double price;
     private double discount;
-    private int quantity_product;
+    private int quantityProduct;
     private int categoryId;
     
    
@@ -56,12 +56,12 @@ public class Product {
     }
     
 
-    public int getQuantity_product() {
-        return quantity_product;
+    public int getQuantityProduct() {
+        return quantityProduct;
     }
 
-    public void setQuantity_product(int quantity_product) {
-        this.quantity_product = quantity_product;
+    public void setQuantityProduct(int quantityProduct) {
+        this.quantityProduct = quantityProduct;
     }
 
     public int getProductId() {
@@ -73,9 +73,9 @@ public class Product {
     }
    
 
-    public Product(int productId, int quantity_product, String productName, double price) {
+    public Product(int productId, int quantityProduct, String productName, double price) {
         this.productId = productId;
-        this.quantity_product = quantity_product;
+        this.quantityProduct = quantityProduct;
         this.productName = productName;
         this.price = price;
     }
