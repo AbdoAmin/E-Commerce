@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,10 +27,16 @@ public class DataBaseConnection {
     /**
      * @this currentUsageNumber for
      */
-    private DataBaseConnection() throws ClassNotFoundException, SQLException {
-        this.currentUsageNumber = 0;
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "admin", "admin");
+    private DataBaseConnection(){
+        try {
+            this.currentUsageNumber = 0;
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "admin", "admin");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -36,7 +44,7 @@ public class DataBaseConnection {
      * This Abdo'sTon extends Singleton, give single object for @field
      * MaxConcurrencyUser , create new object when first get full.
      */
-    public static DataBaseConnection getInstance() throws ClassNotFoundException, SQLException {
+    public static DataBaseConnection getInstance() {
         DataBaseConnection temp = null;
         if (instance.isEmpty()) {
             synchronized (DataBaseConnection.class) {
