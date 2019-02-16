@@ -14,21 +14,21 @@ package com.ecommerce.beans;
 public class Product {
 
     private int productId;
-    private String productName;
+    private String name;
     private double price;
     private double discount;
-    private int quantityProduct;
+    private int quantity;
     private int categoryId;
     
    
     public Product() {}
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getPrice() {
@@ -56,12 +56,12 @@ public class Product {
     }
     
 
-    public int getQuantityProduct() {
-        return quantityProduct;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setQuantityProduct(int quantityProduct) {
-        this.quantityProduct = quantityProduct;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public int getProductId() {
@@ -75,8 +75,8 @@ public class Product {
 
     public Product(int productId, int quantityProduct, String productName, double price) {
         this.productId = productId;
-        this.quantityProduct = quantityProduct;
-        this.productName = productName;
+        this.quantity = quantityProduct;
+        this.name = productName;
         this.price = price;
     }
 

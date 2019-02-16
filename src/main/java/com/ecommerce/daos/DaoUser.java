@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,19 +23,13 @@ import java.util.logging.Logger;
  */
 public class DaoUser {
 
-    Connection connection;
+    DatabaseConnection connection;
 
-    public DaoUser() {
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        connection = databaseConnection.getConnection();
-    }
-
-    public void insertUser(User user) {
+    public void registerUser(User user) {
         try {
-            connection.createStatement();
-
-            PreparedStatement ps = connection
-                    .prepareStatement("insert into admin.users values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            connection = DatabaseConnection.getInstance();
+            PreparedStatement ps = connection.getConnection()
+                    .prepareStatement("insert into users values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
@@ -55,12 +50,14 @@ public class DaoUser {
     }
 
     public ArrayList<User> getAllUsers() {
+        ArrayList<User> usersList = new ArrayList<>();
+
         try {
-            PreparedStatement ps = connection.prepareStatement("select * from admin.users");
-            ResultSet rs = ps.executeQuery();
-            ArrayList<User> usersList = new ArrayList<>();
-            
-            while(rs.next()){
+            connection = DatabaseConnection.getInstance();
+            Statement statement = connection.getConnection().createStatement();
+            ResultSet rs = statement.executeQuery("select * from users");
+
+            while (rs.next()) {
                 User user = new User();
                 user.setUserId(rs.getInt("user_id"));
                 user.setFirstName(rs.getString("first_name"));
@@ -71,16 +68,15 @@ public class DaoUser {
                 user.setJob(rs.getString("job"));
                 user.setAddress(rs.getString("address"));
                 user.setCreditLimit(rs.getDouble("credit_limit"));
-                user.setProfileImage(rs.getString("profile_image"));
+//                user.setProfileImage(rs.getString("profile_image"));
                 user.setPhone(rs.getString("phone"));
                 user.setPrivilege(rs.getString("privilege"));
                 usersList.add(user);
             }
-            return usersList;
         } catch (SQLException ex) {
             Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return usersList;
     }
 
 }

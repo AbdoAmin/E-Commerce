@@ -24,14 +24,16 @@ import javax.servlet.http.HttpServletResponse;
 public class JustForTesting extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         DaoUser daoUser = new DaoUser();
-        ArrayList<User> users = new ArrayList<>();
-
-        users = daoUser.getAllUsers();
+        ArrayList<User> users = daoUser.getAllUsers();
         if(users != null){
+            out.println(users.size());
+
             for(User usr : users){
                 out.println(usr.getLastName()+"<br/>");
             }
