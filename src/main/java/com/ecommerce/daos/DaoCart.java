@@ -6,7 +6,7 @@
 package com.ecommerce.daos;
 
 import com.ecommerce.beans.Cart;
-import com.ecommerce.utilities.DataBaseConnection;
+import com.ecommerce.utilities.DatabaseConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,11 +21,11 @@ import java.util.logging.Logger;
  */
 public class DaoCart
 {
-    DataBaseConnection connection;
+    DatabaseConnection connection;
     
     public ArrayList<Cart> getUserCart(int userId) {
         ArrayList<Cart> userCart = new ArrayList<>();
-        connection = DataBaseConnection.getInstance();
+        connection = DatabaseConnection.getInstance();
         Statement s;
         try {
             s = connection.getConnection().createStatement();      
@@ -47,7 +47,7 @@ public class DaoCart
     }
     
      public boolean addCart(Cart cart) {
-            connection = DataBaseConnection.getInstance();
+            connection = DatabaseConnection.getInstance();
         try {
          
             PreparedStatement pst=connection.getConnection().prepareStatement("insert into carts (cart_id,user_id,product_id,quantity)Values (?,?,?,?)");         
@@ -67,7 +67,7 @@ public class DaoCart
     }
      
      public boolean deleteCart (int cartId){
-         connection = DataBaseConnection.getInstance();
+         connection = DatabaseConnection.getInstance();
          PreparedStatement pst;
         try {
             pst = connection.getConnection().prepareStatement("delete From carts where cart_id=?");                  
@@ -84,7 +84,7 @@ public class DaoCart
     }
      
      public boolean deleteUserCart (int userId){
-          connection = DataBaseConnection.getInstance();
+          connection = DatabaseConnection.getInstance();
          PreparedStatement pst;
        
         try {                  
@@ -105,7 +105,7 @@ public class DaoCart
      
       public boolean editQantity(int quantity, int userId, int productId) {
       
-           connection = DataBaseConnection.getInstance();
+           connection = DatabaseConnection.getInstance();
               PreparedStatement pst;
         try {
             pst = connection.getConnection().prepareStatement("update carts set quantity=? where user_id=? and product_id=?");
