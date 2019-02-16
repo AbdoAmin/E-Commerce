@@ -17,9 +17,9 @@ import java.util.logging.Logger;
  *
  * @author Abdo Amin
  */
-public class DataBaseConnection {
+public class DatabaseConnection {
 
-    private static ArrayList<DataBaseConnection> instance = new ArrayList<>();
+    private static ArrayList<DatabaseConnection> instance = new ArrayList<>();
     private final static int MaxConcurrencyUser = 10;
     private int currentUsageNumber;
     private Connection con;
@@ -27,15 +27,13 @@ public class DataBaseConnection {
     /**
      * @this currentUsageNumber for
      */
-    private DataBaseConnection(){
+    private DatabaseConnection(){
         try {
             this.currentUsageNumber = 0;
             Class.forName("oracle.jdbc.driver.OracleDriver");
             con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "admin", "admin");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(DataBaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -44,23 +42,23 @@ public class DataBaseConnection {
      * This Abdo'sTon extends Singleton, give single object for @field
      * MaxConcurrencyUser , create new object when first get full.
      */
-    public static DataBaseConnection getInstance() {
-        DataBaseConnection temp = null;
+    public static DatabaseConnection getInstance() {
+        DatabaseConnection temp = null;
         if (instance.isEmpty()) {
-            synchronized (DataBaseConnection.class) {
+            synchronized (DatabaseConnection.class) {
                 if (instance.isEmpty()) {
-                    temp = new DataBaseConnection();
+                    temp = new DatabaseConnection();
                     instance.add(temp);
                 }
             }
         } else {
-            for (DataBaseConnection inst : instance) {
+            for (DatabaseConnection inst : instance) {
                 if (inst.currentUsageNumber < MaxConcurrencyUser) {
                     inst.currentUsageNumber++;
                     return inst;
                 }
             }
-            temp = new DataBaseConnection();
+            temp = new DatabaseConnection();
             instance.add(temp);
             temp.currentUsageNumber++;
             return temp;
@@ -78,12 +76,12 @@ public class DataBaseConnection {
      */
     public static void removeNotInUse() {
         boolean isEmptySpace = false;
-        Iterator<DataBaseConnection> it = instance.iterator();
+        Iterator<DatabaseConnection> it = instance.iterator();
         if (it.next().currentUsageNumber < MaxConcurrencyUser) {
             isEmptySpace = true;//to skip first item /* It's singletone must keep one object ,maaaaaan */
         }
         for (; it.hasNext();) {
-            DataBaseConnection inst = it.next();
+            DatabaseConnection inst = it.next();
             if (inst.currentUsageNumber == 0 && isEmptySpace) {
                 instance.remove(inst);
             } else if (inst.currentUsageNumber < MaxConcurrencyUser) {
