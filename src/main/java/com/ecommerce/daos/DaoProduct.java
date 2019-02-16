@@ -76,7 +76,7 @@ public class DaoProduct {
             Connection connection = dataBaseConnection.getConnection();
             String sql
                     = "SELECT * FROM " + DatabaseHelper.PRODUCT.TABLE_NAME
-                    + "where " + DatabaseHelper.PRODUCT.CATEGORY_ID + " = ?";
+                    + " where " + DatabaseHelper.PRODUCT.CATEGORY_ID + " = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, categoryId);
             ResultSet resultSet = preparedStatement.executeQuery();
