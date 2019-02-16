@@ -29,8 +29,14 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String categoryId=req.getParameter("category");
         DaoProduct daoProduct = new DaoProduct();
-        List<Product> allProduct = daoProduct.getAllProduct();
+         List<Product> allProduct;
+        if(categoryId!=null){
+            allProduct = daoProduct.getAllProduct(Integer.valueOf(categoryId));
+        }else
+            allProduct = daoProduct.getAllProduct();
+            
         req.setAttribute("products", allProduct);
         DAOCategories dAOCategories = new DAOCategories();
         List<Category> allCategories = dAOCategories.getAllCategories();
