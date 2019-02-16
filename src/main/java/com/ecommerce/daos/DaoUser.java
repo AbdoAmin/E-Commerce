@@ -6,6 +6,7 @@
 package com.ecommerce.daos;
 
 import com.ecommerce.beans.User;
+import com.ecommerce.beans.UserLogin;
 import com.ecommerce.utilities.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.Date;
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
 public class DaoUser {
 
     DatabaseConnection connection;
-
+    
     public void insertUser(User user) {
         try {
             connection = DatabaseConnection.getInstance();
@@ -43,6 +44,8 @@ public class DaoUser {
             ps.setString(10, user.getPhone());
             ps.setString(11, user.getPrivilege());
             ps.executeUpdate();
+            
+            connection.close();
 
         } catch (SQLException ex) {
             Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
@@ -56,9 +59,6 @@ public class DaoUser {
             connection = DatabaseConnection.getInstance();
             Statement statement = connection.getConnection().createStatement();
             ResultSet rs = statement.executeQuery("select * from users");
-//            PreparedStatement ps = connection.getConnection()
-//                    .prepareStatement("select * from admin.users");
-//            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 User user = new User();
@@ -76,6 +76,7 @@ public class DaoUser {
                 user.setPrivilege(rs.getString("privilege"));
                 usersList.add(user);
             }
+            connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
         }

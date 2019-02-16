@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @author Abdo Amin
  *
  * This class for get connection use:
- *      DataBaseConnection example =DataBaseConnection.getInstance();
+ *      DatabaseConnection example =DatabaseConnection.getInstance();
  *      example.getConnection()."Query" ;
  *      example.close();
  */
@@ -45,7 +45,7 @@ public class DatabaseConnection {
     /**
      * This Abdo'sTon extends Singleton, give single object for @field
      * MaxConcurrencyUser , create new object when first get full.
-     * @return DataBaseConnection
+     * @return DatabaseConnection
      */
     public static DatabaseConnection getInstance() {
         if (INSTANCES.isEmpty()) {
