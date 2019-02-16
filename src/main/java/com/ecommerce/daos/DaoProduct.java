@@ -6,7 +6,7 @@
 package com.ecommerce.daos;
 
 import com.ecommerce.beans.Product;
-import com.ecommerce.utilities.DataBaseConnection;
+import com.ecommerce.utilities.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +25,7 @@ public class DaoProduct {
     Connection connection;
 
     public DaoProduct() {
-        DataBaseConnection dataBaseConnection = DataBaseConnection.getInstance();
+        DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
         connection = dataBaseConnection.getConnection();
         System.out.println("connection is done");
     }

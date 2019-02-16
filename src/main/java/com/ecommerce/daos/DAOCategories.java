@@ -6,7 +6,7 @@
 package com.ecommerce.daos;
 
 import com.ecommerce.beans.Category;
-import com.ecommerce.utilities.DataBaseConnection;
+import com.ecommerce.utilities.DatabaseConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,18 +22,18 @@ import java.util.logging.Logger;
  */
 public class DAOCategories {
 
-    DataBaseConnection connection;
+    DatabaseConnection dataBaseConnection;
 
     public List<Category> getAllCategories() {
         List<Category> categories = new ArrayList<>();
-        connection = DataBaseConnection.getInstance();
+        dataBaseConnection = DatabaseConnection.getInstance();
         try {
-            Statement s = connection.getConnection().createStatement();
+            Statement s = dataBaseConnection.getConnection().createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM Categories");
             while (rs.next()) {
                 categories.add(new Category(rs.getInt("CATEGORY_ID"), rs.getString("CATEGORY_NAME")));
             }
-            connection.close();
+            dataBaseConnection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DAOCategories.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -41,13 +41,13 @@ public class DAOCategories {
     }
 
     public boolean insertCategory(String categoryName) {
-        connection = DataBaseConnection.getInstance();
+        dataBaseConnection = DatabaseConnection.getInstance();
         try {
-            PreparedStatement s = connection.getConnection()
+            PreparedStatement s = dataBaseConnection.getConnection()
                     .prepareStatement("INSERT INTO Categories (CATEGORY_NAME) VALUES(?)");
             s.setString(1, categoryName);
             int result = s.executeUpdate();
-            connection.close();
+            dataBaseConnection.close();
             return result > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DAOCategories.class.getName()).log(Level.SEVERE, null, ex);
@@ -56,14 +56,14 @@ public class DAOCategories {
     }
 
     public boolean updateCategory(String oldCategoryName, String newCategoryName) {
-        connection = DataBaseConnection.getInstance();
+        dataBaseConnection = DatabaseConnection.getInstance();
         try {
-            PreparedStatement s = connection.getConnection()
+            PreparedStatement s = dataBaseConnection.getConnection()
                     .prepareStatement("UPDATE Categories SET CATEGORY_NAME=? WHERE CATEGORY_NAME=?");
             s.setString(1, newCategoryName);
             s.setString(2, oldCategoryName);
             int result = s.executeUpdate();
-            connection.close();
+            dataBaseConnection.close();
             return result > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DAOCategories.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,14 +72,14 @@ public class DAOCategories {
     }
 
     public boolean updateCategory(int categoryId, String newCategoryName) {
-        connection = DataBaseConnection.getInstance();
+        dataBaseConnection = DatabaseConnection.getInstance();
         try {
-            PreparedStatement s = connection.getConnection()
+            PreparedStatement s = dataBaseConnection.getConnection()
                     .prepareStatement("UPDATE Categories SET CATEGORY_NAME=? WHERE CATEGORY_ID=?");
             s.setString(1, newCategoryName);
             s.setInt(2, categoryId);
             int result = s.executeUpdate();
-            connection.close();
+            dataBaseConnection.close();
             return result > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DAOCategories.class.getName()).log(Level.SEVERE, null, ex);
@@ -88,14 +88,14 @@ public class DAOCategories {
     }
 
     public boolean deleteCategory(int categoryId) {
-        connection = DataBaseConnection.getInstance();
+        dataBaseConnection = DatabaseConnection.getInstance();
         try {
             //TODO Delete interest and product
-            PreparedStatement s = connection.getConnection()
+            PreparedStatement s = dataBaseConnection.getConnection()
                     .prepareStatement("DELETE FROM Categories WHERE CATEGORY_ID=?");
             s.setInt(1, categoryId);
             int result = s.executeUpdate();
-            connection.close();
+            dataBaseConnection.close();
             return result > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DAOCategories.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,14 +104,14 @@ public class DAOCategories {
     }
     
     public boolean deleteCategory(String categoryName) {
-        connection = DataBaseConnection.getInstance();
+        dataBaseConnection = DatabaseConnection.getInstance();
         try {
             //TODO Delete interest and product
-            PreparedStatement s = connection.getConnection()
+            PreparedStatement s = dataBaseConnection.getConnection()
                     .prepareStatement("DELETE FROM Categories WHERE CATEGORY_NAME=?");
             s.setString(1, categoryName);
             int result = s.executeUpdate();
-            connection.close();
+            dataBaseConnection.close();
             return result > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DAOCategories.class.getName()).log(Level.SEVERE, null, ex);
@@ -120,14 +120,14 @@ public class DAOCategories {
     }
     
      public String getCategoryName(int categoryId) {
-        connection = DataBaseConnection.getInstance();
+        dataBaseConnection = DatabaseConnection.getInstance();
         try {
-            PreparedStatement s = connection.getConnection()
+            PreparedStatement s = dataBaseConnection.getConnection()
                     .prepareStatement("SELECT CATEGORY_NAME FROM Categories WHERE CATEGORY_ID=?");
             s.setInt(1, categoryId);
             ResultSet result = s.executeQuery();
             boolean found=result.next();
-            connection.close();
+            dataBaseConnection.close();
             return found? result.getString("CATEGORY_NAME"):"";
         } catch (SQLException ex) {
             Logger.getLogger(DAOCategories.class.getName()).log(Level.SEVERE, null, ex);
@@ -136,14 +136,14 @@ public class DAOCategories {
     }
      
      public String getCategoryID(String categoryName) {
-        connection = DataBaseConnection.getInstance();
+        dataBaseConnection = DatabaseConnection.getInstance();
         try {
-            PreparedStatement s = connection.getConnection()
+            PreparedStatement s = dataBaseConnection.getConnection()
                     .prepareStatement("SELECT CATEGORY_ID  FROM Categories WHERE CATEGORY_NAME=?");
             s.setString(1, categoryName);
             ResultSet result = s.executeQuery();
             boolean found=result.next();
-            connection.close();
+            dataBaseConnection.close();
             return found? result.getString("CATEGORY_NAME"):"";
         } catch (SQLException ex) {
             Logger.getLogger(DAOCategories.class.getName()).log(Level.SEVERE, null, ex);
