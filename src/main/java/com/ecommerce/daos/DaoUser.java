@@ -26,8 +26,23 @@ public class DaoUser {
 
     DatabaseConnection connection;
 
-    public void checkIfUserExists(UserLogin user){
-        
+    public boolean checkIfUserExists(UserLogin user){
+        boolean exists = false;
+        try {
+            connection = DatabaseConnection.getInstance();
+            Statement statement = connection.getConnection().createStatement();
+            ResultSet rs = statement
+                    .executeQuery("select * from users where email="+user.getEmail()+" and password="+user.getPassword());
+            
+            if(rs.next()){
+                exists = true;
+            }
+            
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return exists;
     }
     
     public void registerUser(User user) {
