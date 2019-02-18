@@ -6,6 +6,7 @@
 package com.ecommerce.utilities;
 
 import com.ecommerce.beans.User;
+import com.ecommerce.beans.UserLogin;
 import com.ecommerce.daos.DaoUser;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,14 +31,20 @@ public class JustForTesting extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         DaoUser daoUser = new DaoUser();
-        ArrayList<User> users = daoUser.getAllUsers();
-        if(users != null){
-            out.println(users.size());
+        
+        UserLogin user = new UserLogin();
+        user.setEmail(request.getParameter("username"));
+        user.setPassword(request.getParameter("password"));
+        
+        User user2 = daoUser.signIn(user);
+        if(user2!=null){
+            out.println(user2.getFirstName() + "<br/>");
+//            for(Integer i : user2.getInterests()){
+//                out.println(i + "<br/>");
+//            }
+        }else
+            out.println("Doesn't exist");
 
-            for(User usr : users){
-                out.println(usr.getLastName()+"<br/>");
-            }
-        }
     }
 
     @Override
