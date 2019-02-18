@@ -23,4 +23,11 @@ public class DatabaseHelper {
          public final static String QUANTITY = "QUANTITY";
          public final static String CATEGORY_ID = "CATEGORY_ID";
     }
+    
+    public final static class ProductImages {
+         public final static String TABLE_NAME = "PRODUCT_IMAGES";
+         public final static String ID = "PRODUCT_IMAGE_ID";
+         public final static String PRODUCT_ID = "PRODUCT_ID";
+         public final static String IMAGE = "IMAGE";
+    }
 }
