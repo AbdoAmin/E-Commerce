@@ -24,9 +24,8 @@ import java.util.logging.Logger;
  */
 public class DatabaseConnection {
 
-    private static ArrayList<DatabaseConnection> INSTANCES = new ArrayList<>();
-    private final static int MAX_CONCURRENCY_USERS = 10;
-
+    private static final ArrayList<DatabaseConnection> INSTANCES = new ArrayList<>();
+    private static final int MAX_CONCURRENCY_USERS = 10;
     private int currentUsageNumber;
     private Connection con;
 
@@ -40,7 +39,6 @@ public class DatabaseConnection {
             con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "admin", "admin");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
-
         }
     }
 
@@ -49,7 +47,6 @@ public class DatabaseConnection {
      * MaxConcurrencyUser , create new object when first get full.
      * @return DatabaseConnection
      */
-
     public static DatabaseConnection getInstance() {
         if (INSTANCES.isEmpty()) {
             synchronized (DatabaseConnection.class) {
@@ -65,7 +62,6 @@ public class DatabaseConnection {
                     return inst;
                 }
             }
-
             DatabaseConnection temp = new DatabaseConnection();
             INSTANCES.add(temp);
             temp.currentUsageNumber++;
@@ -89,7 +85,6 @@ public class DatabaseConnection {
      */
     public static void removeNotInUse() {
         boolean isEmptySpace = false;
-
         Iterator<DatabaseConnection> it = INSTANCES.iterator();
         if (it.next().currentUsageNumber < MAX_CONCURRENCY_USERS) {
             isEmptySpace = true;//to skip first item /* It's singletone must keep one object ,maaaaaan */

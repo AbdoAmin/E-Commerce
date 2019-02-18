@@ -5,8 +5,12 @@
  */
 package com.ecommerce.servlets;
 
+import com.ecommerce.beans.Category;
 import com.ecommerce.beans.Product;
+import com.ecommerce.beans.User;
+import com.ecommerce.daos.DAOCategories;
 import com.ecommerce.daos.DaoProduct;
+import com.ecommerce.daos.DaoUser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -25,10 +29,19 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        DaoProduct daoProduct = new DaoProduct();
-        List<Product> allProduct = daoProduct.getAllProduct();
-        req.setAttribute("products", allProduct);
+//        String categoryId = req.getParameter("category");
+//        DaoProduct daoProduct = new DaoProduct();
+//        List<Product> allProduct;
+//        if (categoryId != null) {
+//            allProduct = daoProduct.getProducts(Integer.valueOf(categoryId));
+//        } else {
+//            allProduct = daoProduct.getAllProduct();
+//        }
+//
+//        req.setAttribute("products", allProduct);
+//        DAOCategories dAOCategories = new DAOCategories();
+//        List<Category> allCategories = dAOCategories.getAllCategories();
+//        req.setAttribute("categories", allCategories);
     }
 
-    
 }

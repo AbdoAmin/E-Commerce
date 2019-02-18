@@ -36,9 +36,12 @@ public class JustForTesting extends HttpServlet {
         user.setEmail(request.getParameter("username"));
         user.setPassword(request.getParameter("password"));
         
-        boolean exists = daoUser.checkIfUserExists(user);
-        if(exists==true){
-            out.println("exists");
+        User user2 = daoUser.signIn(user);
+        if(user2!=null){
+            out.println(user2.getFirstName() + "<br/>");
+//            for(Integer i : user2.getInterests()){
+//                out.println(i + "<br/>");
+//            }
         }else
             out.println("Doesn't exist");
 
