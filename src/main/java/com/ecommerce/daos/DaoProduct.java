@@ -31,45 +31,15 @@ public class DaoProduct {
             Connection connection = dataBaseConnection.getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM PRODUCTS");
-            while (resultSet.next()) {
-                Product product = new Product();
-                product.setProductId(resultSet.getInt("PRODUCT_ID"));
-                product.setName(resultSet.getString("PRODUCT_NAME"));
-                product.setPrice(resultSet.getInt("PRICE"));
-                product.setDiscount(resultSet.getDouble("DISCOUNT"));
-                product.setCategoryId(resultSet.getInt("CATEGORY_ID"));
-                product.setQuantity(resultSet.getInt("QUANTITY"));
-                products.add(product);
-            }
-//            dataBaseConnection.close();
+            setOnList(resultSet, products);
+            dataBaseConnection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
         }
         return products;
     }
 
-//    public int addProduct(Product product){
-//        Product product = new Product();
-//        try {
-//            DataBaseConnection dataBaseConnection = DataBaseConnection.getInstance();
-//            Connection connection = dataBaseConnection.getConnection();
-//            Statement statement = connection.createStatement();
-//            statement.executeUpdate("INSERT INTO PRODUCTS");
-//            
-//                product.setProductId(resultSet.getInt("PRODUCT_ID"));
-//                product.setName(resultSet.getString("PRODUCT_NAME"));
-//                product.setPrice(resultSet.getInt("PRICE"));
-//                product.setDiscount(resultSet.getDouble("DISCOUNT"));
-//                product.setCategoryId(resultSet.getInt("CATEGORY_ID"));
-//                product.setQuantity(resultSet.getInt("QUANTITY"));
-//           
-//            dataBaseConnection.close();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return product;
-//    }
-    public List<Product> getProduct(int categoryId) {
+    public List<Product> getProducts(int categoryId) {
         List<Product> products = new ArrayList<>();
         try {
             DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
@@ -79,17 +49,7 @@ public class DaoProduct {
                     + " where " + DatabaseHelper.PRODUCT.CATEGORY_ID + " = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, categoryId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                Product product = new Product();
-                product.setProductId(resultSet.getInt("PRODUCT_ID"));
-                product.setName(resultSet.getString("PRODUCT_NAME"));
-                product.setPrice(resultSet.getInt("PRICE"));
-                product.setDiscount(resultSet.getDouble("DISCOUNT"));
-                product.setCategoryId(resultSet.getInt("CATEGORY_ID"));
-                product.setQuantity(resultSet.getInt("QUANTITY"));
-                products.add(product);
-            }
+            setOnList(preparedStatement.executeQuery(), products);
             dataBaseConnection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,7 +57,7 @@ public class DaoProduct {
         return products;
     }
 
-    public List<Product> getProduct(String productName) {
+    public List<Product> getProducts(String productName) {
         List<Product> products = new ArrayList<>();
         try {
             DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
@@ -130,5 +90,58 @@ public class DaoProduct {
         } catch (SQLException ex) {
             Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public int addProduct(Product product) {
+        int rowEffect = 0;
+        try {
+            DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
+            Connection connection = dataBaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+            String sql = 
+                    "INSERT INTO " + DatabaseHelper.PRODUCT.TABLE_NAME
+                    + " ( " + DatabaseHelper.PRODUCT.NAME + ", "
+                    + DatabaseHelper.PRODUCT.PRICE + ", "
+                    + DatabaseHelper.PRODUCT.DISCOUNT + ", "
+                    + DatabaseHelper.PRODUCT.QUANTITY + ", "
+                    + DatabaseHelper.PRODUCT.CATEGORY_ID + ")"
+                    + " VALUES"
+                    + " ('" + product.getName() + "',"
+                    + product.getPrice() + ","
+                    + product.getDiscount() + ","
+                    + product.getQuantity() + ","
+                    + product.getCategoryId() + ")";
+            rowEffect = statement.executeUpdate(sql);
+            dataBaseConnection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rowEffect;
+    }
+     public int updateProduct(Product product) {
+        int rowEffect = 0;
+        try {
+            DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
+            Connection connection = dataBaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+            String sql = 
+                    "update INTO " + DatabaseHelper.PRODUCT.TABLE_NAME
+                    + " ( " + DatabaseHelper.PRODUCT.NAME + ", "
+                    + DatabaseHelper.PRODUCT.PRICE + ", "
+                    + DatabaseHelper.PRODUCT.DISCOUNT + ", "
+                    + DatabaseHelper.PRODUCT.QUANTITY + ", "
+                    + DatabaseHelper.PRODUCT.CATEGORY_ID + ")"
+                    + " VALUES"
+                    + " ('" + product.getName() + "',"
+                    + product.getPrice() + ","
+                    + product.getDiscount() + ","
+                    + product.getQuantity() + ","
+                    + product.getCategoryId() + ")";
+            rowEffect = statement.executeUpdate(sql);
+            dataBaseConnection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rowEffect;
     }
 }
