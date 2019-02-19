@@ -39,4 +39,10 @@ public class DatabaseHelper {
         public final static String PHONE = "PHONE";
         public final static String PRIVILEGE = "PRIVILEGE";
     }
+    
+    public final static class USER_INTERESTS {
+        public final static String TABLE_NAME = "USER_INTERESTES";
+        public final static String USER_ID = "USER_ID";
+        public final static String CATEGORY_ID = "CATEGORY_ID";
+    }
 }

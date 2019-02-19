@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ecommerce.utilities;
+package com.ecommerce.servlets;
 
 import com.ecommerce.beans.User;
 import com.ecommerce.beans.UserLogin;
@@ -32,13 +32,18 @@ public class JustForTesting extends HttpServlet {
         PrintWriter out = response.getWriter();
         DaoUser daoUser = new DaoUser();
         
-        UserLogin user = new UserLogin();
-        user.setEmail(request.getParameter("username"));
-        user.setPassword(request.getParameter("password"));
+//        UserLogin user = new UserLogin();
+//        user.setEmail(request.getParameter("username"));
+//        user.setPassword(request.getParameter("password"));
         
-        User user2 = daoUser.signIn(user);
-        if(user2!=null){
-            out.println(user2.getFirstName() + "<br/>");
+        User user = new User();
+        
+        user = daoUser.getUserByEmail("ahmedsallamdd@gmail.com");
+        user.setPhone("888888");
+        daoUser.updateUser(user);
+        
+        if(user != null){
+            out.println(user.getFirstName() + "<br/>");
 //            for(Integer i : user2.getInterests()){
 //                out.println(i + "<br/>");
 //            }
