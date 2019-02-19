@@ -5,10 +5,12 @@
  */
 package com.ecommerce.beans;
 
+import java.util.List;
+
 /**
- * This entity represents a single product in the store, which have its id,
- * a name and a price, quantities , discount and category.
- * 
+ * This entity represents a single product in the store, which have its id, a
+ * name and a price, quantities , discount and category.
+ *
  * @author Ashraf_R
  */
 public class Product {
@@ -19,9 +21,11 @@ public class Product {
     private double discount;
     private int quantity;
     private int categoryId;
-    
-   
-    public Product() {}
+    private List<String> productImages;
+    private String mainProductImage;
+
+    public Product() {
+    }
 
     public String getName() {
         return name;
@@ -54,7 +58,6 @@ public class Product {
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
-    
 
     public int getQuantity() {
         return quantity;
@@ -71,7 +74,23 @@ public class Product {
     public void setProductId(int productId) {
         this.productId = productId;
     }
-   
+
+    public List<String> getProductImages() {
+        return productImages;
+    }
+
+    public String getMainProductImage() {
+        if (productImages != null) {
+            if (!productImages.isEmpty()) {
+                return productImages.get(0);
+            }
+        }
+        return "Default Image"; //TODO
+    }
+
+    public void setProductImages(List<String> productImages) {
+        this.productImages = productImages;
+    }
 
     public Product(int productId, int quantityProduct, String productName, double price) {
         this.productId = productId;
@@ -80,8 +99,4 @@ public class Product {
         this.price = price;
     }
 
-   
 }
-
-    
-

@@ -31,7 +31,7 @@ public class DaoProduct {
             Connection connection = dataBaseConnection.getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM PRODUCTS");
-            setOnList(resultSet, products);
+            setOnList(resultSet, products, dataBaseConnection);
             dataBaseConnection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,7 +49,7 @@ public class DaoProduct {
                     + " where " + DatabaseHelper.PRODUCT.CATEGORY_ID + " = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, categoryId);
-            setOnList(preparedStatement.executeQuery(), products);
+            setOnList(preparedStatement.executeQuery(), products, dataBaseConnection);
             dataBaseConnection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,7 +67,7 @@ public class DaoProduct {
                     + "where " + DatabaseHelper.PRODUCT.NAME + " = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, "%" + productName + "%");
-            setOnList(preparedStatement.executeQuery(), products);
+            setOnList(preparedStatement.executeQuery(), products, dataBaseConnection);
             dataBaseConnection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,16 +75,24 @@ public class DaoProduct {
         return products;
     }
 
-    private void setOnList(ResultSet resultSet, List<Product> products) {
+    private void setOnList(ResultSet resultSet, List<Product> products, DatabaseConnection dataBaseConnection) {
         try {
             while (resultSet.next()) {
                 Product product = new Product();
-                product.setProductId(resultSet.getInt("PRODUCT_ID"));
+                int productId = resultSet.getInt("PRODUCT_ID");
+                product.setProductId(productId);
                 product.setName(resultSet.getString("PRODUCT_NAME"));
                 product.setPrice(resultSet.getInt("PRICE"));
                 product.setDiscount(resultSet.getDouble("DISCOUNT"));
                 product.setCategoryId(resultSet.getInt("CATEGORY_ID"));
                 product.setQuantity(resultSet.getInt("QUANTITY"));
+                /**
+                 * Get all Product Images converted into String
+                 * @para dataBaseConnection for pass the same Object
+                 */
+                product.setProductImages(
+                        new DaoProductImages(dataBaseConnection)
+                                .getProductImages(productId));
                 products.add(product);
             }
         } catch (SQLException ex) {
@@ -98,8 +106,8 @@ public class DaoProduct {
             DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
             Connection connection = dataBaseConnection.getConnection();
             Statement statement = connection.createStatement();
-            String sql = 
-                    "INSERT INTO " + DatabaseHelper.PRODUCT.TABLE_NAME
+            String sql
+                    = "INSERT INTO " + DatabaseHelper.PRODUCT.TABLE_NAME
                     + " ( " + DatabaseHelper.PRODUCT.NAME + ", "
                     + DatabaseHelper.PRODUCT.PRICE + ", "
                     + DatabaseHelper.PRODUCT.DISCOUNT + ", "
@@ -118,25 +126,44 @@ public class DaoProduct {
         }
         return rowEffect;
     }
-     public int updateProduct(Product product) {
+
+    public int updateProduct(Product product) {
         int rowEffect = 0;
         try {
             DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
             Connection connection = dataBaseConnection.getConnection();
             Statement statement = connection.createStatement();
-            String sql = 
-                    "update INTO " + DatabaseHelper.PRODUCT.TABLE_NAME
-                    + " ( " + DatabaseHelper.PRODUCT.NAME + ", "
-                    + DatabaseHelper.PRODUCT.PRICE + ", "
-                    + DatabaseHelper.PRODUCT.DISCOUNT + ", "
-                    + DatabaseHelper.PRODUCT.QUANTITY + ", "
-                    + DatabaseHelper.PRODUCT.CATEGORY_ID + ")"
-                    + " VALUES"
-                    + " ('" + product.getName() + "',"
-                    + product.getPrice() + ","
-                    + product.getDiscount() + ","
-                    + product.getQuantity() + ","
-                    + product.getCategoryId() + ")";
+            String sql
+                    = "UPDATE " + DatabaseHelper.PRODUCT.TABLE_NAME
+                    + " SET "
+                    + DatabaseHelper.PRODUCT.NAME + " = " + product.getName() + " , "
+                    + DatabaseHelper.PRODUCT.PRICE + " = " + product.getPrice() + " , "
+                    + DatabaseHelper.PRODUCT.DISCOUNT + " = " + product.getDiscount() + " , "
+                    + DatabaseHelper.PRODUCT.QUANTITY + " = " + product.getQuantity() + " , "
+                    + DatabaseHelper.PRODUCT.CATEGORY_ID + " = " + product.getCategoryId()
+                    + " WHERE " + DatabaseHelper.PRODUCT.ID + " = " + product.getProductId();
+            rowEffect = statement.executeUpdate(sql);
+            dataBaseConnection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rowEffect;
+    }
+
+    public int setProductQuantity(int productId, int productQuantity) {
+        int rowEffect = 0;
+        try {
+            DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
+            Connection connection = dataBaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+            String sql
+                    = "UPDATE "
+                    + DatabaseHelper.PRODUCT.TABLE_NAME
+                    + " SET "
+                    + DatabaseHelper.PRODUCT.QUANTITY + " = "
+                    + productQuantity
+                    + " where "
+                    + DatabaseHelper.PRODUCT.ID + " = " + productId;
             rowEffect = statement.executeUpdate(sql);
             dataBaseConnection.close();
         } catch (SQLException ex) {
