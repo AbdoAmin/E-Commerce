@@ -41,6 +41,8 @@ public class DaoUser {
 //            boolean next = rs.next();
             if (rs.next()) {
                 userSignIn.setUserId(rs.getInt(DatabaseHelper.USER.ID));
+                userSignIn.setFirstName(rs.getString(DatabaseHelper.USER.FIRST_NAME));
+                userSignIn.setLastName(rs.getString(DatabaseHelper.USER.LAST_NAME));
                 userSignIn.setEmail(rs.getString("email"));
                 userSignIn.setAddress(rs.getString("address"));
                 userSignIn.setJob(rs.getString("job"));
@@ -198,23 +200,29 @@ public class DaoUser {
             ps2.setString(8, user.getPhone());
             ps2.setString(9, user.getPrivilege());
             ps2.setInt(10, user.getUserId());
-            ps2.executeUpdate();
+            int executeUpdate2 = ps2.executeUpdate();
  
-            //delete all old interests, then put the new one.
+            //delete all old interests, then put the new ones.
             String sqlDelete = "delete from " + DatabaseHelper.USER_INTERESTS.TABLE_NAME 
                     + " where " + DatabaseHelper.USER.ID + " =?";
             
             PreparedStatement ps = connection.getConnection().prepareStatement(sqlDelete);
             ps.setInt(1, user.getUserId());
             
-            ps.executeUpdate();
+            int executeUpdate = ps.executeUpdate();
             
-            String sqlInsertInterests = "insert into " + DatabaseHelper.USER_INTERESTS.TABLE_NAME + " values"
-            PreparedStatement ps3 = connection.getConnection().prepareStatement(sqlDelete);
-
-
-//            int executeUpdate = ps.executeUpdate();
-            return executeUpdate > 0;
+            String sqlInsertInterests = "insert into " + DatabaseHelper.USER_INTERESTS.TABLE_NAME 
+                    + " ("+ DatabaseHelper.USER_INTERESTS.USER_ID + ", "+ DatabaseHelper.USER_INTERESTS.CATEGORY_ID
+                    + ")" +" values(?, ?)";
+            for(Integer i : user.getInterests()){
+                PreparedStatement ps3 = connection.getConnection().prepareStatement(sqlInsertInterests);
+                ps3.setInt(1, user.getUserId());
+                ps3.setInt(2, i);
+                
+                ps3.executeUpdate();
+            }
+            connection.close();
+            return ((executeUpdate2 > 0) && (executeUpdate > 0));
             
         } catch (SQLException ex) {
             Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
@@ -222,6 +230,51 @@ public class DaoUser {
         return false;
     }
 
-    
+    public User getUserByEmail(String email){
+        
+        try {
+            connection = DatabaseConnection.getInstance();
+            PreparedStatement ps = connection.getConnection()
+                    .prepareStatement("SELECT * FROM USERS WHERE EMAIL= ?");
+            
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            User user = new User();
 
+            if(rs.next()){
+                
+                user.setUserId(rs.getInt(DatabaseHelper.USER.ID));
+                user.setFirstName(rs.getString(DatabaseHelper.USER.FIRST_NAME));
+                user.setLastName(rs.getString(DatabaseHelper.USER.LAST_NAME));
+                user.setEmail(rs.getString("email"));
+                user.setAddress(rs.getString("address"));
+                user.setJob(rs.getString("job"));
+                user.setBirthDate(rs.getDate("birth_date"));
+                user.setJob(rs.getString("job"));
+                user.setAddress(rs.getString("address"));
+                user.setCreditLimit(rs.getDouble("credit_limit"));
+//                user.setProfileImage(rs.getString("profile_image"));
+                user.setPhone(rs.getString("phone"));
+                user.setPrivilege(rs.getString("privilege"));
+                
+                PreparedStatement ps1 = connection.getConnection()
+                    .prepareStatement("SELECT CATEGORY_ID FROM USER_INTERESTES WHERE USER_ID=?");
+                
+                ps1.setInt(1, user.getUserId());
+                
+                ResultSet interstsResultSet = ps1.executeQuery();
+                
+                ArrayList<Integer> interests = new ArrayList<>();
+                while(interstsResultSet.next()){
+                    interests.add(interstsResultSet.getInt("CATEGORY_ID"));
+                }
+                user.setInterests(interests);
+            }
+            connection.close();
+            return user;
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }
