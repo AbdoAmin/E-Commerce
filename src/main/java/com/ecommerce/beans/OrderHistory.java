@@ -5,8 +5,6 @@
  */
 package com.ecommerce.beans;
 
-import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
-
 /**
  *
  * @author Ashraf_R

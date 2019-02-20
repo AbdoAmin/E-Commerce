@@ -74,10 +74,10 @@ public class Cart {
      * @param lineItem The line item to be added to the cart
      */
     public void addItem(CartItem item) {
-        int itemCode = item.getProduct().getProductId();
+        int itemCode = item.getProduct().getId();
 
         for (CartItem i : cartItems) {
-            if (i.getProduct().getProductId() == itemCode) {
+            if (i.getProduct().getId() == itemCode) {
                 // already exists man
                 i.incremantQuantity();
                 return;
@@ -92,9 +92,9 @@ public class Cart {
      * @param lineItem The line item to be removed
      */
     public void removeItem(CartItem cartItem) {
-        int itemCode = cartItem.getProduct().getProductId();
+        int itemCode = cartItem.getProduct().getId();
         for (int i = 0; i < cartItems.size(); i++) {
-            if (cartItems.get(i).getProduct().getProductId() == itemCode) {
+            if (cartItems.get(i).getProduct().getId() == itemCode) {
                 cartItems.remove(i);
                 return;
             }
