@@ -15,16 +15,24 @@ import java.util.List;
  */
 public class Product {
 
-    private int productId;
+    private int id;
     private String name;
+    private String description;
     private double price;
     private double discount;
     private int quantity;
     private int categoryId;
     private List<String> productImages;
-    private String mainProductImage;
 
     public Product() {
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {
@@ -67,12 +75,12 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public int getProductId() {
-        return productId;
+    public int getId() {
+        return id;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setId(int productId) {
+        this.id = productId;
     }
 
     public List<String> getProductImages() {
@@ -93,7 +101,7 @@ public class Product {
     }
 
     public Product(int productId, int quantityProduct, String productName, double price) {
-        this.productId = productId;
+        this.id = productId;
         this.quantity = quantityProduct;
         this.name = productName;
         this.price = price;

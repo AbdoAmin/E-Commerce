@@ -57,35 +57,37 @@ public class DaoProduct {
         return products;
     }
 
-    public List<Product> getProducts(String productName) {
+      public Product getProduct(int productId) {
         List<Product> products = new ArrayList<>();
         try {
             DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
             Connection connection = dataBaseConnection.getConnection();
             String sql
                     = "SELECT * FROM " + DatabaseHelper.PRODUCT.TABLE_NAME
-                    + "where " + DatabaseHelper.PRODUCT.NAME + " = ?";
+                    + " where " + DatabaseHelper.PRODUCT.ID + " = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, "%" + productName + "%");
+            preparedStatement.setInt(1, productId);
             setOnList(preparedStatement.executeQuery(), products, dataBaseConnection);
             dataBaseConnection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return products;
+        return products.get(0);
     }
 
+   
     private void setOnList(ResultSet resultSet, List<Product> products, DatabaseConnection dataBaseConnection) {
         try {
             while (resultSet.next()) {
                 Product product = new Product();
                 int productId = resultSet.getInt("PRODUCT_ID");
-                product.setProductId(productId);
+                product.setId(productId);
                 product.setName(resultSet.getString("PRODUCT_NAME"));
                 product.setPrice(resultSet.getInt("PRICE"));
                 product.setDiscount(resultSet.getDouble("DISCOUNT"));
                 product.setCategoryId(resultSet.getInt("CATEGORY_ID"));
                 product.setQuantity(resultSet.getInt("QUANTITY"));
+                product.setDescription(resultSet.getString(DatabaseHelper.PRODUCT.DESCRIPTION));
                 /**
                  * Get all Product Images converted into String
                  * @para dataBaseConnection for pass the same Object
@@ -141,7 +143,7 @@ public class DaoProduct {
                     + DatabaseHelper.PRODUCT.DISCOUNT + " = " + product.getDiscount() + " , "
                     + DatabaseHelper.PRODUCT.QUANTITY + " = " + product.getQuantity() + " , "
                     + DatabaseHelper.PRODUCT.CATEGORY_ID + " = " + product.getCategoryId()
-                    + " WHERE " + DatabaseHelper.PRODUCT.ID + " = " + product.getProductId();
+                    + " WHERE " + DatabaseHelper.PRODUCT.ID + " = " + product.getId();
             rowEffect = statement.executeUpdate(sql);
             dataBaseConnection.close();
         } catch (SQLException ex) {
