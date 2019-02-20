@@ -22,7 +22,7 @@ public class Product {
     private int quantity;
     private int categoryId;
     private List<String> productImages;
-    private String mainProductImage;
+//    private String mainProductImage;
 
     public Product() {
     }
