@@ -87,6 +87,7 @@ public class DaoProduct {
                 product.setDiscount(resultSet.getDouble("DISCOUNT"));
                 product.setCategoryId(resultSet.getInt("CATEGORY_ID"));
                 product.setQuantity(resultSet.getInt("QUANTITY"));
+                product.setDescription(resultSet.getString(DatabaseHelper.PRODUCT.DESCRIPTION));
                 /**
                  * Get all Product Images converted into String
                  * @para dataBaseConnection for pass the same Object

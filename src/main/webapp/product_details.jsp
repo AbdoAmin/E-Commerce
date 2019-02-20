@@ -1,5 +1,5 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
     <jsp:include page="/ProductDetailsServlet" />
     <head>
@@ -16,6 +16,7 @@
         -->
         <!--<link rel="stylesheet/less" type="text/css" href="themes/less/bootshop.less">
         <script src="themes/js/less.js" type="text/javascript"></script> -->
+        
 
         <!-- Bootstrap style --> 
         <link id="callCss" rel="stylesheet" href="themes/bootshop/bootstrap.min.css" media="screen">
@@ -32,6 +33,10 @@
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="themes/images/ico/apple-touch-icon-72-precomposed.png">
         <link rel="apple-touch-icon-precomposed" href="themes/images/ico/apple-touch-icon-57-precomposed.png">
         <style type="text/css" id="enject"></style>
+        
+        <!--MODIFY Abdo Add Price discount-->  
+        <link href="themes/css/discountText.css" rel="stylesheet">
+        <!--MODIFY Abdo Add Price discount-->  
     </head>
     <body>
         <div id="header">
@@ -111,9 +116,20 @@
             <div class="container">
                 <div class="row">
                     <!-- Sidebar ================================================== -->
-                    <!-- MODIFY Abdo print categories as list -->
-                    <!--TODO-->
-                    <!-- MODIFY Abdo print categories as list -->
+                    <div id="sidebar" class="span3">
+                        <div class="well well-small"><a id="myCart" href="product_summary.html"><img src="themes/images/ico-cart.png" alt="cart">3 Items in your cart  <span class="badge badge-warning pull-right">$155.00</span></a></div>
+                        <ul id="sideManu" class="nav nav-tabs nav-stacked">
+                            <!-- MODIFY Abdo print categories as list -->
+                            <c:forEach items="${categories}" var="category">
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/index.jsp?category=${category.categoryId}">
+                                        ${category.categoryName}</a>
+                                </li>
+                            </c:forEach>
+                            <!-- MODIFY Abdo print categories as list -->
+                        </ul>
+                        <br />
+                    </div>
                     <!-- Sidebar end=============================================== -->
                     <div class="span9">
                         <ul class="breadcrumb">
@@ -123,17 +139,18 @@
                         </ul>	
                         <div class="row">	  
                             <div id="gallery" class="span3">
-                                <a href="data:image/jpeg;base64,${product.productImages[0]}" title="${requestScope.product.name}">
+                                <!--TODO display clicked image-->
+                                <a href="" title="${requestScope.product.name}">
                                     <img src="data:image/jpeg;base64,${product.productImages[0]}" style="width:100%" alt="${requestScope.product.name}">
                                 </a>
                                 <div id="differentview" class="moreOptopm carousel slide">
                                     <div class="carousel-inner">
                                         <div class="item active">
-                                             <c:forEach items="${requestScope.product.productImages}" var="image">
-                                                <a href="data:image/jpeg;base64,${image}"> <img style="width:29%" src="data:image/jpeg;base64,${image}" alt=""></a>
-                                            </c:forEach>
-<!--                                            <a href="themes/images/products/large/f2.jpg"> <img style="width:29%" src="themes/images/products/large/f2.jpg" alt=""></a>
-                                            <a href="themes/images/products/large/f3.jpg"> <img style="width:29%" src="themes/images/products/large/f3.jpg" alt=""></a>-->
+                                            <c:forEach items="${requestScope.product.productImages}" var="image">
+                                                <a href=""> <img style="width:29%" src="data:image/jpeg;base64,${image}" alt=""></a>
+                                                </c:forEach>
+                                            <a href="themes/images/products/large/f2.jpg"> <img style="width:29%" src="themes/images/products/large/f2.jpg" alt=""></a>
+                                            <a href="themes/images/products/large/f3.jpg"> <img style="width:29%" src="themes/images/products/large/f3.jpg" alt=""></a>
                                         </div>
                                     </div>
                                     <!--  
@@ -144,14 +161,35 @@
 
 
                             </div>
-                            
+
                             <div class="span6">
                                 <h3>${requestScope.product.name}</h3>
 
                                 <hr class="soft">
                                 <form class="form-horizontal qtyFrm">
                                     <div class="control-group">
-                                        <label class="control-label"><span>$${requestScope.product.price}</span></label>
+                                        <!--MODIFY Abdo Add Price discount--> 
+                                        <c:choose>
+                                            <c:when test="${requestScope.product.discount!=0.00}">
+                                                <div class="style-3">
+                                                    <del>
+                                                        <span class="amount">$35,<sup>00</sup></span>
+                                                    </del>
+                                                    <ins>
+                                                        <span class="amount">$32,<sup>50</sup></span>
+                                                    </ins>
+                                                </div>
+                                            </c:when>    
+                                            <c:otherwise>
+                                                <div class="style-3">
+                                                    <ins>
+                                                        <span class="amount">$35,<sup>00</sup></span>
+                                                    </ins>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <!--MODIFY Abdo Add Price discount-->  
+<!--                                        <label class="control-label"><span>$${requestScope.product.price}</span></label>-->
                                         <div class="controls">
                                             <input type="number" class="span1" placeholder="Qty.">
                                             <button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
@@ -163,6 +201,7 @@
                                 <h4>${requestScope.product.quantity} items in stock</h4>
 
                                 <hr class="soft clr">
+                                <h3>Description</h3>
                                 <p>
                                     ${requestScope.product.description}
                                 </p>
@@ -179,8 +218,8 @@
                 </div> </div>
         </div>
         <!-- MainBody End ============================= -->
-        
-        
+
+
         <!-- Footer ================================================================== -->
         <div id="footerSection">
             <div class="container">

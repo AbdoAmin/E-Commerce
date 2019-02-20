@@ -432,7 +432,7 @@
                         <ul class="thumbnails">
                             <c:forEach items="${products}" var="product" varStatus="loop">
                                 <c:url var="thisURL" value="product_details.jsp" scope="request">
-                                    <c:param name="productID" value="${product.Id}"/>
+                                    <c:param name="productID" value="${product.id}"/>
                                 </c:url>
                                 <li class="span3">
                                     <div class="thumbnail" >

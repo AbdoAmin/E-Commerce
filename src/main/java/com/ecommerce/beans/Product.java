@@ -17,6 +17,7 @@ public class Product {
 
     private int id;
     private String name;
+    private String description;
     private double price;
     private double discount;
     private int quantity;
@@ -24,6 +25,14 @@ public class Product {
     private List<String> productImages;
 
     public Product() {
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {

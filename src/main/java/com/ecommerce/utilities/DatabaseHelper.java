@@ -22,6 +22,7 @@ public class DatabaseHelper {
         public final static String DISCOUNT = "DISCOUNT";
         public final static String QUANTITY = "QUANTITY";
         public final static String CATEGORY_ID = "CATEGORY_ID";
+        public final static String DESCRIPTION = "DESCRIPTION";
     }
     
     public final static class USER {
