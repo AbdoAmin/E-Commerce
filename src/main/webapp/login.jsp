@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" session="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
     <head>
@@ -34,6 +34,7 @@
         <style type="text/css" id="enject"></style>
     </head>
     <body>
+
         <div id="header">
             <div class="container">
                 <div id="welcomeLine" class="row">
@@ -77,8 +78,8 @@
                             <li class=""><a href="contact.html">Contact</a></li>
                             <li class="">
                                 <!--modify sallam if user object is not a null, hide the login button-->
-                                <c:set var="user"/>
-                                <c:if test="${user != null}">
+                                <%--<c:set var="user" value="${sessionScope.user}"/>--%>
+                                <c:if test="${pageContext.session!=null}">
                                     <a href="#login" role="button" data-toggle="modal" style="padding-right:0">
                                         <span class="btn btn-large btn-success">Login</span>
                                     </a>

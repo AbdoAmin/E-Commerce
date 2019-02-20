@@ -29,19 +29,26 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        String categoryId = req.getParameter("category");
-//        DaoProduct daoProduct = new DaoProduct();
-//        List<Product> allProduct;
-//        if (categoryId != null) {
-//            allProduct = daoProduct.getProducts(Integer.valueOf(categoryId));
-//        } else {
-//            allProduct = daoProduct.getAllProduct();
-//        }
-//
-//        req.setAttribute("products", allProduct);
-//        DAOCategories dAOCategories = new DAOCategories();
-//        List<Category> allCategories = dAOCategories.getAllCategories();
-//        req.setAttribute("categories", allCategories);
+        String categoryId = req.getParameter("category");
+        DaoProduct daoProduct = new DaoProduct();
+        List<Product> allProduct;
+        if (categoryId != null) {
+            allProduct = daoProduct.getProducts(Integer.valueOf(categoryId));
+        } else {
+            allProduct = daoProduct.getAllProduct();
+        }
+
+        req.setAttribute("products", allProduct);
+        DAOCategories dAOCategories = new DAOCategories();
+        List<Category> allCategories = dAOCategories.getAllCategories();
+        req.setAttribute("categories", allCategories);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 
 }

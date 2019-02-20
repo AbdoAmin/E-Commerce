@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!--/*modify: sallam..added the session to be false*/-->
+<%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
     <jsp:include page="/HomeServlet" />
@@ -30,24 +31,28 @@
         <style type="text/css" id="enject"></style>
     </head>
 
-    <body>
+    <body> 
+        
         <div id="header">
             <div class="container">
-                <div id="welcomeLine" class="row">
-                    <div class="span6">Welcome!<strong> User</strong></div>
-                    <div class="span6">
-                        <div class="pull-right">
-                            <a href="product_summary.html"><span class="">Fr</span></a>
-                            <a href="product_summary.html"><span class="">Es</span></a>
-                            <span class="btn btn-mini">En</span>
-                            <a href="product_summary.html"><span>&pound;</span></a>
-                            <span class="btn btn-mini">$155.00</span>
-                            <a href="product_summary.html"><span class="">$</span></a>
-                            <a href="product_summary.html"><span class="btn btn-mini btn-primary"><i
-                                        class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart </span> </a>
+                <!--/*modified by sallam..added a condition to display the welcome div*/-->
+                <c:if test="${pageContext.session.getAttribute(user)!=null}">
+                    <div id="welcomeLine" class="row">
+                        <div class="span6">Welcome!<strong> User</strong></div>
+                        <div class="span6">
+                            <div class="pull-right">
+                                <a href="product_summary.html"><span class="">Fr</span></a>
+                                <a href="product_summary.html"><span class="">Es</span></a>
+                                <span class="btn btn-mini">En</span>
+                                <a href="product_summary.html"><span>&pound;</span></a>
+                                <span class="btn btn-mini">$155.00</span>
+                                <a href="product_summary.html"><span class="">$</span></a>
+                                <a href="product_summary.html"><span class="btn btn-mini btn-primary"><i
+                                            class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart </span> </a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </c:if>
                 <!-- Navbar ================================================== -->
                 <div id="logoArea" class="navbar">
                     <a id="smallScreen" data-target="#topMenu" data-toggle="collapse" class="btn btn-navbar">
@@ -71,36 +76,19 @@
                         </form>
                         <ul id="topMenu" class="nav pull-right">
                             <li class=""><a href="special_offer.html">Specials Offer</a></li>
-                            <!--<li class=""><a href="normal.html">Delivery</a></li>-->
                             <li class=""><a href="contact.html">Contact</a></li>
+                            <!--/*modify by sallam..added the condition*/-->
                             <li class="">
-                                <a href="#login" role="button" data-toggle="modal" style="padding-right:0"><span
-                                        class="btn btn-large btn-success">Login</span></a>
-                                <div id="login" class="modal hide fade in" tabindex="-1" role="dialog"
-                                     aria-labelledby="login" aria-hidden="false">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-hidden="true">×</button>
-                                        <h3>Login Block</h3>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form class="form-horizontal loginFrm">
-                                            <div class="control-group">
-                                                <input type="text" id="inputEmail" placeholder="Email">
-                                            </div>
-                                            <div class="control-group">
-                                                <input type="password" id="inputPassword" placeholder="Password">
-                                            </div>
-                                            <div class="control-group">
-                                                <label class="checkbox">
-                                                    <input type="checkbox"> Remember me
-                                                </label>
-                                            </div>
-                                        </form>
-                                        <button type="submit" class="btn btn-success">Sign in</button>
-                                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                                    </div>
-                                </div>
+                                <c:if test="${user==null}">
+                                    <a role="button" style="padding-right:0" href="${pageContext.request.contextPath}/login.jsp">
+                                        <span class="btn btn-large btn-success" >Login</span>
+                                    </a>
+                                </c:if>
+                                <c:if test="${user!=null}">
+                                    <a href="LogOutServlet" role="button" style="padding-right:0">
+                                        <span class="btn btn-large btn-success">Logout</span>
+                                    </a>
+                                </c:if>  
                             </li>
                         </ul>
                     </div>
@@ -447,7 +435,6 @@
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
     </div>
     <!-- Footer ================================================================== -->
     <div id="footerSection">
@@ -480,50 +467,11 @@
                 <div id="socialMedia" class="span3 pull-right">
                     <h5>SOCIAL MEDIA </h5>
                     <a href="#"><img width="60" height="60" src="themes/images/facebook.png" title="facebook"
-                            alt="facebook" /></a>
+                                     alt="facebook" /></a>
                     <a href="#"><img width="60" height="60" src="themes/images/twitter.png" title="twitter"
-                            alt="twitter" /></a>
+                                     alt="twitter" /></a>
                     <a href="#"><img width="60" height="60" src="themes/images/youtube.png" title="youtube"
-                            alt="youtube" /></a>
-=======
-        <!-- Footer ================================================================== -->
-        <div id="footerSection">
-            <div class="container">
-                <div class="row">
-                    <div class="span3">
-                        <h5>ACCOUNT</h5>
-                        <a href="login.html">YOUR ACCOUNT</a>
-                        <a href="login.html">PERSONAL INFORMATION</a>
-                        <a href="login.html">ADDRESSES</a>
-                        <a href="login.html">DISCOUNT</a>
-                        <a href="login.html">ORDER HISTORY</a>
-                    </div>
-                    <div class="span3">
-                        <h5>INFORMATION</h5>
-                        <a href="contact.html">CONTACT</a>
-                        <a href="register.html">REGISTRATION</a>
-                        <a href="legal_notice.html">LEGAL NOTICE</a>
-                        <a href="tac.html">TERMS AND CONDITIONS</a>
-                        <a href="faq.html">FAQ</a>
-                    </div>
-                    <div class="span3">
-                        <h5>OUR OFFERS</h5>
-                        <a href="#">NEW PRODUCTS</a>
-                        <a href="#">TOP SELLERS</a>
-                        <a href="special_offer.html">SPECIAL OFFERS</a>
-                        <a href="#">MANUFACTURERS</a>
-                        <a href="#">SUPPLIERS</a>
-                    </div>
-                    <div id="socialMedia" class="span3 pull-right">
-                        <h5>SOCIAL MEDIA </h5>
-                        <a href="#"><img width="60" height="60" src="themes/images/facebook.png" title="facebook"
-                                         alt="facebook" /></a>
-                        <a href="#"><img width="60" height="60" src="themes/images/twitter.png" title="twitter"
-                                         alt="twitter" /></a>
-                        <a href="#"><img width="60" height="60" src="themes/images/youtube.png" title="youtube"
-                                         alt="youtube" /></a>
-                    </div>
->>>>>>> ee4c0803f7899b96e273999e450a7ce0ed5a7a87
+                                     alt="youtube" /></a>
                 </div>
                 <p class="pull-right">&copy; Bootshop</p>
             </div><!-- Container End -->
@@ -625,6 +573,6 @@
             </div>
         </div>
         <span id="themesBtn"></span>
-    </body>
+</body>
 
 </html>
