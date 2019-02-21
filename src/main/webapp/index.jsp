@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!--/*modify: sallam..added the session to be false*/-->
+<%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
     <jsp:include page="/HomeServlet" />
@@ -30,24 +31,28 @@
         <style type="text/css" id="enject"></style>
     </head>
 
-    <body>
+    <body> 
+
         <div id="header">
             <div class="container">
-                <div id="welcomeLine" class="row">
-                    <div class="span6">Welcome!<strong> User</strong></div>
-                    <div class="span6">
-                        <div class="pull-right">
-                            <a href="product_summary.html"><span class="">Fr</span></a>
-                            <a href="product_summary.html"><span class="">Es</span></a>
-                            <span class="btn btn-mini">En</span>
-                            <a href="product_summary.html"><span>&pound;</span></a>
-                            <span class="btn btn-mini">$155.00</span>
-                            <a href="product_summary.html"><span class="">$</span></a>
-                            <a href="product_summary.html"><span class="btn btn-mini btn-primary"><i
-                                        class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart </span> </a>
+                <!--/*modified by sallam..added a condition to display the welcome div*/-->
+                <c:if test="${pageContext.session.getAttribute(user)!=null}">
+                    <div id="welcomeLine" class="row">
+                        <div class="span6">Welcome!<strong> User</strong></div>
+                        <div class="span6">
+                            <div class="pull-right">
+                                <a href="product_summary.html"><span class="">Fr</span></a>
+                                <a href="product_summary.html"><span class="">Es</span></a>
+                                <span class="btn btn-mini">En</span>
+                                <a href="product_summary.html"><span>&pound;</span></a>
+                                <span class="btn btn-mini">$155.00</span>
+                                <a href="product_summary.html"><span class="">$</span></a>
+                                <a href="product_summary.html"><span class="btn btn-mini btn-primary"><i
+                                            class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart </span> </a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </c:if>
                 <!-- Navbar ================================================== -->
                 <div id="logoArea" class="navbar">
                     <a id="smallScreen" data-target="#topMenu" data-toggle="collapse" class="btn btn-navbar">
@@ -71,36 +76,19 @@
                         </form>
                         <ul id="topMenu" class="nav pull-right">
                             <li class=""><a href="special_offer.html">Specials Offer</a></li>
-                            <!--<li class=""><a href="normal.html">Delivery</a></li>-->
                             <li class=""><a href="contact.html">Contact</a></li>
+                            <!--/*modify by sallam..added the condition*/-->
                             <li class="">
-                                <a href="#login" role="button" data-toggle="modal" style="padding-right:0"><span
-                                        class="btn btn-large btn-success">Login</span></a>
-                                <div id="login" class="modal hide fade in" tabindex="-1" role="dialog"
-                                     aria-labelledby="login" aria-hidden="false">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-hidden="true">×</button>
-                                        <h3>Login Block</h3>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form class="form-horizontal loginFrm">
-                                            <div class="control-group">
-                                                <input type="text" id="inputEmail" placeholder="Email" name="email">
-                                            </div>
-                                            <div class="control-group">
-                                                <input type="password" id="inputPassword" placeholder="Password">
-                                            </div>
-                                            <div class="control-group">
-                                                <label class="checkbox">
-                                                    <input type="checkbox"> Remember me
-                                                </label>
-                                            </div>
-                                        </form>
-                                        <button type="submit" class="btn btn-success">Sign in</button>
-                                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                                    </div>
-                                </div>
+                                <c:if test="${user==null}">
+                                    <a role="button" style="padding-right:0" href="${pageContext.request.contextPath}/login.jsp">
+                                        <span class="btn btn-large btn-success" >Login</span>
+                                    </a>
+                                </c:if>
+                                <c:if test="${user!=null}">
+                                    <a href="LogOutServlet" role="button" style="padding-right:0">
+                                        <span class="btn btn-large btn-success">Logout</span>
+                                    </a>
+                                </c:if>  
                             </li>
                         </ul>
                     </div>
@@ -188,9 +176,11 @@
                         <ul id="sideManu" class="nav nav-tabs nav-stacked">
                             <!-- MODIFY Abdo print categories as list -->
                             <c:forEach items="${categories}" var="category">
-                                <li><a href="${pageContext.request.contextPath}/index.jsp?category=${category.categoryId}">
-                                        ${category.categoryName}</a></li>
-                                    </c:forEach>
+                                <li>
+                                    <a href="${pageContext.request.contextPath}/index.jsp?category=${category.categoryId}">
+                                        ${category.categoryName}</a>
+                                </li>
+                            </c:forEach>
                             <!-- MODIFY Abdo print categories as list -->
                         </ul>
                         <br />
@@ -428,14 +418,16 @@
                         </div>
                         <h4>Latest Products </h4>
                         <ul class="thumbnails">
-                            <c:forEach items="${products}" var="product">
+                            <c:forEach items="${products}" var="product" varStatus="loop">
+                                <c:url var="thisURL" value="product_details.jsp" scope="request">
+                                    <c:param name="productID" value="${product.id}"/>
+                                </c:url>
                                 <li class="span3">
-                                    <div class="thumbnail">
-                                        <img 
-                                            src="data:image/jpeg;base64,${product.mainProductImage}" alt="" />
+                                    <div class="thumbnail" >
+                                        <a href="<c:out value="${thisURL}"/>"><img src="data:image/jpeg;base64,${product.mainProductImage}" alt="" /></a>
                                         <div class="caption">
                                             <h5>${product.name}</h5>
-                                            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
+                                            <h4 style="text-align:center"><a class="btn" href="<c:out value="${thisURL}"/>"> <i
                                                         class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
                                                         class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
                                                                                        href="#">${product.price}</a></h4>

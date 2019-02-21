@@ -51,4 +51,56 @@ public class DaoProductImages {
         return products;
     }
 
+    public boolean deleteProductImage(int productImageId) {
+        try {
+            Connection connection = dataBaseConnection.getConnection();
+            String sql
+                    = "DELET From "
+                    + DatabaseHelper.ProductImages.TABLE_NAME
+                    + " where " + DatabaseHelper.ProductImages.ID + " = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, productImageId);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProductImages.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public boolean insertProductImage(int productId, byte[] image) {
+        try {
+            Connection connection = dataBaseConnection.getConnection();
+            String sql
+                    = "INSERT INTO "
+                    + DatabaseHelper.ProductImages.TABLE_NAME
+                    + " (" + DatabaseHelper.ProductImages.PRODUCT_ID + "," + DatabaseHelper.ProductImages.IMAGE + ") "
+                    + "VALUES( ? , ? )";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, productId);
+            preparedStatement.setBytes(2, image);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProductImages.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public boolean updateProductImage(int productImageId, byte[] image) {
+        try {
+            Connection connection = dataBaseConnection.getConnection();
+            String sql
+                    = "UPDATE "
+                    + DatabaseHelper.ProductImages.TABLE_NAME
+                    + " SET " + DatabaseHelper.ProductImages.IMAGE + " = ?"
+                    + " WHERE " +  DatabaseHelper.ProductImages.ID + " = ? ";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setBytes(1, image);
+            preparedStatement.setInt(2, productImageId);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProductImages.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
 }

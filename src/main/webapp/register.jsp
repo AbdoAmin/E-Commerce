@@ -106,7 +106,7 @@
 			<div class="row">
 				<div class="span9" style="margin: 0 auto; float: none; ">
 					<ul class="breadcrumb">
-						<li><a href="index.jsp">Home</a> <span class="divider">/</span></li>
+						<li><a href="${pageContext.request.contextPath}/index.jsp">Home</a> <span class="divider">/</span></li>
 						<li class="active">Registration</li>
 					</ul>
 					<h3> Registration</h3>

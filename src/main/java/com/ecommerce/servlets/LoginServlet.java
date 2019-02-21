@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -32,28 +33,33 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DaoUser daoUser = new DaoUser();
-        
+
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         UserLogin userLogin = new UserLogin();
         userLogin.setEmail(email);
         userLogin.setPassword(password);
-        
+
         User user = new User();
         user = daoUser.signIn(userLogin);
-        
+
         //TODO: put the user object transfer to index.jsp code here
-        
-        
 //        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 //        rd.include(request, response);
-        if(user != null)
+        if (user != null) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user", user);
+            session.setMaxInactiveInterval(30 * 60);
+            
             response.sendRedirect("index.jsp");
-        
-        //TODO: redirect to an error page 
-        //or tell the user that the email or the password he/she entered is fuckin' worng!
+//            request.getRequestDispatcher("index.jsp").include(request, response);
+        } else {
+            //TODO: redirect to an error page 
+            //or tell the user that the email or the password he/she entered is worng!
+        }
+//            response.sendRedirect("index.jsp");
+
     }
 
-    
 }
