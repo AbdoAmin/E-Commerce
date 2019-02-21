@@ -61,19 +61,20 @@
                         <span class="icon-bar"></span>
                     </a>
                     <div class="navbar-inner">
-                        <a class="brand" href="index.html"><img src="themes/images/logo.png" alt="Bootsshop" /></a>
-                        <form class="form-inline navbar-search" method="post" action="products.html">
-                            <input id="srchFld" class="srchTxt" type="text" />
-                            <select class="srchTxt">
-                                <option>All</option>
-                                <option>CLOTHES </option>
-                                <option>FOOD AND BEVERAGES </option>
-                                <option>HEALTH & BEAUTY </option>
-                                <option>SPORTS & LEISURE </option>
-                                <option>BOOKS & ENTERTAINMENTS </option>
+                        <a class="brand" href="${pageContext.request.contextPath}/index.jsp"><img src="themes/images/logo.png" alt="Bootsshop" /></a>
+                        <!-- MODIFY ashraf display search category -->
+                        <form class="form-inline navbar-search" method="GET" action="${pageContext.request.contextPath}/index.jsp">
+                            <input id="srchFld" class="srchTxt" type="text" name="productName" style="padding-left: 25px !important;"/>
+                            <select class="srchTxt" name="category">
+                                <!-- vaLue =-1 mean that no category selected --> 
+                                <option value="-1">All</option>
+                                <c:forEach items="${categories}" var="category">
+                                     <option value="${category.categoryId}">${category.categoryName}</option>
+                                </c:forEach>
                             </select>
                             <button type="submit" id="submitButton" class="btn btn-primary">Go</button>
                         </form>
+                        <!-- MODIFY ashraf display search category -->
                         <ul id="topMenu" class="nav pull-right">
                             <li class=""><a href="special_offer.html">Specials Offer</a></li>
                             <li class=""><a href="contact.html">Contact</a></li>
@@ -418,6 +419,7 @@
                         </div>
                         <h4>Latest Products </h4>
                         <ul class="thumbnails">
+                            <!-- MODIFY ashraf display products -->
                             <c:forEach items="${products}" var="product" varStatus="loop">
                                 <c:url var="thisURL" value="product_details.jsp" scope="request">
                                     <c:param name="productID" value="${product.id}"/>
@@ -435,6 +437,7 @@
                                     </div>
                                 </li>
                             </c:forEach>
+                            <!-- MODIFY ashraf display products -->
                         </ul>
                     </div>
                 </div>

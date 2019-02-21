@@ -39,6 +39,23 @@ public class DaoProduct {
         return products;
     }
 
+    public List<Product> getAllProductWithDiscount() {
+        List<Product> products = new ArrayList<>();
+        try {
+            DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
+            Connection connection = dataBaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM PRODUCTS"
+                    + " WHERE "
+                    + DatabaseHelper.PRODUCT.DISCOUNT+" > 0");
+            setOnList(resultSet, products, dataBaseConnection);
+            dataBaseConnection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return products;
+    }
+
     public List<Product> getProducts(int categoryId) {
         List<Product> products = new ArrayList<>();
         try {
@@ -57,7 +74,47 @@ public class DaoProduct {
         return products;
     }
 
-      public Product getProduct(int productId) {
+    public List<Product> getProducts(int categoryId, String productName) {
+        List<Product> products = new ArrayList<>();
+        try {
+            DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
+            Connection connection = dataBaseConnection.getConnection();
+            String sql
+                    = "SELECT * FROM " + DatabaseHelper.PRODUCT.TABLE_NAME
+                    + " where " + DatabaseHelper.PRODUCT.CATEGORY_ID + " = ? "
+                    + " AND UPPER( "
+                    + DatabaseHelper.PRODUCT.NAME + " ) LIKE ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, categoryId);
+            preparedStatement.setString(2, "%"+productName+"%");
+            setOnList(preparedStatement.executeQuery(), products, dataBaseConnection);
+            dataBaseConnection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return products;
+    }
+
+    public List<Product> getProducts(String productName) {
+        List<Product> products = new ArrayList<>();
+        try {
+            DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
+            Connection connection = dataBaseConnection.getConnection();
+            String sql
+                    = "SELECT * FROM " + DatabaseHelper.PRODUCT.TABLE_NAME
+                    + " where UPPER( "
+                    + DatabaseHelper.PRODUCT.NAME + " ) LIKE ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, "%"+productName+"%");
+            setOnList(preparedStatement.executeQuery(), products, dataBaseConnection);
+            dataBaseConnection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return products;
+    }
+
+    public Product getProduct(int productId) {
         List<Product> products = new ArrayList<>();
         try {
             DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
@@ -75,7 +132,6 @@ public class DaoProduct {
         return products.get(0);
     }
 
-   
     private void setOnList(ResultSet resultSet, List<Product> products, DatabaseConnection dataBaseConnection) {
         try {
             while (resultSet.next()) {
@@ -90,6 +146,7 @@ public class DaoProduct {
                 product.setDescription(resultSet.getString(DatabaseHelper.PRODUCT.DESCRIPTION));
                 /**
                  * Get all Product Images converted into String
+                 *
                  * @para dataBaseConnection for pass the same Object
                  */
                 product.setProductImages(
