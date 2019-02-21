@@ -86,7 +86,7 @@
                                     <div class="modal-body">
                                         <form class="form-horizontal loginFrm">
                                             <div class="control-group">
-                                                <input type="text" id="inputEmail" placeholder="Email">
+                                                <input type="text" id="inputEmail" placeholder="Email" name="email">
                                             </div>
                                             <div class="control-group">
                                                 <input type="password" id="inputPassword" placeholder="Password">
@@ -432,7 +432,7 @@
                                 <li class="span3">
                                     <div class="thumbnail">
                                         <img 
-                                             src="data:image/jpeg;base64,${product.mainProductImage}" alt="" />
+                                            src="data:image/jpeg;base64,${product.mainProductImage}" alt="" />
                                         <div class="caption">
                                             <h5>${product.name}</h5>
                                             <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i
@@ -583,13 +583,5 @@
                 </div>
             </div>
         </div>
-        <script>
-            function send("${product}"){
-                console.log(product.id)
-                $.get('${pageContext.request.contextPath}/login.jsp', function () {
-                    alert("hjhkjhk "+${product.id});
-                });
-            }
-        </script>
     </body>
 </html>
