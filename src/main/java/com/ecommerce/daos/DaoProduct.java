@@ -47,7 +47,7 @@ public class DaoProduct {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM PRODUCTS"
                     + " WHERE "
-                    + DatabaseHelper.PRODUCT.DISCOUNT+" > 0");
+                    + DatabaseHelper.PRODUCT.DISCOUNT + " > 0");
             setOnList(resultSet, products, dataBaseConnection);
             dataBaseConnection.close();
         } catch (SQLException ex) {
@@ -86,7 +86,31 @@ public class DaoProduct {
                     + DatabaseHelper.PRODUCT.NAME + " ) LIKE ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, categoryId);
-            preparedStatement.setString(2, "%"+productName+"%");
+            preparedStatement.setString(2, "%" + productName + "%");
+            setOnList(preparedStatement.executeQuery(), products, dataBaseConnection);
+            dataBaseConnection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return products;
+    }
+
+    public List<Product> getProductsOfInterest(int userId) {
+        List<Product> products = new ArrayList<>();
+        try {
+            DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
+            Connection connection = dataBaseConnection.getConnection();
+            String sql
+                    = "SELECT * FROM " + DatabaseHelper.PRODUCT.TABLE_NAME
+                    + " , " + DatabaseHelper.USER_INTERESTS.TABLE_NAME
+                    + " where " + DatabaseHelper.PRODUCT.TABLE_NAME + "."
+                    + DatabaseHelper.PRODUCT.CATEGORY_ID + " = "
+                    + DatabaseHelper.USER_INTERESTS.TABLE_NAME + "."
+                    + DatabaseHelper.USER_INTERESTS.CATEGORY_ID
+                    + " AND "
+                    + DatabaseHelper.USER_INTERESTS.USER_ID + " = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, userId);
             setOnList(preparedStatement.executeQuery(), products, dataBaseConnection);
             dataBaseConnection.close();
         } catch (SQLException ex) {
@@ -105,7 +129,7 @@ public class DaoProduct {
                     + " where UPPER( "
                     + DatabaseHelper.PRODUCT.NAME + " ) LIKE ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, "%"+productName+"%");
+            preparedStatement.setString(1, "%" + productName + "%");
             setOnList(preparedStatement.executeQuery(), products, dataBaseConnection);
             dataBaseConnection.close();
         } catch (SQLException ex) {
