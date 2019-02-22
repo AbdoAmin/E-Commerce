@@ -9,13 +9,15 @@ import com.ecommerce.beans.User;
 import com.ecommerce.beans.UserLogin;
 import com.ecommerce.utilities.DatabaseConnection;
 import com.ecommerce.utilities.DatabaseHelper;
-import java.sql.Connection;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,32 +40,32 @@ public class DaoUser {
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
             ResultSet rs = ps.executeQuery();
-//            boolean next = rs.next();
             if (rs.next()) {
                 userSignIn.setUserId(rs.getInt(DatabaseHelper.USER.ID));
                 userSignIn.setFirstName(rs.getString(DatabaseHelper.USER.FIRST_NAME));
                 userSignIn.setLastName(rs.getString(DatabaseHelper.USER.LAST_NAME));
-                userSignIn.setEmail(rs.getString("email"));
-                userSignIn.setAddress(rs.getString("address"));
-                userSignIn.setJob(rs.getString("job"));
-                userSignIn.setBirthDate(rs.getDate("birth_date"));
-                userSignIn.setJob(rs.getString("job"));
-                userSignIn.setAddress(rs.getString("address"));
-                userSignIn.setCreditLimit(rs.getDouble("credit_limit"));
-//                user.setProfileImage(rs.getString("profile_image"));
-                userSignIn.setPhone(rs.getString("phone"));
-                userSignIn.setPrivilege(rs.getString("privilege"));
-                
+                userSignIn.setEmail(rs.getString(DatabaseHelper.USER.EMAIL));
+                userSignIn.setAddress(rs.getString(DatabaseHelper.USER.ADDRESS));
+                userSignIn.setJob(rs.getString(DatabaseHelper.USER.JOB));
+                userSignIn.setBirthDate(rs.getString(DatabaseHelper.USER.BIRTH_DATE));
+                userSignIn.setCreditLimit(rs.getDouble(DatabaseHelper.USER.CREDIT_LIMIT));
+                userSignIn.setProfileImage(Base64.getEncoder().encodeToString(
+                        rs.getBytes(DatabaseHelper.USER.PROFILE_IMAGE)));
+                userSignIn.setPhone(rs.getString(DatabaseHelper.USER.PHONE));
+                userSignIn.setPrivilege(rs.getString(DatabaseHelper.USER.PRIVILEGE));
+
                 PreparedStatement ps1 = connection.getConnection()
-                    .prepareStatement("SELECT CATEGORY_ID FROM USER_INTERESTES WHERE USER_ID=?");
-                
+                        .prepareStatement(
+                                "SELECT CATEGORY_ID FROM USER_INTERESTES "
+                                + "WHERE " + DatabaseHelper.USER.ID + " = ?");
                 ps1.setInt(1, userSignIn.getUserId());
-                
+
                 ResultSet interstsResultSet = ps1.executeQuery();
-                
+
                 ArrayList<Integer> interests = new ArrayList<>();
-                while(interstsResultSet.next()){
-                    interests.add(interstsResultSet.getInt("CATEGORY_ID"));
+                while (interstsResultSet.next()) {
+                    interests.add(interstsResultSet.getInt(
+                            DatabaseHelper.USER_INTERESTS.CATEGORY_ID));
                 }
                 userSignIn.setInterests(interests);
             }
@@ -75,38 +77,52 @@ public class DaoUser {
         }
         return null;
     }
-    
-    public boolean signUp(User user) {
+
+    public boolean signUp(User user, InputStream inputStream, int size) {
         try {
             connection = DatabaseConnection.getInstance();
             PreparedStatement ps = connection.getConnection()
-                    .prepareStatement("insert into users values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    .prepareStatement("insert into " + DatabaseHelper.USER.TABLE_NAME + " ( "
+                            + DatabaseHelper.USER.FIRST_NAME + " , "
+                            + DatabaseHelper.USER.LAST_NAME + " , "
+                            + DatabaseHelper.USER.EMAIL + " , "
+                            + DatabaseHelper.USER.BIRTH_DATE + " , "
+                            + DatabaseHelper.USER.PASSWORD + " , "
+                            + DatabaseHelper.USER.JOB + " , "
+                            + DatabaseHelper.USER.ADDRESS + " , "
+                            + DatabaseHelper.USER.CREDIT_LIMIT + " , "
+                            + DatabaseHelper.USER.PROFILE_IMAGE + " , "
+                            + DatabaseHelper.USER.PHONE + " , "
+                            + DatabaseHelper.USER.PRIVILEGE + " ) "
+                            + " VALUES"
+                            + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getEmail());
-            ps.setDate(4, (Date) user.getBirthDate());
+            ps.setString(4, user.getBirthDate());
             ps.setString(5, user.getPassword());
             ps.setString(6, user.getJob());
             ps.setString(7, user.getAddress());
             ps.setDouble(8, user.getCreditLimit());
-            ps.setString(9, user.getProfileImage());
+            ps.setBinaryStream(9, inputStream, size);
+
             ps.setString(10, user.getPhone());
             ps.setString(11, user.getPrivilege());
             int executeUpdate = ps.executeUpdate();
 
             connection.close();
-            return executeUpdate >0;
+            return executeUpdate > 0;
 
         } catch (SQLException ex) {
             Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return false;
     }
 
     public ArrayList<User> getAllUsers() {
-        
+
         ArrayList<User> usersList = new ArrayList<>();
         try {
             connection = DatabaseConnection.getInstance();
@@ -119,25 +135,26 @@ public class DaoUser {
                 user.setFirstName(rs.getString("first_name"));
                 user.setLastName(rs.getString("last_name"));
                 user.setEmail(rs.getString("email"));
-                user.setBirthDate(rs.getDate("birth_date"));
+                user.setBirthDate(rs.getString("birth_date"));
                 user.setPassword(rs.getString("password"));
                 user.setJob(rs.getString("job"));
                 user.setAddress(rs.getString("address"));
                 user.setCreditLimit(rs.getDouble("credit_limit"));
-//                user.setProfileImage(rs.getString("profile_image"));
+                user.setProfileImage(Base64.getEncoder().encodeToString(
+                        rs.getBytes(DatabaseHelper.USER.PROFILE_IMAGE)));
                 user.setPhone(rs.getString("phone"));
                 user.setPrivilege(rs.getString("privilege"));
-                
+
                 //add the category list.
                 PreparedStatement ps1 = connection.getConnection()
-                    .prepareStatement("SELECT CATEGORY_ID FROM USER_INTERESTES WHERE USER_ID=?");
-                
+                        .prepareStatement("SELECT CATEGORY_ID FROM USER_INTERESTES WHERE USER_ID=?");
+
                 ps1.setInt(1, user.getUserId());
-                
+
                 ResultSet interstsResultSet = ps1.executeQuery();
-                
+
                 ArrayList<Integer> interests = new ArrayList<>();
-                while(interstsResultSet.next()){
+                while (interstsResultSet.next()) {
                     interests.add(interstsResultSet.getInt("CATEGORY_ID"));
                 }
                 user.setInterests(interests);
@@ -149,7 +166,7 @@ public class DaoUser {
         }
         return usersList;
     }
-    
+
     //don't use it...under maintainence
     public int removeCategory(int userID, int categoryID) {
         //TODO
@@ -159,11 +176,11 @@ public class DaoUser {
         try {
             PreparedStatement ps = connection.getConnection()
                     .prepareStatement("delete from USER_INTERESTES where USER_ID=? and CATEGORY_ID=?");
-            
+
             ps.setInt(1, userID);
             ps.setInt(2, categoryID);
-            
-            executeUpdate= ps.executeUpdate();
+
+            executeUpdate = ps.executeUpdate();
             connection.close();
             return executeUpdate;
         } catch (SQLException ex) {
@@ -171,12 +188,12 @@ public class DaoUser {
         }
         return executeUpdate;
     }
-    
-    public boolean updateUser(User user){
+
+    public boolean updateUser(User user) {
         try {
             connection = DatabaseConnection.getInstance();
-            String sqlUsers = 
-                    "update " + DatabaseHelper.USER.TABLE_NAME + " set "
+            String sqlUsers
+                    = "update " + DatabaseHelper.USER.TABLE_NAME + " set "
                     + DatabaseHelper.USER.FIRST_NAME + " = ? " + " , "
                     + DatabaseHelper.USER.LAST_NAME + " = ? " + " , "
                     + DatabaseHelper.USER.EMAIL + " = ? " + " , "
@@ -185,15 +202,15 @@ public class DaoUser {
                     + DatabaseHelper.USER.ADDRESS + " = ? " + " , "
                     + DatabaseHelper.USER.CREDIT_LIMIT + " = ? " + " , "
                     + DatabaseHelper.USER.PHONE + " = ? " + " , "
-                    + DatabaseHelper.USER.PRIVILEGE + " = ? " 
+                    + DatabaseHelper.USER.PRIVILEGE + " = ? "
                     + "where " + DatabaseHelper.USER.ID + " = ?";
-            
+
             PreparedStatement ps2 = connection.getConnection().prepareStatement(sqlUsers);
-            
+
             ps2.setString(1, user.getFirstName());
             ps2.setString(2, user.getLastName());
             ps2.setString(3, user.getEmail());
-            ps2.setDate(4, (Date)user.getBirthDate());
+            ps2.setString(4, user.getBirthDate());
             ps2.setString(5, user.getJob());
             ps2.setString(6, user.getAddress());
             ps2.setDouble(7, user.getCreditLimit());
@@ -201,71 +218,71 @@ public class DaoUser {
             ps2.setString(9, user.getPrivilege());
             ps2.setInt(10, user.getUserId());
             int executeUpdate2 = ps2.executeUpdate();
- 
+
             //delete all old interests, then put the new ones.
-            String sqlDelete = "delete from " + DatabaseHelper.USER_INTERESTS.TABLE_NAME 
+            String sqlDelete = "delete from " + DatabaseHelper.USER_INTERESTS.TABLE_NAME
                     + " where " + DatabaseHelper.USER.ID + " =?";
-            
+
             PreparedStatement ps = connection.getConnection().prepareStatement(sqlDelete);
             ps.setInt(1, user.getUserId());
-            
+
             int executeUpdate = ps.executeUpdate();
-            
-            String sqlInsertInterests = "insert into " + DatabaseHelper.USER_INTERESTS.TABLE_NAME 
-                    + " ("+ DatabaseHelper.USER_INTERESTS.USER_ID + ", "+ DatabaseHelper.USER_INTERESTS.CATEGORY_ID
-                    + ")" +" values(?, ?)";
-            for(Integer i : user.getInterests()){
+
+            String sqlInsertInterests = "insert into " + DatabaseHelper.USER_INTERESTS.TABLE_NAME
+                    + " (" + DatabaseHelper.USER_INTERESTS.USER_ID + ", " + DatabaseHelper.USER_INTERESTS.CATEGORY_ID
+                    + ")" + " values(?, ?)";
+            for (Integer i : user.getInterests()) {
                 PreparedStatement ps3 = connection.getConnection().prepareStatement(sqlInsertInterests);
                 ps3.setInt(1, user.getUserId());
                 ps3.setInt(2, i);
-                
+
                 ps3.executeUpdate();
             }
             connection.close();
             return ((executeUpdate2 > 0) && (executeUpdate > 0));
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
 
-    public User getUserByEmail(String email){
-        
+    public User getUserByEmail(String email) {
+
         try {
             connection = DatabaseConnection.getInstance();
             PreparedStatement ps = connection.getConnection()
                     .prepareStatement("SELECT * FROM USERS WHERE EMAIL= ?");
-            
+
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             User user = new User();
 
-            if(rs.next()){
-                
+            if (rs.next()) {
                 user.setUserId(rs.getInt(DatabaseHelper.USER.ID));
                 user.setFirstName(rs.getString(DatabaseHelper.USER.FIRST_NAME));
                 user.setLastName(rs.getString(DatabaseHelper.USER.LAST_NAME));
                 user.setEmail(rs.getString("email"));
                 user.setAddress(rs.getString("address"));
                 user.setJob(rs.getString("job"));
-                user.setBirthDate(rs.getDate("birth_date"));
+                user.setBirthDate(rs.getString("birth_date"));
                 user.setJob(rs.getString("job"));
                 user.setAddress(rs.getString("address"));
                 user.setCreditLimit(rs.getDouble("credit_limit"));
-//                user.setProfileImage(rs.getString("profile_image"));
+                user.setProfileImage(Base64.getEncoder().encodeToString(
+                        rs.getBytes(DatabaseHelper.USER.PROFILE_IMAGE)));
                 user.setPhone(rs.getString("phone"));
                 user.setPrivilege(rs.getString("privilege"));
-                
+
                 PreparedStatement ps1 = connection.getConnection()
-                    .prepareStatement("SELECT CATEGORY_ID FROM USER_INTERESTES WHERE USER_ID=?");
-                
+                        .prepareStatement("SELECT CATEGORY_ID FROM USER_INTERESTES WHERE USER_ID=?");
+
                 ps1.setInt(1, user.getUserId());
-                
+
                 ResultSet interstsResultSet = ps1.executeQuery();
-                
+
                 ArrayList<Integer> interests = new ArrayList<>();
-                while(interstsResultSet.next()){
+                while (interstsResultSet.next()) {
                     interests.add(interstsResultSet.getInt("CATEGORY_ID"));
                 }
                 user.setInterests(interests);

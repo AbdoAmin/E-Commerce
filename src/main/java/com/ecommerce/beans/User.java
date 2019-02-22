@@ -6,7 +6,6 @@
 package com.ecommerce.beans;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  *
@@ -17,7 +16,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    private Date birthDate;
+    private String birthDate;
     private volatile String password;
     private String job;
     private String address;
@@ -59,11 +58,11 @@ public class User {
         this.email = email;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -130,6 +129,5 @@ public class User {
     public void setInterests(ArrayList<Integer> interests) {
         this.interests = interests;
     }
-
     
 }

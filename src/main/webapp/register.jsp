@@ -32,31 +32,38 @@
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="themes/images/ico/apple-touch-icon-72-precomposed.png">
 	<link rel="apple-touch-icon-precomposed" href="themes/images/ico/apple-touch-icon-57-precomposed.png">
 	<style type="text/css" id="enject">
-	.control-group{
-		width: fit-content;
-		margin: auto;
-	}
-	.control-label{
-		width: 100px !important;
-	}
-	.controls{
-		margin-left: 120px !important;
-	}
-	.span1{
-		width: 70px !important;
-	}
-	@media only screen and (max-width: 850px) {
-		/* For mobile phones: */
-		.span1{
-			display: inline-flex !important;
+		.control-group {
+			width: fit-content;
+			margin: auto;
 		}
-	}
-	@media only screen and (max-width: 450px) {
-		/* For mobile phones: */
-		.span1{
-			width: 60px !important;
+
+		.control-label {
+			width: 100px !important;
 		}
-	}
+
+		.controls {
+			margin-left: 120px !important;
+		}
+
+		.span1 {
+			width: 70px !important;
+		}
+
+		@media only screen and (max-width: 850px) {
+
+			/* For mobile phones: */
+			.span1 {
+				display: inline-flex !important;
+			}
+		}
+
+		@media only screen and (max-width: 450px) {
+
+			/* For mobile phones: */
+			.span1 {
+				width: 60px !important;
+			}
+		}
 	</style>
 </head>
 
@@ -85,7 +92,7 @@
 						<li class=""><a href="normal.html">Delivery</a></li>
 						<li class=""><a href="contact.html">Contact</a></li>
 						<li class="">
-							<a href="${pageContext.request.contextPath}/login.html" role="button" data-toggle="modal"
+							<a href="${pageContext.request.contextPath}/login.jsp" role="button"
 								style="padding-right:0"><span class="btn btn-large btn-success">Login</span></a>
 						</li>
 					</ul>
@@ -99,16 +106,17 @@
 			<div class="row">
 				<div class="span9" style="margin: 0 auto; float: none; ">
 					<ul class="breadcrumb">
-						<li><a href="index.jsp">Home</a> <span class="divider">/</span></li>
+						<li><a href="${pageContext.request.contextPath}/index.jsp">Home</a> <span class="divider">/</span></li>
 						<li class="active">Registration</li>
 					</ul>
 					<h3> Registration</h3>
 					<div class="well" style="margin:0 auto; float: none;">
 						<form class="form-horizontal" method="POST"
-							action="${pageContext.request.contextPath}/SignUpServlet">
+							action="${pageContext.request.contextPath}/SignUpServlet" enctype="multipart/form-data">
 							<h4>Your personal information</h4>
 							<div class="control-group">
 								<img src="themes/images/user.png" alt="Avatar">
+								<input type="file" name="file" />
 							</div>
 
 							<div class="control-group">
@@ -126,13 +134,14 @@
 							<div class="control-group">
 								<label class="control-label" for="input_email">Email <sup>*</sup></label>
 								<div class="controls">
-									<input type="text" id="input_email" placeholder="Email" name="email">
+									<input type="text" id="input_email" placeholder="Email" name="UserEmail">
 								</div>
 							</div>
 							<div class="control-group">
 								<label class="control-label" for="inputPassword1">Password <sup>*</sup></label>
 								<div class="controls">
-									<input type="password" id="inputPassword1" placeholder="Password" name="password">
+									<input type="password" id="inputPassword1" placeholder="Password"
+										name="UserPassword">
 								</div>
 							</div>
 							<div class="control-group">

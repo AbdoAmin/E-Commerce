@@ -27,9 +27,16 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String categoryId = req.getParameter("category");
+        String productName = req.getParameter("productName");
         DaoProduct daoProduct = new DaoProduct();
         List<Product> allProduct;
-        if (categoryId != null) {
+        if (productName != null && categoryId != null) {
+            if (Integer.valueOf(categoryId) != -1) {
+                allProduct = daoProduct.getProducts(Integer.valueOf(categoryId), productName.toUpperCase());
+            }else{
+                allProduct = daoProduct.getProducts(productName.toUpperCase());
+            }
+        } else if (categoryId != null) {
             allProduct = daoProduct.getProducts(Integer.valueOf(categoryId));
         } else {
             allProduct = daoProduct.getAllProduct();
@@ -41,7 +48,5 @@ public class HomeServlet extends HttpServlet {
         List<Category> allCategories = dAOCategories.getAllCategories();
         req.setAttribute("categories", allCategories);
     }
-    
-    
 
 }
