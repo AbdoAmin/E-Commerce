@@ -75,7 +75,7 @@
                             <button type="submit" id="submitButton" class="btn btn-primary">Go</button>
                         </form>
                         <ul id="topMenu" class="nav pull-right">
-                            <li class=""><a href="special_offer.html">Specials Offer</a></li>
+                            <li class=""><a href="special_offer.jsp">Specials Offer</a></li>
                             <li class=""><a href="contact.html">Contact</a></li>
                             <!--/*modify by sallam..added the condition*/-->
                             <li class="">

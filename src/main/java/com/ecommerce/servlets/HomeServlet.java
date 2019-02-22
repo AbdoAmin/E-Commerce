@@ -7,12 +7,9 @@ package com.ecommerce.servlets;
 
 import com.ecommerce.beans.Category;
 import com.ecommerce.beans.Product;
-import com.ecommerce.beans.User;
 import com.ecommerce.daos.DAOCategories;
 import com.ecommerce.daos.DaoProduct;
-import com.ecommerce.daos.DaoUser;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,8 +34,9 @@ public class HomeServlet extends HttpServlet {
         } else {
             allProduct = daoProduct.getAllProduct();
         }
-
         req.setAttribute("products", allProduct);
+        
+        //Deprecated
         DAOCategories dAOCategories = new DAOCategories();
         List<Category> allCategories = dAOCategories.getAllCategories();
         req.setAttribute("categories", allCategories);

@@ -33,6 +33,7 @@ public class ProductDetailsServlet extends HttpServlet {
             product = daoProduct.getProduct(Integer.valueOf(productId));
             req.setAttribute("product", product);
         } 
+        //Deprecated must remove soon,Competabilty
         DAOCategories dAOCategories = new DAOCategories();
         List<Category> allCategories = dAOCategories.getAllCategories();
         req.setAttribute("categories", allCategories);
