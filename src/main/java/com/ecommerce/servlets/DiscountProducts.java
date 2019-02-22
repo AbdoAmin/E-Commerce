@@ -26,7 +26,7 @@ public class DiscountProducts extends HttpServlet {
             throws ServletException, IOException {
         DaoProduct daoProduct = new DaoProduct();
         List<Product> allProduct;
-        allProduct = daoProduct.getAllProduct();
+        allProduct = daoProduct.getAllProductWithDiscount();
 
         request.setAttribute("products", allProduct);
     }
