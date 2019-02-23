@@ -8,9 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
-    <!--TODO change homeservlet to gategori servlet or put inside it*Body*-->
-    <jsp:include page="/CategoriesServelet" /> 
-
+    
     <jsp:include page="/CommonHead.jsp" />
 
     <body> 

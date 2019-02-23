@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+
 <div class="tab-content">
     <div class="tab-pane  active" id="blockView">
         <ul class="thumbnails">
@@ -16,13 +18,18 @@
                 </c:url>
                 <li class="span3">
                     <div class="thumbnail" >
-                        <a href="<c:out value="${thisURL}"/>"><img src="data:image/jpeg;base64,${product.mainProductImage}" alt="" /></a>
+                        <a href="<c:out value="${thisURL}"/>"><img src="data:image/jpeg;base64,${product.mainProductImage}"
+                                                                   alt="" style="height: 250px;"/>
+                        </a>
                         <div class="caption">
                             <h5>${product.name}</h5>
-                            <h4 style="text-align:center"><a class="btn" href="<c:out value="${thisURL}"/>"> <i
-                                    class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i
-                                        class="icon-shopping-cart"></i></a> <a class="btn btn-primary"
-                                                                       href="#">${product.price}</a></h4>
+                            <h4 style="text-align:center">
+                                <!--<a class="btn" href="<c:out value="${thisURL}"/>"> <i class="icon-zoom-in"></i></a>--> 
+                                <a class="btn btn-primary" href="#">
+                                    <c:set var="product" value="${product}" scope="request"/>
+                                    <jsp:include page="/ShowPriceDiscount.jsp" />
+                                </a>
+                            </h4>
                         </div>
                     </div>
                 </li>

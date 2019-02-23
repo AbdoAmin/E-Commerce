@@ -31,4 +31,8 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="themes/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="themes/images/ico/apple-touch-icon-57-precomposed.png">
     <style type="text/css" id="enject"></style>
+
+    <!--MODIFY Abdo Add Price discount-->  
+    <link href="themes/css/discountTextButton.css" rel="stylesheet">
+    <!--MODIFY Abdo Add Price discount-->  
 </head>

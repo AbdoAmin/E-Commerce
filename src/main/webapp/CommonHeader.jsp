@@ -53,16 +53,16 @@
                     <li class=""><a href="contact.html">Contact</a></li>
                     <!--/*modify by sallam..added the condition*/-->
                     <li class="">
-                    <c:if test="${user==null}">
-                        <a role="button" style="padding-right:0" href="${pageContext.request.contextPath}/login.jsp">
-                            <span class="btn btn-large btn-success" >Login</span>
-                        </a>
-                    </c:if>
-                    <c:if test="${user!=null}">
-                        <a href="LogOutServlet" role="button" style="padding-right:0">
-                            <span class="btn btn-large btn-success">Logout</span>
-                        </a>
-                    </c:if>  
+                        <c:if test="${user==null}">
+                            <a role="button" style="padding-right:0" href="${pageContext.request.contextPath}/login.jsp">
+                                <span class="btn btn-large btn-success" >Login</span>
+                            </a>
+                        </c:if>
+                        <c:if test="${user!=null}">
+                            <a href="LogOutServlet" role="button" style="padding-right:0">
+                                <span class="btn btn-large btn-success">Logout</span>
+                            </a>
+                        </c:if>  
                     </li>
                 </ul>
             </div>
