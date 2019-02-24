@@ -10,17 +10,12 @@
 <div id="header">
     <div class="container">
         <!--/*modified by sallam..added a condition to display the welcome div*/-->
-        <c:if test="${pageContext.session.getAttribute(user)!=null}">
+        <c:if test="${user!= null}">
             <div id="welcomeLine" class="row">
-                <div class="span6">Welcome!<strong> User</strong></div>
+                <div class="span6">Welcome!<strong> ${user.firstName} ${user.lastName}</strong></div>
                 <div class="span6">
                     <div class="pull-right">
-                        <a href="product_summary.html"><span class="">Fr</span></a>
-                        <a href="product_summary.html"><span class="">Es</span></a>
-                        <span class="btn btn-mini">En</span>
-                        <a href="product_summary.html"><span>&pound;</span></a>
-                        <span class="btn btn-mini">$155.00</span>
-                        <a href="product_summary.html"><span class="">$</span></a>
+                        <span class="btn btn-mini">${user.creditLimit} $</span>
                         <a href="product_summary.html"><span class="btn btn-mini btn-primary"><i
                                     class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart </span> </a>
                     </div>
@@ -35,16 +30,14 @@
                 <span class="icon-bar"></span>
             </a>
             <div class="navbar-inner">
-                <a class="brand" href="index.html"><img src="themes/images/logo.png" alt="Bootsshop" /></a>
-                <form class="form-inline navbar-search" method="post" action="products.html">
-                    <input id="srchFld" class="srchTxt" type="text" />
-                    <select class="srchTxt">
-                        <option>All</option>
-                        <option>CLOTHES </option>
-                        <option>FOOD AND BEVERAGES </option>
-                        <option>HEALTH & BEAUTY </option>
-                        <option>SPORTS & LEISURE </option>
-                        <option>BOOKS & ENTERTAINMENTS </option>
+                <a class="brand" href="index.jsp"><img src="themes/images/logo.png" alt="Bootsshop" /></a>
+                <form class="form-inline navbar-search" method="GET" action="index.jsp">
+                    <input id="srchFld" class="srchTxt" type="text" name="productName" />
+                    <select class="srchTxt" name="category">
+                        <option value="-1">All</option>
+                        <c:forEach items="${categories}" var="category">
+                            <option value="${category.categoryId}">${category.categoryName}</option>
+                        </c:forEach>
                     </select>
                     <button type="submit" id="submitButton" class="btn btn-primary">Go</button>
                 </form>
