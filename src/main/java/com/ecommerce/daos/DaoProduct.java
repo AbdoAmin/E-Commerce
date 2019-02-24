@@ -184,7 +184,7 @@ public class DaoProduct {
     }
 
     public int addProduct(Product product) {
-        int rowEffect = 0;
+        int productId = -1;
         try {
             DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
             Connection connection = dataBaseConnection.getConnection();
@@ -202,12 +202,40 @@ public class DaoProduct {
                     + product.getDiscount() + ","
                     + product.getQuantity() + ","
                     + product.getCategoryId() + ")";
-            rowEffect = statement.executeUpdate(sql);
+            int executeUpdate = statement.executeUpdate(sql);
+            connection.commit();
+            dataBaseConnection.close();
+            if (executeUpdate > 0) {
+                productId = getLastProductAdded();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return productId;
+    }
+
+    private int getLastProductAdded() {
+        int productId = -1;
+        try {
+            DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
+            Connection connection = dataBaseConnection.getConnection();
+            Statement statement = connection.createStatement();
+//            statement.executeUpdate("update categories set category_id =  1 where  category_id =  1 ");
+            ResultSet resultSet = statement.executeQuery(
+                    "select " + DatabaseHelper.PRODUCT.ID
+                    + " from " + DatabaseHelper.PRODUCT.TABLE_NAME
+                    + " where " + DatabaseHelper.PRODUCT.ID
+                    + " = "
+                    + " ( select max ( " + DatabaseHelper.PRODUCT.ID + " )"
+                    + " from " + DatabaseHelper.PRODUCT.TABLE_NAME + ")");
+            if (resultSet.next()) {
+                productId = resultSet.getInt(DatabaseHelper.PRODUCT.ID);
+            }
             dataBaseConnection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return rowEffect;
+        return productId;
     }
 
     public int updateProduct(Product product) {

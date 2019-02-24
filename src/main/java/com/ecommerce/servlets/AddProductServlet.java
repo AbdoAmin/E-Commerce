@@ -7,6 +7,7 @@ package com.ecommerce.servlets;
 
 import com.ecommerce.beans.Product;
 import com.ecommerce.daos.DaoProduct;
+import com.ecommerce.daos.DaoProductImages;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -36,6 +37,7 @@ public class AddProductServlet extends HttpServlet {
         try {
             Product product = new Product();
             DaoProduct daoProduct = new DaoProduct();
+            DaoProductImages daoProductImages = new DaoProductImages();
 
             DiskFileItemFactory factory = new DiskFileItemFactory();
 
@@ -49,20 +51,15 @@ public class AddProductServlet extends HttpServlet {
             Iterator<FileItem> iter = items.iterator();
             while (iter.hasNext()) {
                 FileItem item = iter.next();
-                if (!item.isFormField()) {
-                    if (item.getFieldName().equals("image")) {
-                        inputStream = item.getInputStream();
-                        size = (int) item.getSize();
-                    }
-                } else {
+                if (item.isFormField()) {
                     if (item.getFieldName().equals("name")) {
                         product.setName(item.getString());
                     } else if (item.getFieldName().equals("price")) {
                         product.setPrice(Integer.parseInt(item.getString()));
                     } else if (item.getFieldName().equals("discount")) {
-                        product.setDiscount(Integer.parseInt(item.getString()));
+                        product.setDiscount(Integer.parseInt(item.getString()) / 100);
                     } else if (item.getFieldName().equals("quantity")) {
-                        product.setQuantity(Integer.parseInt(item.getString())/100);
+                        product.setQuantity(Integer.parseInt(item.getString()));
                     } else if (item.getFieldName().equals("categoryId")) {
                         product.setCategoryId(Integer.parseInt(item.getString()));
                     } else if (item.getFieldName().equals("description")) {
@@ -70,8 +67,21 @@ public class AddProductServlet extends HttpServlet {
                     }
                 }
             }
-            daoProduct.addProduct(product);
-        } catch (FileUploadException ex) {
+            int productId = daoProduct.addProduct(product);
+            if (productId != -1) {
+                Iterator<FileItem> iterator = items.iterator();
+                while (iterator.hasNext()) {
+                    FileItem item = iterator.next();
+                    if (!item.isFormField()) {
+                        inputStream = item.getInputStream();
+                        size = (int) item.getSize();
+                        if (item.getFieldName().equals("image1")&&size > 0) {
+                                daoProductImages.insertProductImage(size, inputStream, size);
+                            }
+                        }
+                    }
+                }
+            } catch (FileUploadException ex) {
             Logger.getLogger(AddProductServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

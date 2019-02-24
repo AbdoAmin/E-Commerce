@@ -7,6 +7,7 @@ package com.ecommerce.daos;
 
 import com.ecommerce.utilities.DatabaseConnection;
 import com.ecommerce.utilities.DatabaseHelper;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,6 +30,9 @@ public class DaoProductImages {
         this.dataBaseConnection = dataBaseConnection;
     }
 
+    public DaoProductImages() {
+    }
+    
     public List<String> getProductImages(int productId) {
         List<String> products = new ArrayList<>();
         try {
@@ -67,8 +71,9 @@ public class DaoProductImages {
         return false;
     }
 
-    public boolean insertProductImage(int productId, byte[] image) {
+    public boolean insertProductImage(int productId, InputStream inputStream, int size) {
         try {
+            DatabaseConnection dataBaseConnection =DatabaseConnection.getInstance();
             Connection connection = dataBaseConnection.getConnection();
             String sql
                     = "INSERT INTO "
@@ -77,7 +82,8 @@ public class DaoProductImages {
                     + "VALUES( ? , ? )";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, productId);
-            preparedStatement.setBytes(2, image);
+            preparedStatement.setBinaryStream(2, inputStream, size);
+            dataBaseConnection.close();
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(DaoProductImages.class.getName()).log(Level.SEVERE, null, ex);
