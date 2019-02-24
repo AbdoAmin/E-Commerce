@@ -24,6 +24,12 @@ public class Cart {
     
     private List<CartItem> cartItems;
 
+    public Cart(int userId, int productId, int quantity) {
+        this.userId = userId;
+        this.productId = productId;
+        this.quantity = quantity;
+    }
+
     public Cart() {
         cartItems = new ArrayList<>();
     }

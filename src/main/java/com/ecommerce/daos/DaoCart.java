@@ -125,5 +125,26 @@ public class DaoCart
     }
       
       
-    
+      public ArrayList<Cart> getUserCart(int userId) {
+        ArrayList<Cart> userCart = new ArrayList<>();
+        connection = DatabaseConnection.getInstance();
+        Statement s;
+        try {
+            s = connection.getConnection().createStatement();      
+            
+            ResultSet rs = s.executeQuery("select * From carts where user_id=?");
+            while (rs.next()) {
+                Cart cart = new Cart();
+                cart.setCartId(rs.getInt("cart_id"));
+                cart.setUserId(rs.getInt(2));
+                cart.setProductId(rs.getInt(3));
+                cart.setQuantity(rs.getInt(4));
+                userCart.add(cart);
+            }
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCart.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return userCart;        
+    }
 }

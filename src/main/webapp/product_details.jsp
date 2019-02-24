@@ -53,14 +53,15 @@
 
                                 <hr class="soft">
                                 <!--TODO Buy *Put In Cart*-->
-                                <form class="form-horizontal qtyFrm"> 
+                                <form class="form-horizontal qtyFrm" action="MyCart.jsp" method="get"> 
                                     <div class="control-group">
 
                                         <jsp:include page="/ShowPriceDiscount.jsp" />
 
                                         <div class="controls">
-                                            <input type="number" class="span1" placeholder="Qty.">
-                                            <button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
+                                            <input type="hidden" name="id" value="${requestScope.product.id}"/>
+                                            <input type="number" class="span1" min="1" max="${requestScope.product.quantity}" placeholder="Qty." name="quantity">
+                                            <button type="submit" href="javascript:document.submitForm.submit()" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
                                         </div>
                                     </div>
                                 </form>

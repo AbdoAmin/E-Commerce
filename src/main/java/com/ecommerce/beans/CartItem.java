@@ -18,6 +18,11 @@ public class CartItem {
     private Product product;
     private int quantity = 1;
 
+    public CartItem(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+    }
+
     public CartItem() {
     }
 
@@ -31,7 +36,7 @@ public class CartItem {
 
     //to know the total price of products in my catr
     public double getTotalPrice() {
-        return product.getPrice() * quantity;
+        return (product.getPrice() - (product.getPrice() * product.getDiscount())) * quantity;
     }
 
     /*
