@@ -32,7 +32,7 @@ public class DaoProductImages {
 
     public DaoProductImages() {
     }
-    
+
     public List<String> getProductImages(int productId) {
         List<String> products = new ArrayList<>();
         try {
@@ -71,9 +71,28 @@ public class DaoProductImages {
         return false;
     }
 
+    public boolean deleteProductImages(int productId) {
+        try {
+            DatabaseConnection dc = DatabaseConnection.getInstance();
+            Connection connection = dc.getConnection();
+            String sql
+                    = "DELETE FROM "
+                    + DatabaseHelper.ProductImages.TABLE_NAME
+                    + " where " + DatabaseHelper.ProductImages.PRODUCT_ID + " = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, productId);
+            boolean execute = preparedStatement.executeUpdate() >0;
+            dc.close();
+            return execute;
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProductImages.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
     public boolean insertProductImage(int productId, InputStream inputStream, int size) {
         try {
-            DatabaseConnection dataBaseConnection =DatabaseConnection.getInstance();
+            DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
             Connection connection = dataBaseConnection.getConnection();
             String sql
                     = "INSERT INTO "
@@ -91,16 +110,16 @@ public class DaoProductImages {
         return false;
     }
 
-    public boolean updateProductImage(int productImageId, byte[] image) {
+    public boolean updateProductImage(int productImageId, InputStream inputStream, int size) {
         try {
             Connection connection = dataBaseConnection.getConnection();
             String sql
                     = "UPDATE "
                     + DatabaseHelper.ProductImages.TABLE_NAME
                     + " SET " + DatabaseHelper.ProductImages.IMAGE + " = ?"
-                    + " WHERE " +  DatabaseHelper.ProductImages.ID + " = ? ";
+                    + " WHERE " + DatabaseHelper.ProductImages.ID + " = ? ";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setBytes(1, image);
+            preparedStatement.setBinaryStream(1, inputStream, size);
             preparedStatement.setInt(2, productImageId);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException ex) {
