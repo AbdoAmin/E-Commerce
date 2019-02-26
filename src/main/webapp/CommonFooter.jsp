@@ -21,7 +21,7 @@
             <div class="span3">
                 <h5>INFORMATION</h5>
                 <a href="contact.html">CONTACT</a>
-                <a href="register.html">REGISTRATION</a>
+                <a href="${pageContext.request.contextPath}/register.jsp">REGISTRATION</a>
                 <a href="legal_notice.html">LEGAL NOTICE</a>
                 <a href="tac.html">TERMS AND CONDITIONS</a>
                 <a href="faq.html">FAQ</a>

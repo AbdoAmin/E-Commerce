@@ -78,9 +78,13 @@ public class SignUpServlet extends HttpServlet {
                 }
             }
             user.setBirthDate(day + "/" + month + "/" + year);
-            boolean signUp = daoUser.signUp(user, inputStream, size);
+            if(daoUser.signUp(user, inputStream, size)){
+                req.getRequestDispatcher("login.jsp").forward(req, resp);
+            }else{
+                req.getRequestDispatcher("register.jsp?error").forward(req, resp);
+            }
         } catch (FileUploadException ex) {
-            Logger.getLogger(SignUpServlet.class.getName()).log(Level.SEVERE, null, ex);
+                req.getRequestDispatcher("register.jsp?error").forward(req, resp);
         }
     }
 }

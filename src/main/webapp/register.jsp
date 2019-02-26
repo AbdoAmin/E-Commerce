@@ -84,36 +84,46 @@
 						<form class="form-horizontal" method="POST"
 							action="${pageContext.request.contextPath}/SignUpServlet" enctype="multipart/form-data">
 							<h4>Your personal information</h4>
+
 							<div class="control-group">
-								<img src="themes/images/user.png" alt="Avatar">
-								<input type="file" name="file" />
+								<label class="control-label">Profile Image <sup>*</sup></label>
+								<div class="controls">
+									<input type="file" name="file" required style="width: 215px !important;" />
+								</div>
 							</div>
 
 							<div class="control-group">
 								<label class="control-label" for="inputFname1">First name <sup>*</sup></label>
 								<div class="controls">
-									<input type="text" id="inputFname1" placeholder="First Name" name="firstName">
+									<input type="text" id="inputFname1" required placeholder="First Name"
+										name="firstName">
 								</div>
 							</div>
+
 							<div class="control-group">
 								<label class="control-label" for="inputLnam">Last name <sup>*</sup></label>
 								<div class="controls">
-									<input type="text" id="inputLnam" placeholder="Last Name" name="lastName">
+									<input type="text" id="inputLnam" placeholder="Last Name" required="true"
+										name="lastName">
 								</div>
 							</div>
+
 							<div class="control-group">
 								<label class="control-label" for="input_email">Email <sup>*</sup></label>
 								<div class="controls">
-									<input type="text" id="input_email" placeholder="Email" name="UserEmail">
+									<input id="input_email" placeholder="Email" required="true" type="email"
+										name="UserEmail">
 								</div>
 							</div>
+
 							<div class="control-group">
 								<label class="control-label" for="inputPassword1">Password <sup>*</sup></label>
 								<div class="controls">
-									<input type="password" id="inputPassword1" placeholder="Password"
+									<input type="password" id="inputPassword1" placeholder="Password" required="true"
 										name="UserPassword">
 								</div>
 							</div>
+
 							<div class="control-group">
 								<label class="control-label">Date of Birth <sup>*</sup></label>
 								<div class="controls">
@@ -286,21 +296,22 @@
 							<div class="control-group">
 								<label class="control-label" for="input_email">Address <sup>*</sup></label>
 								<div class="controls">
-									<input type="text" id="input_email" placeholder="Address" name="address">
+									<input type="text" id="input_email" placeholder="Address" name="address" required>
 								</div>
 							</div>
 
 							<div class="control-group">
 								<label class="control-label" for="input_email">Phone <sup>*</sup></label>
 								<div class="controls">
-									<input type="text" id="input_email" placeholder="Phone" name="phone">
+									<input type="tel" pattern="[0-9]{11}" id="input_email" placeholder="Phone"
+										name="phone" required>
 								</div>
 							</div>
 
 							<div class="control-group">
 								<label class="control-label" for="input_email">Job <sup>*</sup></label>
 								<div class="controls">
-									<input type="text" id="input_email" placeholder="Job" name="job">
+									<input type="text" id="input_email" placeholder="Job" name="job" required />
 								</div>
 							</div>
 
@@ -311,11 +322,13 @@
 								industry. Lorem Ipsum
 								has been the industry's standard dummy text ever since the 1500s
 							</div>
+
 							<div class="control-group">
 								<div class="controls">
-									<input class="btn btn-large btn-success" type="submit" value="Register"/>
+									<input class="btn btn-large btn-success" type="submit" value="Register" />
 								</div>
 							</div>
+
 						</form>
 					</div>
 				</div>
@@ -324,7 +337,9 @@
 	</div>
 	<!-- MainBody End ============================= -->
 	<!-- Footer ================================================================== -->
-	<jsp:include page="/CommonFooter.jsp" />
+	<div id="footerSection">
+		<jsp:include page="/CommonFooter.jsp" />
+	</div>
 </body>
 
 </html>

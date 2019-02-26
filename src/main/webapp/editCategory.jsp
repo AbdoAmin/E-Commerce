@@ -69,7 +69,9 @@
         </div>
         <!-- MainBody End ============================= -->
         <!-- Footer ================================================================== -->
-        <jsp:include page="/CommonFooter.jsp" />
+        <div id="footerSection">
+                <jsp:include page="/CommonFooter.jsp" />
+        </div>
     </body>
 
 </html>
