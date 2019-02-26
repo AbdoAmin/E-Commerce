@@ -21,7 +21,7 @@
             <div class="container">
                 <div class="row">
                     <!-- Sidebar ================================================== -->
-                    <jsp:include page="/CommonBody.jsp" />
+                    <jsp:include page="/adminSideBar.jsp" />
                     <!-- Sidebar end=============================================== -->
 
                    
