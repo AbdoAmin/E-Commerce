@@ -83,8 +83,10 @@ public class DaoProductImages {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, productId);
             preparedStatement.setBinaryStream(2, inputStream, size);
+            boolean a=preparedStatement.executeUpdate() > 0;
             dataBaseConnection.close();
-            return preparedStatement.executeUpdate() > 0;
+            return a;
+            
         } catch (SQLException ex) {
             Logger.getLogger(DaoProductImages.class.getName()).log(Level.SEVERE, null, ex);
         }

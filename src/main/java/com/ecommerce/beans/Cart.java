@@ -21,6 +21,10 @@ public class Cart {
     private int userId;
     private int productId;
     private int quantity;
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
     
     private List<CartItem> cartItems;
 
@@ -56,6 +60,23 @@ public class Cart {
         double total = 0.0;
         for (CartItem i : cartItems) {
             total += i.getTotalPrice();
+        }
+
+        return total;
+    }
+    public double getTotalPriceNDis() {
+        double total = 0.0;
+        for (CartItem i : cartItems) {
+            total += i.getProduct().getPrice()*i.getQuantity();
+        }
+
+        return total;
+    }
+    
+     public double getTotalDiscount() {
+        double total = 0.0;
+        for (CartItem i : cartItems) {
+            total += i.getTotalDiscount();
         }
 
         return total;

@@ -38,6 +38,10 @@ public class CartItem {
     public double getTotalPrice() {
         return (product.getPrice() - (product.getPrice() * product.getDiscount())) * quantity;
     }
+    
+    public double getTotalDiscount() {
+        return ((product.getPrice() * product.getDiscount())) * quantity;
+    }
 
     /*
    * this lines in method getTotalPriceCurrencyFormat()
