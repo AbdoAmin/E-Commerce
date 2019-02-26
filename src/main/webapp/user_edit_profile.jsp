@@ -108,15 +108,15 @@
                     <div class="span9" style="margin: 0 auto; float: none; ">
                         <ul class="breadcrumb">
                             <li><a href="${pageContext.request.contextPath}/index.jsp">Home</a> <span class="divider">/</span></li>
-                            <li class="active">Registration</li>
+                            <li class="active">User Info</li>
                         </ul>
-                        <h3> Registration</h3>
+                        <h3>Edit profile</h3>
                         <div class="well" style="margin:0 auto; float: none;">
                             <form class="form-horizontal" method="POST"
                                   action="${pageContext.request.contextPath}/SignUpServlet" enctype="multipart/form-data">
                                 <h4>Your personal information</h4>
                                 <div class="control-group">
-                                    <img src="themes/images/user.png" alt="Avatar">
+                                    <img src="data:image/jpeg;base64,${user.profileImage}" alt="Avatar">
                                     <input type="file" name="file" />
                                 </div>
 
@@ -238,21 +238,21 @@
                                 <div class="control-group">
                                     <label class="control-label" for="input_email">Address <sup>*</sup></label>
                                     <div class="controls">
-                                        <input type="text" id="input_email" placeholder="Address" name="address">
+                                        <input type="text" id="input_email" value="${user.address}" name="address">
                                     </div>
                                 </div>
 
                                 <div class="control-group">
                                     <label class="control-label" for="input_email">Phone <sup>*</sup></label>
                                     <div class="controls">
-                                        <input type="text" id="input_email" placeholder="Phone" name="phone">
+                                        <input type="text" id="input_email" value="${user.phone}" name="phone">
                                     </div>
                                 </div>
 
                                 <div class="control-group">
                                     <label class="control-label" for="input_email">Job <sup>*</sup></label>
                                     <div class="controls">
-                                        <input type="text" id="input_email" placeholder="Job" name="job">
+                                        <input type="text" id="input_email" value="${user.job}" name="job">
                                     </div>
                                 </div>
 
@@ -267,7 +267,7 @@
 
                                 <div class="control-group">
                                     <div class="controls">
-                                        <input class="btn btn-large btn-success" type="submit" value="Register" />
+                                        <input class="btn btn-large btn-success" type="submit" value="Save" />
                                     </div>
                                 </div>
                             </form>

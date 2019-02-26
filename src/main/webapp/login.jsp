@@ -24,13 +24,13 @@
                                 <div class="control-group">
                                     <label class="control-label" for="inputEmail1">Email</label>
                                     <div class="controls">
-                                        <input name="email" class="span3" type="text" id="inputEmail1" placeholder="Email">
+                                        <input name="email" class="span3" required="true" type="email" id="inputEmail1" placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="control-group">
                                     <label class="control-label" for="inputPassword1">Password</label>
                                     <div class="controls">
-                                        <input name="password" type="password" class="span3" id="inputPassword1"
+                                        <input name="password" type="password" required="true" class="span3" id="inputPassword1"
                                             placeholder="Password">
                                     </div>
                                 </div>
