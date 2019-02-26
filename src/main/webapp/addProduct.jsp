@@ -11,7 +11,10 @@
 	<div id="mainBody">
 		<div class="container">
 			<div class="row">
-				<div class="span9" style="margin: 0 auto; float: none; ">
+				 <!-- Sidebar ================================================== -->
+				 <jsp:include page="/adminSideBar.jsp" />
+				 <!-- Sidebar end=============================================== -->
+				<div class="span9"">
 					<ul class="breadcrumb">
 						<li><a href="${pageContext.request.contextPath}/index.jsp">Home</a> <span
 								class="divider">/</span></li>
