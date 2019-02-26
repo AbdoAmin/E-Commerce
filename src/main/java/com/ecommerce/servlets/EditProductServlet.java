@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,17 +31,19 @@ public class EditProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
-        
-        DaoProduct daoProduct = new DaoProduct();
-        Product product = daoProduct.getProduct(68);
-        req.setAttribute("product", product);
+
+        String productId = req.getParameter("productId");
+        if (productId != null) {
+            DaoProduct daoProduct = new DaoProduct();
+            Product product = daoProduct.getProduct(Integer.parseInt(productId));
+            req.setAttribute("product", product);
+        }
     }
-    
-    
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        String validation = "";
         try {
             Product product = new Product();
             DaoProduct daoProduct = new DaoProduct();
@@ -88,16 +88,17 @@ public class EditProductServlet extends HttpServlet {
                     if (!item.isFormField()) {
                         inputStream = item.getInputStream();
                         size = (int) item.getSize();
-                        if (item.getFieldName().contains("image")&& size > 0) {
-                                daoProductImages.insertProductImage(product.getId(), inputStream, size);
-                            }
+                        if (item.getFieldName().contains("image") && size > 0) {
+                            daoProductImages.insertProductImage(product.getId(), inputStream, size);
                         }
                     }
                 }
-            } catch (FileUploadException ex) {
-            Logger.getLogger(AddProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
+                validation = "?error";
+            }
+        } catch (FileUploadException ex) {
+            validation = "?error";
         }
+        resp.sendRedirect("editProduct.jsp");
     }
-
-    
 }

@@ -34,8 +34,8 @@ public class DaoOrderHistory {
             pst.setInt(1, usrId);
             rs = pst.executeQuery();
             if (rs.next()) {
-                history.setOrederHistoryId(rs.getInt(1));
-                history.setOrederDate(rs.getString(2));
+                history.setOrderHistoryId(rs.getInt(1));
+                history.setOrderDate(rs.getString(2));
                 history.setUserId(rs.getInt(3));
             }
             databaseConnection.close();
@@ -54,8 +54,8 @@ public class DaoOrderHistory {
         try {
             pst = databaseConnection.getConnection()
                     .prepareStatement("insert into ORDER_HISTORY (ORDER_HISTORY_ID , ORDER_DATE , USER_ID) Values (?,?,?)");
-            pst.setInt(1, history.getOrederHistoryId());
-            pst.setString(2, history.getOrederDate());
+            pst.setInt(1, history.getOrderHistoryId());
+            pst.setString(2, history.getOrderDate());
             pst.setInt(3, history.getUserId());
 
             int executeUpdate = pst.executeUpdate();
@@ -87,8 +87,8 @@ public class DaoOrderHistory {
 
             while (rs.next()) {
                 OrderHistory history = new OrderHistory();
-                history.setOrederHistoryId(rs.getInt(1));
-                history.setOrederDate(rs.getString(2));
+                history.setOrderHistoryId(rs.getInt(1));
+                history.setOrderDate(rs.getString(2));
                 history.setUserId(rs.getInt(3));
                 arrList.add(history);
             }

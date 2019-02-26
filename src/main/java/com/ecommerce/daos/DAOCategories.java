@@ -55,29 +55,13 @@ public class DAOCategories {
         return false;
     }
 
-    public boolean updateCategory(String oldCategoryName, String newCategoryName) {
+    public boolean updateCategory(Category category) {
         databaseConnection = DatabaseConnection.getInstance();
         try {
             PreparedStatement s = databaseConnection.getConnection()
-                    .prepareStatement("UPDATE Categories SET CATEGORY_NAME=? WHERE CATEGORY_NAME=?");
-            s.setString(1, newCategoryName);
-            s.setString(2, oldCategoryName);
-            int result = s.executeUpdate();
-            databaseConnection.close();
-            return result > 0;
-        } catch (SQLException ex) {
-            Logger.getLogger(DAOCategories.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
-
-    public boolean updateCategory(int categoryId, String newCategoryName) {
-        databaseConnection = DatabaseConnection.getInstance();
-        try {
-            PreparedStatement s = databaseConnection.getConnection()
-                    .prepareStatement("UPDATE Categories SET CATEGORY_NAME=? WHERE CATEGORY_ID=?");
-            s.setString(1, newCategoryName);
-            s.setInt(2, categoryId);
+                    .prepareStatement("UPDATE Categories SET CATEGORY_NAME = ? WHERE CATEGORY_ID = ?");
+            s.setString(1, category.getCategoryName());
+            s.setInt(2, category.getCategoryId());
             int result = s.executeUpdate();
             databaseConnection.close();
             return result > 0;
