@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Tahoon
  */
-@WebFilter(filterName = "LoginedUser",urlPatterns = {"/special_offer.jsp"})
+@WebFilter(filterName = "LoginedUser",urlPatterns = {"/user_profile.jsp","/user_edit_profile.jsp","/MyCart.jsp",})
 public class LoginedUser implements Filter {
 
     public LoginedUser() {

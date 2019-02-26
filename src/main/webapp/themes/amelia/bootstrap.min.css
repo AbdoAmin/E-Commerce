@@ -956,4 +956,6 @@ input,textarea,.search-query,.uneditable-input,.input-append input,.input-append
 .hide{display:none;}
 .show{display:block;}
 .invisible{visibility:hidden;}
-.affix{position:fixed;}
+.affix{position:fixed;}.text-center {
+
+}
