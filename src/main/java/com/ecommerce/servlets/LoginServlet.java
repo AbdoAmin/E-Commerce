@@ -5,6 +5,10 @@
  */
 package com.ecommerce.servlets;
 
+import com.ecommerce.beans.Cart;
+import com.ecommerce.beans.User;
+import com.ecommerce.beans.UserLogin;
+import com.ecommerce.daos.DaoCart;
 import com.ecommerce.beans.Product;
 import com.ecommerce.beans.User;
 import com.ecommerce.beans.UserLogin;
@@ -63,6 +67,12 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
             session.setMaxInactiveInterval(30 * 60);
+
+            //Abdo Edit Ew3a..
+            DaoCart dAOCart = new DaoCart();
+            Cart cart = dAOCart.getUserCart(user.getUserId());
+            request.getSession().setAttribute("myCart", cart);
+
             
             ArrayList<Product> productsOfInterest = (ArrayList<Product>)daoProduct.getProductsOfInterest(user.getUserId());
             

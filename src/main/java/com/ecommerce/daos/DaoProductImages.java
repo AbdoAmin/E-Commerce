@@ -59,7 +59,7 @@ public class DaoProductImages {
         try {
             Connection connection = dataBaseConnection.getConnection();
             String sql
-                    = "DELET From "
+                    = "DELETE From "
                     + DatabaseHelper.ProductImages.TABLE_NAME
                     + " where " + DatabaseHelper.ProductImages.ID + " = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -102,8 +102,10 @@ public class DaoProductImages {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, productId);
             preparedStatement.setBinaryStream(2, inputStream, size);
+            boolean a=preparedStatement.executeUpdate() > 0;
             dataBaseConnection.close();
-            return preparedStatement.executeUpdate() > 0;
+            return a;
+            
         } catch (SQLException ex) {
             Logger.getLogger(DaoProductImages.class.getName()).log(Level.SEVERE, null, ex);
         }

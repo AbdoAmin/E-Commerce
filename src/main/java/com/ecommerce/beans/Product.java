@@ -5,6 +5,7 @@
  */
 package com.ecommerce.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -105,6 +106,18 @@ public class Product {
         this.quantity = quantityProduct;
         this.name = productName;
         this.price = price;
+    }
+
+    public Product(int id, String name, double price, double discount, String description, int quantity, String productImage
+    ) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.discount = discount;
+        this.quantity=quantity;
+        this.productImages = new ArrayList<>();
+        this.productImages.add(productImage);
     }
 
 }

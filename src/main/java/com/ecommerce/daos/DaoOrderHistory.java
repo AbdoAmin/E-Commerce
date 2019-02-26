@@ -5,12 +5,15 @@
  */
 package com.ecommerce.daos;
 
+import com.ecommerce.beans.CartItem;
 import com.ecommerce.beans.OrderHistory;
 import com.ecommerce.utilities.DatabaseConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,23 +49,67 @@ public class DaoOrderHistory {
         return null;
     }
 
-    public boolean addUserHistory(OrderHistory history) {
+    //TODO PL Queary
+    public boolean addUserHistory(int userId,List<CartItem> item) {
         databaseConnection = DatabaseConnection.getInstance();
 
         PreparedStatement pst;
 
         try {
             pst = databaseConnection.getConnection()
-                    .prepareStatement("insert into ORDER_HISTORY (ORDER_HISTORY_ID , ORDER_DATE , USER_ID) Values (?,?,?)");
-            pst.setInt(1, history.getOrderHistoryId());
-            pst.setString(2, history.getOrderDate());
-            pst.setInt(3, history.getUserId());
+                    .prepareStatement("insert into ORDER_HISTORY ( ORDER_DATE , USER_ID) Values (SYSDATE,?)");
+            pst.setInt(1, userId);
 
             int executeUpdate = pst.executeUpdate();
-            databaseConnection.close();
             if (executeUpdate > 0) {
+                addItemsHistory(getLastUserHistoryInsertedId(databaseConnection),item,databaseConnection);
+                databaseConnection.close();
                 return true;
             }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoOrderHistory.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+    }
+    private int getLastUserHistoryInsertedId(DatabaseConnection databaseConnection) {
+        int productId = -1;
+        try {
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "select ORDER_HISTORY_ID " 
+                    + " from ORDER_HISTORY " 
+                    + " where ORDER_HISTORY_ID " 
+                    + " = "
+                    + " ( select max ( ORDER_HISTORY_ID )"
+                    + " from ORDER_HISTORY )");
+            if (resultSet.next()) {
+                productId = resultSet.getInt("ORDER_HISTORY_ID");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return productId;
+    }
+
+    public boolean addItemsHistory(int historyId, List<CartItem> item,DatabaseConnection databaseConnection) {
+
+        PreparedStatement pst;
+
+        try {
+            for (int i = 0; i < item.size(); i++) {
+                pst = databaseConnection.getConnection()
+                        .prepareStatement("insert into ORDER_ITEMS ( ORDER_HISTORY_ID, PRODUCT_ID , QUANTITY) Values (?,?,?)");
+                pst.setInt(1, historyId);
+                pst.setInt(2, item.get(i).getProduct().getId());
+                pst.setInt(3, item.get(i).getQuantity());
+
+                pst.executeUpdate();
+                
+            }
+            return true;
+
         } catch (SQLException ex) {
             Logger.getLogger(DaoOrderHistory.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -96,6 +143,6 @@ public class DaoOrderHistory {
         } catch (SQLException ex) {
             Logger.getLogger(DaoOrderHistory.class.getName()).log(Level.SEVERE, null, ex);
         }
-            return arrList;
+        return arrList;
     }
 }

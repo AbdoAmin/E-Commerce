@@ -33,12 +33,12 @@
                             <!-- MODIFY Abdo Print Product Image -->
                             <div id="carouselBlk">
                                 <div id="myCarousel" class="carousel slide">
-                                    <div class="carousel-inner">
+                                    <div class="carousel-inner" >
 
                                         <c:forEach items="${requestScope.product.productImages}" var="image" varStatus="loop">
                                             <div class="item <c:if test="${loop.index==0}"><c:out value="active"/></c:if>">
-                                                    <div class="container">
-                                                        <img style="width:100%" src="data:image/jpeg;base64,${image}" alt=""/>
+                                                    <div class="container" style="height: 450px;">
+                                                        <img style="width:100%;height:100%" src="data:image/jpeg;base64,${image}" alt=""/>
                                                 </div>
                                             </div>
                                         </c:forEach>
@@ -53,14 +53,15 @@
 
                                 <hr class="soft">
                                 <!--TODO Buy *Put In Cart*-->
-                                <form class="form-horizontal qtyFrm"> 
+                                <form class="form-horizontal qtyFrm" action="MyCart.jsp" method="get"> 
                                     <div class="control-group">
 
                                         <jsp:include page="/ShowPriceDiscount.jsp" />
 
                                         <div class="controls">
-                                            <input type="number" class="span1" placeholder="Qty.">
-                                            <button type="submit" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
+                                            <input type="hidden" name="id" value="${requestScope.product.id}"/>
+                                            <input type="number" class="span1" min="1" max="${requestScope.product.quantity}" placeholder="Qty." name="quantity">
+                                            <button type="submit" href="javascript:document.submitForm.submit()" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
                                         </div>
                                     </div>
                                 </form>
