@@ -9,7 +9,9 @@ import com.ecommerce.beans.User;
 import com.ecommerce.beans.UserLogin;
 import com.ecommerce.utilities.DatabaseConnection;
 import com.ecommerce.utilities.DatabaseHelper;
+import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,17 +30,20 @@ public class DaoUser {
     DatabaseConnection connection;
 
     public User signIn(UserLogin user) {
-        User userSignIn = new User();
+        User userSignIn = null;
 
         try {
+            String sql = "SELECT * FROM " + DatabaseHelper.USER.TABLE_NAME+
+                    " WHERE " + DatabaseHelper.USER.EMAIL + " = ? AND " + DatabaseHelper.USER.PASSWORD + " = ?";
             connection = DatabaseConnection.getInstance();
             PreparedStatement ps = connection.getConnection()
-                    .prepareStatement("SELECT * FROM USERS WHERE EMAIL= ? AND PASSWORD= ?");
+                    .prepareStatement(sql);
 
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
+                userSignIn = new User();
                 userSignIn.setUserId(rs.getInt(DatabaseHelper.USER.ID));
                 userSignIn.setFirstName(rs.getString(DatabaseHelper.USER.FIRST_NAME));
                 userSignIn.setLastName(rs.getString(DatabaseHelper.USER.LAST_NAME));
@@ -68,12 +73,11 @@ public class DaoUser {
                 userSignIn.setInterests(interests);
             }
             connection.close();
-            return userSignIn;
 
         } catch (SQLException ex) {
             Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        return userSignIn;
     }
 
     public boolean signUp(User user, InputStream inputStream, int size) {

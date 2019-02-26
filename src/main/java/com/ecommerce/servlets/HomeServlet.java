@@ -43,7 +43,6 @@ public class HomeServlet extends HttpServlet {
         }
         req.setAttribute("products", allProduct);
         
-        //Deprecated
         DAOCategories dAOCategories = new DAOCategories();
         List<Category> allCategories = dAOCategories.getAllCategories();
         req.setAttribute("categories", allCategories);
