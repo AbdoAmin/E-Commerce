@@ -1,26 +1,28 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
-    <jsp:include page="/HomeServlet" />
+<jsp:include page="/HomeServlet" />
 
-    <jsp:include page="/CommonHead.jsp" />
+<jsp:include page="/CommonHead.jsp" />
 
-    <body> 
+<body>
 
-        <jsp:include page="/CommonHeader.jsp" />
-        <!-- Header End====================================================================== -->
-        <div id="mainBody">
-            <div class="container">
-                <div class="row">
-                    <!-- Sidebar ================================================== -->
-                    <jsp:include page="/adminSideBar.jsp" />
-                    <!-- Sidebar end=============================================== -->
-                  
-                </div>
+    <jsp:include page="/CommonHeader.jsp" />
+    <!-- Header End====================================================================== -->
+    <div id="mainBody">
+        <div class="container">
+            <div class="row">
+                <!-- Sidebar ================================================== -->
+                <jsp:include page="/adminSideBar.jsp" />
+                <!-- Sidebar end=============================================== -->
+
             </div>
         </div>
-        <!-- Footer ================================================================== -->
+    </div>
+    <!-- Footer ================================================================== -->
+    <div id="footerSection">
         <jsp:include page="/CommonFooter.jsp" />
-    </body>
+    </div>
+</body>
+
 </html>
