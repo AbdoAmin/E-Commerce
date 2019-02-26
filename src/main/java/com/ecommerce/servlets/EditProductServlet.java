@@ -28,9 +28,19 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  *
  * @author Ashraf_R
  */
-@WebServlet(name = "AddProductServlet", urlPatterns = {"/AddProductServlet"})
-public class AddProductServlet extends HttpServlet {
+@WebServlet(name = "EditProductServlet", urlPatterns = {"/EditProductServlet"})
+public class EditProductServlet extends HttpServlet {
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        
+        DaoProduct daoProduct = new DaoProduct();
+        Product product = daoProduct.getProduct(68);
+        req.setAttribute("product", product);
+    }
+    
+    
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -54,6 +64,8 @@ public class AddProductServlet extends HttpServlet {
                 if (item.isFormField()) {
                     if (item.getFieldName().equals("name")) {
                         product.setName(item.getString());
+                    } else if (item.getFieldName().equals("id")) {
+                        product.setId(Integer.parseInt(item.getString()));
                     } else if (item.getFieldName().equals("price")) {
                         product.setPrice(Double.parseDouble(item.getString()));
                     } else if (item.getFieldName().equals("discount")) {
@@ -67,8 +79,9 @@ public class AddProductServlet extends HttpServlet {
                     }
                 }
             }
-            int productId = daoProduct.addProduct(product);
-            if (productId != -1) {
+            // it's to delete all image from database before adding new images
+            daoProductImages.deleteProductImages(product.getId());
+            if (daoProduct.updateProduct(product) > 0) {
                 Iterator<FileItem> iterator = items.iterator();
                 while (iterator.hasNext()) {
                     FileItem item = iterator.next();
@@ -76,7 +89,7 @@ public class AddProductServlet extends HttpServlet {
                         inputStream = item.getInputStream();
                         size = (int) item.getSize();
                         if (item.getFieldName().contains("image")&& size > 0) {
-                                daoProductImages.insertProductImage(productId, inputStream, size);
+                                daoProductImages.insertProductImage(product.getId(), inputStream, size);
                             }
                         }
                     }
@@ -86,4 +99,5 @@ public class AddProductServlet extends HttpServlet {
         }
     }
 
+    
 }

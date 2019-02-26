@@ -30,7 +30,11 @@ public class DaoProduct {
             DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
             Connection connection = dataBaseConnection.getConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM PRODUCTS");
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT * FROM " + DatabaseHelper.PRODUCT.TABLE_NAME
+                    + " WHERE "
+                    + DatabaseHelper.PRODUCT.QUANTITY + " != 0 "
+                    + " ORDER BY " + DatabaseHelper.PRODUCT.DISCOUNT + " DESC");
             setOnList(resultSet, products, dataBaseConnection);
             dataBaseConnection.close();
         } catch (SQLException ex) {
@@ -47,7 +51,10 @@ public class DaoProduct {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM PRODUCTS"
                     + " WHERE "
-                    + DatabaseHelper.PRODUCT.DISCOUNT + " > 0");
+                    + DatabaseHelper.PRODUCT.DISCOUNT + " > 0 "
+                    + " AND "
+                    + DatabaseHelper.PRODUCT.QUANTITY + "!= 0 "
+                    + " ORDER BY " + DatabaseHelper.PRODUCT.DISCOUNT + " DESC ");
             setOnList(resultSet, products, dataBaseConnection);
             dataBaseConnection.close();
         } catch (SQLException ex) {
@@ -63,7 +70,10 @@ public class DaoProduct {
             Connection connection = dataBaseConnection.getConnection();
             String sql
                     = "SELECT * FROM " + DatabaseHelper.PRODUCT.TABLE_NAME
-                    + " where " + DatabaseHelper.PRODUCT.CATEGORY_ID + " = ?";
+                    + " where " + DatabaseHelper.PRODUCT.CATEGORY_ID + " = ? "
+                    + " AND "
+                    + DatabaseHelper.PRODUCT.QUANTITY + "!= 0 "
+                    + "ORDER BY " + DatabaseHelper.PRODUCT.DISCOUNT + " DESC ";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, categoryId);
             setOnList(preparedStatement.executeQuery(), products, dataBaseConnection);
@@ -83,7 +93,10 @@ public class DaoProduct {
                     = "SELECT * FROM " + DatabaseHelper.PRODUCT.TABLE_NAME
                     + " where " + DatabaseHelper.PRODUCT.CATEGORY_ID + " = ? "
                     + " AND UPPER( "
-                    + DatabaseHelper.PRODUCT.NAME + " ) LIKE ?";
+                    + DatabaseHelper.PRODUCT.NAME + " ) LIKE ? "
+                    + " AND "
+                    + DatabaseHelper.PRODUCT.QUANTITY + "!= 0 "
+                    + "ORDER BY " + DatabaseHelper.PRODUCT.DISCOUNT + " DESC ";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, categoryId);
             preparedStatement.setString(2, "%" + productName + "%");
@@ -108,7 +121,10 @@ public class DaoProduct {
                     + DatabaseHelper.USER_INTERESTS.TABLE_NAME + "."
                     + DatabaseHelper.USER_INTERESTS.CATEGORY_ID
                     + " AND "
-                    + DatabaseHelper.USER_INTERESTS.USER_ID + " = ?";
+                    + DatabaseHelper.USER_INTERESTS.USER_ID + " = ? "
+                    + " AND "
+                    + DatabaseHelper.PRODUCT.QUANTITY + "!= 0 "
+                    + "ORDER BY " + DatabaseHelper.PRODUCT.DISCOUNT + " DESC ";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, userId);
             setOnList(preparedStatement.executeQuery(), products, dataBaseConnection);
@@ -127,7 +143,10 @@ public class DaoProduct {
             String sql
                     = "SELECT * FROM " + DatabaseHelper.PRODUCT.TABLE_NAME
                     + " where UPPER( "
-                    + DatabaseHelper.PRODUCT.NAME + " ) LIKE ?";
+                    + DatabaseHelper.PRODUCT.NAME + " ) LIKE ? "
+                    + " AND "
+                    + DatabaseHelper.PRODUCT.QUANTITY + "!= 0 "
+                    + "ORDER BY " + DatabaseHelper.PRODUCT.DISCOUNT + " DESC ";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, "%" + productName + "%");
             setOnList(preparedStatement.executeQuery(), products, dataBaseConnection);
@@ -160,13 +179,13 @@ public class DaoProduct {
         try {
             while (resultSet.next()) {
                 Product product = new Product();
-                int productId = resultSet.getInt("PRODUCT_ID");
+                int productId = resultSet.getInt(DatabaseHelper.PRODUCT.ID);
                 product.setId(productId);
-                product.setName(resultSet.getString("PRODUCT_NAME"));
-                product.setPrice(resultSet.getInt("PRICE"));
-                product.setDiscount(resultSet.getDouble("DISCOUNT"));
-                product.setCategoryId(resultSet.getInt("CATEGORY_ID"));
-                product.setQuantity(resultSet.getInt("QUANTITY"));
+                product.setName(resultSet.getString(DatabaseHelper.PRODUCT.NAME));
+                product.setPrice(resultSet.getInt(DatabaseHelper.PRODUCT.PRICE));
+                product.setDiscount(resultSet.getDouble(DatabaseHelper.PRODUCT.DISCOUNT));
+                product.setCategoryId(resultSet.getInt(DatabaseHelper.PRODUCT.CATEGORY_ID));
+                product.setQuantity(resultSet.getInt(DatabaseHelper.PRODUCT.QUANTITY));
                 product.setDescription(resultSet.getString(DatabaseHelper.PRODUCT.DESCRIPTION));
                 /**
                  * Get all Product Images converted into String
@@ -195,15 +214,16 @@ public class DaoProduct {
                     + DatabaseHelper.PRODUCT.PRICE + ", "
                     + DatabaseHelper.PRODUCT.DISCOUNT + ", "
                     + DatabaseHelper.PRODUCT.QUANTITY + ", "
-                    + DatabaseHelper.PRODUCT.CATEGORY_ID + ")"
+                    + DatabaseHelper.PRODUCT.CATEGORY_ID + ", "
+                    + DatabaseHelper.PRODUCT.DESCRIPTION + ")"
                     + " VALUES"
-                    + " ('" + product.getName() + "',"
-                    + product.getPrice() + ","
-                    + product.getDiscount() + ","
-                    + product.getQuantity() + ","
-                    + product.getCategoryId() + ")";
+                    + " ('" + product.getName() + "','"
+                    + product.getPrice() + "','"
+                    + product.getDiscount() + "','"
+                    + product.getQuantity() + "','"
+                    + product.getCategoryId() + "','"
+                    + product.getDescription() + "')";
             int executeUpdate = statement.executeUpdate(sql);
-            connection.commit();
             dataBaseConnection.close();
             if (executeUpdate > 0) {
                 productId = getLastProductAdded();
@@ -220,7 +240,6 @@ public class DaoProduct {
             DatabaseConnection dataBaseConnection = DatabaseConnection.getInstance();
             Connection connection = dataBaseConnection.getConnection();
             Statement statement = connection.createStatement();
-//            statement.executeUpdate("update categories set category_id =  1 where  category_id =  1 ");
             ResultSet resultSet = statement.executeQuery(
                     "select " + DatabaseHelper.PRODUCT.ID
                     + " from " + DatabaseHelper.PRODUCT.TABLE_NAME
@@ -247,10 +266,11 @@ public class DaoProduct {
             String sql
                     = "UPDATE " + DatabaseHelper.PRODUCT.TABLE_NAME
                     + " SET "
-                    + DatabaseHelper.PRODUCT.NAME + " = " + product.getName() + " , "
+                    + DatabaseHelper.PRODUCT.NAME + " = '" + product.getName() + "' , "
                     + DatabaseHelper.PRODUCT.PRICE + " = " + product.getPrice() + " , "
                     + DatabaseHelper.PRODUCT.DISCOUNT + " = " + product.getDiscount() + " , "
                     + DatabaseHelper.PRODUCT.QUANTITY + " = " + product.getQuantity() + " , "
+                    + DatabaseHelper.PRODUCT.DESCRIPTION + " = '" + product.getDescription() + "' , "
                     + DatabaseHelper.PRODUCT.CATEGORY_ID + " = " + product.getCategoryId()
                     + " WHERE " + DatabaseHelper.PRODUCT.ID + " = " + product.getId();
             rowEffect = statement.executeUpdate(sql);
