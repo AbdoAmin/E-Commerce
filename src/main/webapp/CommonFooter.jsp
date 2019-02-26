@@ -12,7 +12,7 @@
         <div class="row">
             <div class="span3">
                 <h5>ACCOUNT</h5>
-                <a href="login.jsp">YOUR ACCOUNT</a>
+                <a href="user_profile.jsp">YOUR ACCOUNT</a>
                 <a href="login.jsp">PERSONAL INFORMATION</a>
                 <a href="login.jsp">ADDRESSES</a>
                 <a href="login.jsp">DISCOUNT</a>

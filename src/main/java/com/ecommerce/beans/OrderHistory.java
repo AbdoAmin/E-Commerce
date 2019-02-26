@@ -10,24 +10,24 @@ package com.ecommerce.beans;
  * @author Ashraf_R
  */
 public class OrderHistory {
-    private int orederHistoryId;
-    private String orederDate;
+    private int orderHistoryId;
+    private String orderDate;
     private int userId;
 
-    public int getOrederHistoryId() {
-        return orederHistoryId;
+    public int getOrderHistoryId() {
+        return orderHistoryId;
     }
 
-    public void setOrederHistoryId(int orederHistoryId) {
-        this.orederHistoryId = orederHistoryId;
+    public void setOrderHistoryId(int orderHistoryId) {
+        this.orderHistoryId = orderHistoryId;
     }
 
-    public String getOrederDate() {
-        return orederDate;
+    public String getOrderDate() {
+        return orderDate;
     }
 
-    public void setOrederDate(String orederDate) {
-        this.orederDate = orederDate;
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
     }
 
     public int getUserId() {
