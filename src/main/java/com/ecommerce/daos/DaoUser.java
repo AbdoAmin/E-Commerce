@@ -292,4 +292,26 @@ public class DaoUser {
         }
         return null;
     }
+
+    public boolean updateUserCreditLimit(int userId, double moneyPaid) {
+        try {
+            connection = DatabaseConnection.getInstance();
+            String sqlUsers
+                    = "update " + DatabaseHelper.USER.TABLE_NAME + " set "
+                    + DatabaseHelper.USER.CREDIT_LIMIT + " = " + DatabaseHelper.USER.CREDIT_LIMIT + " -? "
+                    + "where " + DatabaseHelper.USER.ID + " = ?";
+
+            PreparedStatement ps2 = connection.getConnection().prepareStatement(sqlUsers);
+
+            ps2.setDouble(1, moneyPaid);
+            ps2.setInt(2, userId);
+            int executeUpdate2 = ps2.executeUpdate();
+            connection.close();
+            return ((executeUpdate2 > 0));
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 }

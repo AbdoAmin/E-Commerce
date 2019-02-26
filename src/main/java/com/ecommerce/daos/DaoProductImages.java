@@ -59,7 +59,7 @@ public class DaoProductImages {
         try {
             Connection connection = dataBaseConnection.getConnection();
             String sql
-                    = "DELET From "
+                    = "DELETE From "
                     + DatabaseHelper.ProductImages.TABLE_NAME
                     + " where " + DatabaseHelper.ProductImages.ID + " = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);

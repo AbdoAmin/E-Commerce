@@ -33,12 +33,12 @@
                             <!-- MODIFY Abdo Print Product Image -->
                             <div id="carouselBlk">
                                 <div id="myCarousel" class="carousel slide">
-                                    <div class="carousel-inner">
+                                    <div class="carousel-inner" >
 
                                         <c:forEach items="${requestScope.product.productImages}" var="image" varStatus="loop">
                                             <div class="item <c:if test="${loop.index==0}"><c:out value="active"/></c:if>">
-                                                    <div class="container">
-                                                        <img style="width:100%" src="data:image/jpeg;base64,${image}" alt=""/>
+                                                    <div class="container" style="height: 450px;">
+                                                        <img style="width:100%;height:100%" src="data:image/jpeg;base64,${image}" alt=""/>
                                                 </div>
                                             </div>
                                         </c:forEach>

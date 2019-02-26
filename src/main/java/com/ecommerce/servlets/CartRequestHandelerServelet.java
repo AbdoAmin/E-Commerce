@@ -22,33 +22,32 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "CartRequestHandelerServelet", urlPatterns = {"/CartRequestHandelerServelet"})
 public class CartRequestHandelerServelet extends HttpServlet {
 
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DaoCart daoCart=new DaoCart();
-        String productIdToDelete=request.getParameter("productIdToDelete");
-        String buy=request.getParameter("buy");
-        User user=(User) request.getSession().getAttribute("user");
-        if(productIdToDelete!=null){
-            daoCart.deleteProductFromCart(user.getUserId(),Integer.valueOf(productIdToDelete));
+        DaoCart daoCart = new DaoCart();
+        String productIdToDelete = request.getParameter("productIdToDelete");
+        String buy = request.getParameter("buy");
+        User user = (User) request.getSession().getAttribute("user");
+        if (productIdToDelete != null) {
+            daoCart.deleteProductFromCart(user.getUserId(), Integer.valueOf(productIdToDelete));
             //forword mycart
         }
-        if(buy!=null){
-            daoCart.buyAllInCart(user.getUserId(),Integer.valueOf(productIdToDelete));
+        if (buy != null) {
+            daoCart.buyAllInCart(user.getUserId());
+            user.setCreditLimit(user.getCreditLimit()-Double.valueOf(buy));
+            request.getSession().setAttribute("user", user);
             //forword mycart
         }
-        
-        
+        request.getRequestDispatcher("MyCart.jsp").forward(request, response);
+
     }
 
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

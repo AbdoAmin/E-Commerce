@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <div id="header">
     <div class="container">
@@ -16,8 +18,9 @@
                 <div class="span6">
                     <div class="pull-right">
                         <span class="btn btn-mini">${user.creditLimit} $</span>
-                        <a href="product_summary.html"><span class="btn btn-mini btn-primary"><i
-                                    class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart </span> </a>
+                        <a href="MyCart.jsp"><span class="btn btn-mini btn-primary"><i
+                                    class="icon-shopping-cart icon-white"></i> ${fn:length(sessionScope.myCart.cartItems)} Item<c:if test="${fn:length(sessionScope.myCart.cartItems)>1}">s</c:if> 
+                                    in your cart </span> </a>
                     </div>
                 </div>
             </div>

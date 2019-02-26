@@ -30,7 +30,7 @@
                             <li><a href="index.jsp">Home</a> <span class="divider">/</span></li>
                             <li class="active"> SHOPPING CART</li>
                         </ul>
-                        <h3>  SHOPPING CART [ <small>${fn:length(requestScope.myCart.cartItems)} Item<c:if test="${fn:length(requestScope.myCart.cartItems)>1}">s</c:if> </small>]
+                        <h3>  SHOPPING CART [ <small>${fn:length(sessionScope.myCart.cartItems)} Item<c:if test="${fn:length(sessionScope.myCart.cartItems)>1}">s</c:if> </small>]
                                 <a href="index.jsp" class="btn btn-large pull-right"><i class="icon-arrow-left"></i> Continue Shopping </a></h3>	
                             <hr class="soft">
                             <table class="table table-bordered">
@@ -48,13 +48,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach items="${requestScope.myCart.cartItems}" var="item">
+                                <c:forEach items="${sessionScope.myCart.cartItems}" var="item">
                                     <tr>
                                         <td> <img width="60" src="data:image/jpeg;base64,${item.product.productImages[0]}" alt=""></td>
                                         <td>${item.product.name}<br>${item.product.description}</td>
                                         <td>
                                             <div class="input-append"><input class="span1" style="max-width:34px" placeholder="${item.quantity}" id="appendedInputButtons" min="1" max="${item.product.quantity}" size="16" type="text">
-                                                <a class="btn btn-danger" href = "/CartRequestHandelerServelet?productIdToDelete=${item.product.id}" type="button"><i class="icon-remove icon-white"></i></a>
+                                                <a class="btn btn-danger" href = "CartRequestHandelerServelet?productIdToDelete=${item.product.id}" type="button"><i class="icon-remove icon-white"></i></a>
                                             </div>
                                         </td>
                                         <td>$${item.product.price}</td>
@@ -66,15 +66,15 @@
 
                                 <tr>
                                     <td colspan="5" style="text-align:right">Total Price:	</td>
-                                    <td> $${requestScope.myCart.totalPriceNDis}</td>
+                                    <td> $${sessionScope.myCart.totalPriceNDis}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="5" style="text-align:right">Total Discount:	</td>
-                                    <td> $${requestScope.myCart.totalDiscount}</td>
+                                    <td> $${sessionScope.myCart.totalDiscount}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" style="text-align:right"><strong>TOTAL ($${requestScope.myCart.totalPriceNDis}-$${requestScope.myCart.totalDiscount}) =</strong></td>
-                                    <td class="label label-important" style="display:block"> <strong> $${requestScope.myCart.totalPrice} </strong></td>
+                                    <td colspan="5" style="text-align:right"><strong>TOTAL ($${sessionScope.myCart.totalPriceNDis}-$${sessionScope.myCart.totalDiscount}) =</strong></td>
+                                    <td class="label label-important" style="display:block"> <strong> $${sessionScope.myCart.totalPrice} </strong></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -84,17 +84,17 @@
 
                         </table>
 
-
                         <a href="index.jsp" class="btn btn-large"><i class="icon-arrow-left"></i> Continue Shopping </a>
-                        <a href="<c:if test="${requestScope.myCart.totalPrice<=sessionScope.user.creditLimit}" >/CartRequestHandelerServelet?buy=yes</c:if>" class="btn btn-large pull-right">Buy <i class="icon-arrow-right"></i></a>
+                        <a href="<c:if test="${sessionScope.myCart.totalPrice<=sessionScope.user.creditLimit && fn:length(sessionScope.myCart.cartItems)>0}" >
+                           CartRequestHandelerServelet?buy=${sessionScope.myCart.totalPrice}</c:if>" class="btn btn-large pull-right">Buy <i class="icon-arrow-right"></i></a>
+
+                        </div>
+
 
                     </div>
-
-
                 </div>
             </div>
-        </div>
-        <!-- Footer ================================================================== -->
+            <!-- Footer ================================================================== -->
 
         <jsp:include page="/CommonFooter.jsp" />
     </body>

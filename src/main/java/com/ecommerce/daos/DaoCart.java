@@ -9,13 +9,11 @@ import com.ecommerce.beans.Cart;
 import com.ecommerce.beans.CartItem;
 import com.ecommerce.beans.Product;
 import com.ecommerce.utilities.DatabaseConnection;
-import com.ecommerce.utilities.DatabaseHelper;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,37 +25,31 @@ public class DaoCart {
 
     DatabaseConnection connection;
 
-//    public ArrayList<Cart> getUserCart(int userId) {
-//        ArrayList<Cart> userCart = new ArrayList<>();
-//        connection = DatabaseConnection.getInstance();
-//        Statement s;
-//        try {
-//            s = connection.getConnection().createStatement();      
-//            
-//            ResultSet rs = s.executeQuery("select * From carts where user_id=?");
-//            while (rs.next()) {
-//                Cart cart = new Cart();
-//                cart.setCartId(rs.getInt("cart_id"));
-//                cart.setUserId(rs.getInt(2));
-//                cart.setProductId(rs.getInt(3));
-//                cart.setQuantity(rs.getInt(4));
-//                userCart.add(cart);
-//            }
-//            connection.close();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(DaoCart.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return userCart;        
-//    }
+    public boolean buyAllInCart(int userId) {
+        DaoOrderHistory daoOrderHistory = new DaoOrderHistory();
+        DaoProduct daoProduct = new DaoProduct();
+        DaoUser daoUser = new DaoUser();
+        Cart cart = getUserCart(userId);
+        List<CartItem> cartItems = cart.getCartItems();
+        if (daoOrderHistory.addUserHistory(userId, cartItems)) {
+            for (int i = 0; i < cartItems.size(); i++) {
+                daoProduct.setProductQuantity(cartItems.get(i).getProduct().getId(), cartItems.get(i).getProduct().getQuantity()-cartItems.get(i).getQuantity());
+            }
+            daoUser.updateUserCreditLimit(userId, cart.getTotalPrice());
+            deleteUserCart(userId);
+        }
+
+        return true;
+    }
+
     public boolean addCart(Cart cart) {
         connection = DatabaseConnection.getInstance();
         try {
 
-            PreparedStatement pst = connection.getConnection().prepareStatement("insert into carts (cart_id,user_id,product_id,quantity)Values (?,?,?,?)");
-            pst.setInt(1, cart.getCartId());
-            pst.setInt(2, cart.getUserId());
-            pst.setInt(3, cart.getProductId());
-            pst.setInt(4, cart.getQuantity());
+            PreparedStatement pst = connection.getConnection().prepareStatement("insert into carts (user_id,product_id,quantity)Values (?,?,?)");
+            pst.setInt(1, cart.getUserId());
+            pst.setInt(2, cart.getProductId());
+            pst.setInt(3, cart.getQuantity());
             int executeUpdate = pst.executeUpdate();
             connection.close();
             if (executeUpdate > 0) {
@@ -105,7 +97,8 @@ public class DaoCart {
 
         return false;
     }
-    public boolean deleteProductFromCart(int userId,int productId) {
+
+    public boolean deleteProductFromCart(int userId, int productId) {
         connection = DatabaseConnection.getInstance();
         PreparedStatement pst;
 

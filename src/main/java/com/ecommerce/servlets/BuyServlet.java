@@ -33,7 +33,7 @@ public class BuyServlet extends HttpServlet {
         }
         
         Cart cart = dAOCart.getUserCart(userId);
-        request.setAttribute("myCart", cart);
+        request.getSession().setAttribute("myCart", cart);
 
     }
 
