@@ -33,3 +33,19 @@
     text-decoration: none;
     padding: 5px 0.5em;
 }
+
+
+.discount {
+    background: url(../images/offer.png) no-repeat 0 0;
+    position: absolute;
+    display: block;
+    top: -1px;
+    right: -11px;
+    font-style: italic;
+    font-weight: 900;
+    color: #e7fb50;
+    height: 55px;
+    text-align: center;
+    padding-top: 15px;
+    width: 55px;
+}

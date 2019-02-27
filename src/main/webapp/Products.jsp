@@ -18,6 +18,11 @@
                 </c:url>
                 <li class="span3">
                     <div class="thumbnail" >
+                        <c:if test="${product.discount>0.00}">
+                            <fmt:parseNumber var = "dis" integerOnly = "true" 
+                                             type = "number" value = "${product.discount*100}" />
+                            <i class="discount">-${dis}%</i>
+                        </c:if>
                         <a href="<c:out value="${thisURL}"/>"><img src="data:image/jpeg;base64,${product.mainProductImage}"
                                                                    alt="" style="height: 250px;"/>
                         </a>
