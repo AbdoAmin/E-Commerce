@@ -12,7 +12,6 @@
     <jsp:include page="/CommonHead.jsp" />
 
     <body> 
-
         <jsp:include page="/CommonHeader.jsp" />
         <!-- Header End====================================================================== -->
         <div id="mainBody">
@@ -20,8 +19,43 @@
                 <div class="row">
                     <!-- Sidebar ================================================== -->
                     <jsp:include page="/CommonBody.jsp" />
+                    <!--${err==null}-->
                     <!-- Sidebar end=============================================== -->
                     <div class="span9">
+                        <c:if test="${user != null}">
+                            <div class="well well-small">
+                                <h4>Featured Products <small class="pull-right">200+ featured products</small></h4>
+                                <div class="row-fluid">
+                                    <div id="featured" class="carousel slide">
+                                        <div class="carousel-inner">
+                                            <c:set var="starter" value="0"/>
+                                            <c:forEach items="${productsOfInterest}" step="3" varStatus="loop">
+                                                <div class="item <c:if test="${loop.index == 0}"> active </c:if>">
+                                                        <!--need to small for-->
+                                                    <c:forEach items="${productsOfInterest}" var="product" begin="${starter}" end="${starter+3}" varStatus="loop">
+                                                        <li class="span3">
+                                                            <div class="thumbnail">
+                                                                <i class="tag"></i>
+                                                                <a href="${pageContext.request.contextPath}/product_details.jsp?productID=${product.id}"><img
+                                                                        src="data:image/jpeg;base64,${product.mainProductImage}" alt=""></a>
+                                                                <div class="caption">
+                                                                    <h5>${product.name}</h5>
+                                                                    <h4><a class="btn" href="${pageContext.request.contextPath}/product_details.jsp?productID=${product.id}">VIEW</a> <span
+                                                                            class="pull-right">${product.price}</span></h4>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </c:forEach>
+                                                </div>
+                                            </c:forEach>
+                                        </div>
+                                        <a class="left carousel-control" href="#featured" data-slide="prev">‹</a>
+                                        <a class="right carousel-control" href="#featured" data-slide="next">›</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+
                         <h4>Latest Products </h4>
                             <!-- MODIFY ashraf display products -->
                             <jsp:include page="/Products.jsp" />

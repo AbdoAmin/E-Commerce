@@ -40,7 +40,7 @@ public class JustForTesting extends HttpServlet {
         
         user = daoUser.getUserByEmail("ahmedsallamdd@gmail.com");
         user.setPhone("888888");
-        daoUser.updateUser(user);
+//        daoUser.updateUser(user);
         
         if(user != null){
             out.println(user.getFirstName() + "<br/>");

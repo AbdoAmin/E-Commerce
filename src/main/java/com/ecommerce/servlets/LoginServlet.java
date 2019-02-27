@@ -37,14 +37,13 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DaoUser daoUser = new DaoUser();
 
-        
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         UserLogin userLogin = new UserLogin();
         userLogin.setEmail(email);
         userLogin.setPassword(password);
-        
+
         PrintWriter out = response.getWriter();
         out.println(userLogin.getEmail());
         out.println(userLogin.getPassword());
@@ -55,24 +54,34 @@ public class LoginServlet extends HttpServlet {
         //TODO: put the user object transfer to index.jsp code here
 //        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 //        rd.include(request, response);
-           out.println();
+        out.println();
         if (user != null) {
-            DaoProduct daoProduct = new DaoProduct();
-            out.println(user.getEmail());
-            out.println(user.getPrivilege());
-            HttpSession session = request.getSession(true);
-            session.setAttribute("user", user);
-            session.setMaxInactiveInterval(30 * 60);
-            
-            ArrayList<Product> productsOfInterest = (ArrayList<Product>)daoProduct.getProductsOfInterest(user.getUserId());
-            
-            session.setAttribute("productsOfInterest", productsOfInterest);
-            response.sendRedirect("index.jsp");
+            if (user.getPrivilege().equalsIgnoreCase("admin")) {
+                response.sendRedirect("admin.jsp");
+            } else {
+                DaoProduct daoProduct = new DaoProduct();
+
+                HttpSession session = request.getSession(true);
+                session.setAttribute("user", user);
+                session.setMaxInactiveInterval(30 * 60);
+
+                ArrayList<Product> productsOfInterest = (ArrayList<Product>) daoProduct.getProductsOfInterest(user.getUserId());
+
+                session.setAttribute("productsOfInterest", productsOfInterest);
+                request.getSession().setAttribute("err", "false");
+
+                response.sendRedirect("index.jsp");
+            }
 //            request.getRequestDispatcher("index.jsp").include(request, response);
         } else {
             //TODO: redirect to an error page 
             //or tell the user that the email or the password he/she entered is worng!
-            out.print("wrong email or password");
+//            HttpSession session = request.getSession(true);
+            
+//            session.setAttribute("err", "true");
+
+            response.sendRedirect("login.jsp?myparam=invalid");
+
         }
 //            response.sendRedirect("index.jsp");
 

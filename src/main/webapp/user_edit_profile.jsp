@@ -113,7 +113,7 @@
                         <h3>Edit profile</h3>
                         <div class="well" style="margin:0 auto; float: none;">
                             <form class="form-horizontal" method="POST"
-                                  action="${pageContext.request.contextPath}/SignUpServlet" enctype="multipart/form-data">
+                                  action="${pageContext.request.contextPath}/EditProfileServlet" enctype="multipart/form-data">
                                 <h4>Your personal information</h4>
                                 <div class="control-group">
                                     <img src="data:image/jpeg;base64,${user.profileImage}" alt="Avatar">

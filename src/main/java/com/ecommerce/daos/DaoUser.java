@@ -191,7 +191,7 @@ public class DaoUser {
         return executeUpdate;
     }
 
-    public boolean updateUser(User user) {
+    public boolean updateUser(User user, InputStream inputStream, int size) {
         try {
             connection = DatabaseConnection.getInstance();
             String sqlUsers
@@ -203,6 +203,7 @@ public class DaoUser {
                     + DatabaseHelper.USER.JOB + " = ? " + " , "
                     + DatabaseHelper.USER.ADDRESS + " = ? " + " , "
                     + DatabaseHelper.USER.CREDIT_LIMIT + " = ? " + " , "
+                    + DatabaseHelper.USER.PROFILE_IMAGE + " = ? " + " , "
                     + DatabaseHelper.USER.PHONE + " = ? " + " , "
                     + DatabaseHelper.USER.PRIVILEGE + " = ? "
                     + "where " + DatabaseHelper.USER.ID + " = ?";
@@ -216,9 +217,10 @@ public class DaoUser {
             ps2.setString(5, user.getJob());
             ps2.setString(6, user.getAddress());
             ps2.setDouble(7, user.getCreditLimit());
-            ps2.setString(8, user.getPhone());
-            ps2.setString(9, user.getPrivilege());
-            ps2.setInt(10, user.getUserId());
+            ps2.setBinaryStream(8, inputStream, size);
+            ps2.setString(9, user.getPhone());
+            ps2.setString(10, user.getPrivilege());
+            ps2.setInt(11, user.getUserId());
             int executeUpdate2 = ps2.executeUpdate();
 
             //delete all old interests, then put the new ones.
