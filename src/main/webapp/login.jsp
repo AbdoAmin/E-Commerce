@@ -35,11 +35,17 @@
                                             id="inputPassword1" placeholder="Password">
                                     </div>
                                 </div>
+                                <c:if test="${param.error != null}">
+                                    <div class="control-group">
+                                        <label class="control-label" for="inputPassword1" style="color: red;">* invalid email or password</label>
+                                    </div>
+                                </c:if>
+
+
                                 <div class="control-group">
                                     <div class="controls">
                                         <input type="submit" class="btn" value="Sign in" />
                                         OR <a href="register.jsp" class="btn">Register Now!</a>
-
                                     </div>
                                 </div>
                             </form>
