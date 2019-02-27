@@ -50,10 +50,10 @@
                                 <tbody>
                                 <c:forEach items="${sessionScope.myCart.cartItems}" var="item">
                                     <tr>
-                                        <td> <img width="60" src="data:image/jpeg;base64,${item.product.productImages[0]}" alt=""></td>
+                                        <td> <img width="60" style="height: 50px;" src="data:image/jpeg;base64,${item.product.productImages[0]}" alt=""></td>
                                         <td>${item.product.name}<br>${item.product.description}</td>
                                         <td>
-                                            <div class="input-append"><input class="span1" style="max-width:34px" placeholder="${item.quantity}" id="appendedInputButtons" min="1" max="${item.product.quantity}" size="16" type="text">
+                                            <div class="input-append"><input class="span1" style="max-width:34px" placeholder="${item.quantity}" id="appendedInputButtons" min="1" max="${item.product.quantity}" size="16" type="text" readonly>
                                                 <a class="btn btn-danger" href = "CartRequestHandelerServelet?productIdToDelete=${item.product.id}" type="button"><i class="icon-remove icon-white"></i></a>
                                             </div>
                                         </td>
