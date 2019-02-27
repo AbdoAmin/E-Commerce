@@ -41,6 +41,7 @@ public class DaoOrderHistory {
                 history.setOrderDate(rs.getString(2));
                 history.setUserId(rs.getInt(3));
             }
+            pst.close();
             databaseConnection.close();
             return history;
         } catch (SQLException ex) {
@@ -63,10 +64,10 @@ public class DaoOrderHistory {
             int executeUpdate = pst.executeUpdate();
             if (executeUpdate > 0) {
                 addItemsHistory(getLastUserHistoryInsertedId(databaseConnection),item,databaseConnection);
+                pst.close();
                 databaseConnection.close();
                 return true;
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(DaoOrderHistory.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -87,6 +88,8 @@ public class DaoOrderHistory {
             if (resultSet.next()) {
                 productId = resultSet.getInt("ORDER_HISTORY_ID");
             }
+            resultSet.close();
+            statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -96,7 +99,6 @@ public class DaoOrderHistory {
     public boolean addItemsHistory(int historyId, List<CartItem> item,DatabaseConnection databaseConnection) {
 
         PreparedStatement pst;
-
         try {
             for (int i = 0; i < item.size(); i++) {
                 pst = databaseConnection.getConnection()
@@ -104,9 +106,7 @@ public class DaoOrderHistory {
                 pst.setInt(1, historyId);
                 pst.setInt(2, item.get(i).getProduct().getId());
                 pst.setInt(3, item.get(i).getQuantity());
-
                 pst.executeUpdate();
-                
             }
             return true;
 
@@ -139,6 +139,7 @@ public class DaoOrderHistory {
                 history.setUserId(rs.getInt(3));
                 arrList.add(history);
             }
+            pst.close();
             databaseConnection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DaoOrderHistory.class.getName()).log(Level.SEVERE, null, ex);

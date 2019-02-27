@@ -29,9 +29,9 @@ public class DaoInteresting {
             ps.setInt(1, userID);
             ps.setInt(2, categoryId);
             int executeUpdate = ps.executeUpdate();
+            ps.close();
             connection.close();
             return executeUpdate > 0;
-
         } catch (SQLException ex) {
             Logger.getLogger(DaoInteresting.class.getName()).log(Level.SEVERE, null, ex);
         }
