@@ -44,7 +44,7 @@
             <div class="navbar-inner">
                 <a class="brand" href="index.jsp"><img src="themes/images/logo.png" alt="Bootsshop" /></a>
                 <form class="form-inline navbar-search" method="GET" action="index.jsp">
-                    <input id="srchFld" class="srchTxt" type="text" name="productName" style="height: 30 !important;" />
+                    <input id="srchFld" class="srchTxt" type="text" name="productName" style="height: 30 !important;padding-left: 30;" />
                     <select class="srchTxt" name="category">
                         <option value="-1">All</option>
                         <c:forEach items="${categories}" var="category">
