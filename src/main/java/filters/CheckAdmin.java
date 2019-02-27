@@ -35,7 +35,7 @@ public class CheckAdmin implements Filter {
          if (user != null && user.getPrivilege().equalsIgnoreCase("admin")) {
             chain.doFilter(request, response);
         } else {
-            ((HttpServletResponse) response).sendRedirect("/E-Commerce/login.jsp");
+            ((HttpServletResponse) response).sendRedirect("/E-Commerce/error.html");
         }
 
     
@@ -50,7 +50,6 @@ public class CheckAdmin implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
 }

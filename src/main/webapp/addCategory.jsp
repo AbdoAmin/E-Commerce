@@ -28,7 +28,7 @@
                                 <div class="control-group">
                                     <label class="control-label" for="inputFname1">Name<sup>*</sup></label>
                                     <div class="controls">
-                                        <input type="text" id="inputFname1" placeholder="Name" name="categoryName">
+                                        <input type="text" id="inputFname1" placeholder="Name" name="categoryName" required>
                                     </div>
                                 </div>
 
@@ -51,7 +51,9 @@
         </div>
         <!-- MainBody End ============================= -->
         <!-- Footer ================================================================== -->
-        <jsp:include page="/CommonFooter.jsp" />
+        <div id="footerSection">
+                <jsp:include page="/CommonFooter.jsp" />
+        </div>
     </body>
 
 </html>

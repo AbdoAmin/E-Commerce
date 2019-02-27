@@ -79,7 +79,7 @@
                         <span class="icon-bar"></span>
                     </a>
                     <div class="navbar-inner" style="margin-top: 1.5%;">
-                        <a class="brand" href="index.html"><img src="themes/images/logo.png" alt="Bootsshop" /></a>
+                        <a class="brand" href="error.html"><img src="themes/images/logo.png" alt="Bootsshop" /></a>
                         <form class="form-inline navbar-search" method="post" action="products.html">
                             <input id="srchFld" class="srchTxt" type="text" />
                             <select class="srchTxt">

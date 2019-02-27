@@ -24,7 +24,7 @@
                     <!-- MODIFY Abdo print categories as list -->
                     <div class="span9">
                         <ul class="breadcrumb">
-                            <li><a href="index.html">Home</a> <span class="divider">/</span></li>
+                            <li><a href="error.html">Home</a> <span class="divider">/</span></li>
                             <li class="active">Special offers</li>
                         </ul>
                         <jsp:include page="/Products.jsp" />

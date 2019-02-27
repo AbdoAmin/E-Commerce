@@ -7,6 +7,7 @@
         <li><a href="${pageContext.request.contextPath}/TempHistory.jsp">Order history</a></li>
         <li><a href="${pageContext.request.contextPath}/addProduct.jsp">Add product</a></li> 
         <li><a href="${pageContext.request.contextPath}/editProduct.jsp">Edit product</a></li>
+        <li><a href="${pageContext.request.contextPath}/deleteProduct.jsp">Delete product</a></li>
         <li><a href="${pageContext.request.contextPath}/addCategory.jsp">Add Category</a></li>
         <li><a href="${pageContext.request.contextPath}/editCategory.jsp">Edit Category</a></li>
     </ul>

@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public class DatabaseConnection {
 
     private static final ArrayList<DatabaseConnection> INSTANCES = new ArrayList<>();
-    private static final int MAX_CONCURRENCY_USERS = 10;
+    private static final int MAX_CONCURRENCY_USERS = 1;
     private int currentUsageNumber;
     private Connection con;
 

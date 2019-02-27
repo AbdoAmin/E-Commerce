@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ecommerce.servlets;
+package com.ecommerce.servlets.admin;
 
 import com.ecommerce.beans.Product;
 import com.ecommerce.daos.DaoProduct;
