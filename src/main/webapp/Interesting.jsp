@@ -28,6 +28,7 @@
                                 <!--modify sallam: added action to the LoginServlet-->
                                 <form action="InterestingCategoriesServlet" method="POST">
                                     <div class="control-group">
+                                        <input type="hidden" name='userId' value='${param.userId}'>
                                         <input type="hidden" name='size' value='${fn:length(categories)}'>
                                         <c:forEach items="${categories}" var="category" varStatus="loop">
                                             <input type="checkbox" name='c${loop.index}' value='${category.categoryId}'>

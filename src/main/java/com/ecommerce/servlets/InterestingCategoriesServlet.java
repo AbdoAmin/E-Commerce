@@ -26,11 +26,13 @@ public class InterestingCategoriesServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String paramSizeString = request.getParameter("size");
-        User user = (User) request.getSession().getAttribute("user");
+        String userId = request.getParameter("userId");
 
-        if (paramSizeString != null) {
+        if (paramSizeString != null && userId != null) {
             DaoInteresting daoInteresting = new DaoInteresting();
             int paramSize = Integer.valueOf(paramSizeString);
+            System.err.println("userddddddddddddddddddddddddddddddddddddddddddddddddddd id :" + userId);
+            int id = Integer.valueOf(userId);
             if (paramSize > 0) {
                 for (int i = 0; i < paramSize; i++) {
                     String categoreIDString = request.getParameter("c" + i);
@@ -38,12 +40,13 @@ public class InterestingCategoriesServlet extends HttpServlet {
                         int categoreID = Integer.valueOf(categoreIDString);
 
                         System.err.println("Categori id :" + categoreID);
-                        daoInteresting.insertInterestingToUser(user.getUserId(), categoreID);
+                        
+                        daoInteresting.insertInterestingToUser(id, categoreID);
                     }
                 }
             }
         }
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
 
     }
 
