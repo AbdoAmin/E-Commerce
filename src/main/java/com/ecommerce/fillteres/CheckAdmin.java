@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package filters;
+package com.ecommerce.fillteres;
 
 import com.ecommerce.beans.User;
 import java.io.IOException;

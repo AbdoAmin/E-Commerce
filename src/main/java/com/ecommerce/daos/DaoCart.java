@@ -45,12 +45,12 @@ public class DaoCart {
     public boolean addCart(Cart cart) {
         connection = DatabaseConnection.getInstance();
         try {
-
             PreparedStatement pst = connection.getConnection().prepareStatement("insert into carts (user_id,product_id,quantity)Values (?,?,?)");
             pst.setInt(1, cart.getUserId());
             pst.setInt(2, cart.getProductId());
             pst.setInt(3, cart.getQuantity());
             int executeUpdate = pst.executeUpdate();
+            pst.close();
             connection.close();
             if (executeUpdate > 0) {
                 return true;
@@ -68,6 +68,7 @@ public class DaoCart {
             pst = connection.getConnection().prepareStatement("delete From carts where cart_id=?");
             pst.setInt(1, cartId);
             int executeUpdate = pst.executeUpdate();
+            pst.close();
             connection.close();
             if (executeUpdate > 0) {
                 return true;
@@ -87,6 +88,7 @@ public class DaoCart {
 
             pst.setInt(1, userId);
             int executeUpdate = pst.executeUpdate();
+            pst.close();
             connection.close();
             if (executeUpdate > 0) {
                 return true;
@@ -108,6 +110,7 @@ public class DaoCart {
             pst.setInt(1, userId);
             pst.setInt(2, productId);
             int executeUpdate = pst.executeUpdate();
+            pst.close();
             connection.close();
             if (executeUpdate > 0) {
                 return true;
@@ -130,6 +133,7 @@ public class DaoCart {
             pst.setInt(3, productId);
 
             int executeUpdate = pst.executeUpdate();
+            pst.close();
             connection.close();
             if (executeUpdate > 0) {
                 return true;
@@ -177,6 +181,8 @@ public class DaoCart {
                 CartItem item = new CartItem(product, rs.getInt("QUANTITY"));
                 cart.addItem(item);
             }
+            rs.close();
+            pst.close();
             connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DaoCart.class.getName()).log(Level.SEVERE, null, ex);
