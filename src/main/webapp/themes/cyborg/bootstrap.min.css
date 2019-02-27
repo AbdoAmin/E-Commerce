@@ -941,3 +941,7 @@ input[type="file"]:focus,input[type="radio"]:focus,input[type="checkbox"]:focus,
 .show{display:block;}
 .invisible{visibility:hidden;}
 .affix{position:fixed;}
+
+.col-md-6 {
+
+}

@@ -25,7 +25,7 @@
                             <h5>${product.name}</h5>
                             <h4 style="text-align:center">
                                 <!--<a class="btn" href="<c:out value="${thisURL}"/>"> <i class="icon-zoom-in"></i></a>--> 
-                                <a class="btn btn-primary" href="#">
+                                <a class="btn btn-primary" href="<c:out value="${thisURL}"/>">
                                     <c:set var="product" value="${product}" scope="request"/>
                                     <jsp:include page="/ShowPriceDiscount.jsp" />
                                 </a>

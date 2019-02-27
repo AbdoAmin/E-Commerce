@@ -21,10 +21,16 @@
                     <!-- Sidebar ================================================== -->
                     <jsp:include page="/CommonBody.jsp" />
                     <!-- Sidebar end=============================================== -->
+                    
+                    <div class="span9">
+                        
+                        
+                    </div>
                 </div>
             </div>
         </div>
         <!-- Footer ================================================================== -->
+        
         <jsp:include page="/CommonFooter.jsp" />
     </body>
 </html>

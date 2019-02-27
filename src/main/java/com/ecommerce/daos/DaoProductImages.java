@@ -49,6 +49,7 @@ public class DaoProductImages {
                         Base64.getEncoder().encodeToString(
                                 resultSet.getBytes(DatabaseHelper.ProductImages.IMAGE)));
             }
+            preparedStatement.close();
         } catch (SQLException ex) {
             Logger.getLogger(DaoProductImages.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -59,12 +60,15 @@ public class DaoProductImages {
         try {
             Connection connection = dataBaseConnection.getConnection();
             String sql
-                    = "DELET From "
+                    = "DELETE From "
                     + DatabaseHelper.ProductImages.TABLE_NAME
                     + " where " + DatabaseHelper.ProductImages.ID + " = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, productImageId);
-            return preparedStatement.executeUpdate() > 0;
+            boolean value = preparedStatement.executeUpdate() > 0;
+            preparedStatement.close();
+            dataBaseConnection.close();
+            return value;
         } catch (SQLException ex) {
             Logger.getLogger(DaoProductImages.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -81,7 +85,9 @@ public class DaoProductImages {
                     + " where " + DatabaseHelper.ProductImages.PRODUCT_ID + " = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, productId);
+            
             boolean execute = preparedStatement.executeUpdate() >0;
+            preparedStatement.close();
             dc.close();
             return execute;
         } catch (SQLException ex) {
@@ -102,8 +108,11 @@ public class DaoProductImages {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, productId);
             preparedStatement.setBinaryStream(2, inputStream, size);
+            boolean a=preparedStatement.executeUpdate() > 0;
+            preparedStatement.close();
             dataBaseConnection.close();
-            return preparedStatement.executeUpdate() > 0;
+            return a;
+            
         } catch (SQLException ex) {
             Logger.getLogger(DaoProductImages.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -121,7 +130,10 @@ public class DaoProductImages {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setBinaryStream(1, inputStream, size);
             preparedStatement.setInt(2, productImageId);
-            return preparedStatement.executeUpdate() > 0;
+            boolean value = preparedStatement.executeUpdate() > 0;
+            preparedStatement.close();
+            dataBaseConnection.close();
+            return value;
         } catch (SQLException ex) {
             Logger.getLogger(DaoProductImages.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -29,12 +29,35 @@ public class DaoUser {
 
     DatabaseConnection connection;
 
+    public int getLastUserId() {
+        int userId = -1;
+        try {
+
+            connection = DatabaseConnection.getInstance();
+            Statement statement = connection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(
+                    "select " + DatabaseHelper.USER.ID
+                    + " from  " + DatabaseHelper.USER.TABLE_NAME
+                    + " where " + DatabaseHelper.USER.ID
+                    + " = "
+                    + " ( select max ( " + DatabaseHelper.USER.ID + " )"
+                    + " from " + DatabaseHelper.USER.TABLE_NAME + " )");
+            if (resultSet.next()) {
+                userId = resultSet.getInt(DatabaseHelper.USER.ID);
+            }
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return userId;
+    }
+
     public User signIn(UserLogin user) {
         User userSignIn = null;
 
         try {
-            String sql = "SELECT * FROM " + DatabaseHelper.USER.TABLE_NAME+
-                    " WHERE " + DatabaseHelper.USER.EMAIL + " = ? AND " + DatabaseHelper.USER.PASSWORD + " = ?";
+            String sql = "SELECT * FROM " + DatabaseHelper.USER.TABLE_NAME
+                    + " WHERE " + DatabaseHelper.USER.EMAIL + " = ? AND " + DatabaseHelper.USER.PASSWORD + " = ?";
             connection = DatabaseConnection.getInstance();
             PreparedStatement ps = connection.getConnection()
                     .prepareStatement(sql);
@@ -297,5 +320,27 @@ public class DaoUser {
             Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public boolean updateUserCreditLimit(int userId, double moneyPaid) {
+        try {
+            connection = DatabaseConnection.getInstance();
+            String sqlUsers
+                    = "update " + DatabaseHelper.USER.TABLE_NAME + " set "
+                    + DatabaseHelper.USER.CREDIT_LIMIT + " = " + DatabaseHelper.USER.CREDIT_LIMIT + " -? "
+                    + "where " + DatabaseHelper.USER.ID + " = ?";
+
+            PreparedStatement ps2 = connection.getConnection().prepareStatement(sqlUsers);
+
+            ps2.setDouble(1, moneyPaid);
+            ps2.setInt(2, userId);
+            int executeUpdate2 = ps2.executeUpdate();
+            connection.close();
+            return ((executeUpdate2 > 0));
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 }

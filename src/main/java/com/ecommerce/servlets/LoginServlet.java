@@ -5,6 +5,8 @@
  */
 package com.ecommerce.servlets;
 
+import com.ecommerce.beans.Cart;
+import com.ecommerce.daos.DaoCart;
 import com.ecommerce.beans.Product;
 import com.ecommerce.beans.User;
 import com.ecommerce.beans.UserLogin;
@@ -13,7 +15,6 @@ import com.ecommerce.daos.DaoUser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,47 +45,30 @@ public class LoginServlet extends HttpServlet {
         userLogin.setEmail(email);
         userLogin.setPassword(password);
 
-        PrintWriter out = response.getWriter();
-        out.println(userLogin.getEmail());
-        out.println(userLogin.getPassword());
 
-        User user;
-        user = daoUser.signIn(userLogin);
-
-        //TODO: put the user object transfer to index.jsp code here
-//        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-//        rd.include(request, response);
-        out.println();
+        User user = daoUser.signIn(userLogin);
         if (user != null) {
             if (user.getPrivilege().equalsIgnoreCase("admin")) {
                 response.sendRedirect("admin.jsp");
             } else {
-                DaoProduct daoProduct = new DaoProduct();
+        
+            DaoProduct daoProduct = new DaoProduct();
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user", user);
+            session.setMaxInactiveInterval(30 * 60);
 
-                HttpSession session = request.getSession(true);
-                session.setAttribute("user", user);
-                session.setMaxInactiveInterval(30 * 60);
+            //Abdo Edit Ew3a..
+            DaoCart dAOCart = new DaoCart();
+            Cart cart = dAOCart.getUserCart(user.getUserId());
+            request.getSession().setAttribute("myCart", cart);
 
-                ArrayList<Product> productsOfInterest = (ArrayList<Product>) daoProduct.getProductsOfInterest(user.getUserId());
+            ArrayList<Product> productsOfInterest = (ArrayList<Product>) daoProduct.getProductsOfInterest(user.getUserId());
 
-                session.setAttribute("productsOfInterest", productsOfInterest);
-                request.getSession().setAttribute("err", "false");
-
-                response.sendRedirect("index.jsp");
-            }
-//            request.getRequestDispatcher("index.jsp").include(request, response);
-        } else {
-            //TODO: redirect to an error page 
-            //or tell the user that the email or the password he/she entered is worng!
-//            HttpSession session = request.getSession(true);
-            
-//            session.setAttribute("err", "true");
-
-            response.sendRedirect("login.jsp?myparam=invalid");
-
+            session.setAttribute("productsOfInterest", productsOfInterest);
+            response.sendRedirect("index.jsp");
         }
-//            response.sendRedirect("index.jsp");
-
+        } else {
+            response.sendRedirect("login.jsp?error=invalid");
+        }
     }
-
 }

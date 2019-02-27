@@ -6,20 +6,32 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <div id="header">
     <div class="container">
         <!--/*modified by sallam..added a condition to display the welcome div*/-->
         <c:if test="${user!= null}">
             <div id="welcomeLine" class="row">
-                <div class="span6">Welcome!<strong> ${user.firstName} ${user.lastName}</strong></div>
+                <div class="span6">Welcome!
+                    <strong> ${user.firstName} ${user.lastName}</strong>
+                </div>
                 <div class="span6">
                     <div class="pull-right">
                         <span class="btn btn-mini">${user.creditLimit} $</span>
-                        <a href="product_summary.html"><span class="btn btn-mini btn-primary"><i
-                                    class="icon-shopping-cart icon-white"></i> [ 3 ] Itemes in your cart </span> </a>
+                        <a href="MyCart.jsp"><span class="btn btn-mini btn-primary">
+                                <i class="icon-shopping-cart icon-white"></i>
+                                ${fn:length(sessionScope.myCart.cartItems)} Item
+                                <c:if test="${fn:length(sessionScope.myCart.cartItems)>1}">s</c:if>
+                                in your cart </span> </a>
                     </div>
                 </div>
+            </div>
+        </c:if>
+        <c:if test="${user == null}">
+            <div id="welcomeLine" class="row">
+                <div class="span6"><strong>         </strong></div>
             </div>
         </c:if>
         <!-- Navbar ================================================== -->
@@ -32,7 +44,7 @@
             <div class="navbar-inner">
                 <a class="brand" href="index.jsp"><img src="themes/images/logo.png" alt="Bootsshop" /></a>
                 <form class="form-inline navbar-search" method="GET" action="index.jsp">
-                    <input id="srchFld" class="srchTxt" type="text" name="productName" />
+                    <input id="srchFld" class="srchTxt" type="text" name="productName" style="height: 30 !important;padding-left: 30;" />
                     <select class="srchTxt" name="category">
                         <option value="-1">All</option>
                         <c:forEach items="${categories}" var="category">
@@ -47,15 +59,15 @@
                     <!--/*modify by sallam..added the condition*/-->
                     <li class="">
                         <c:if test="${user==null}">
-                            <a role="button" style="padding-right:0" href="${pageContext.request.contextPath}/login.jsp">
-                                <span class="btn btn-large btn-success" >Login</span>
+                            <a role="button" style="padding-right:0"
+                                href="${pageContext.request.contextPath}/login.jsp">
+                                <span class="btn btn-large btn-success">Login</span>
                             </a>
                         </c:if>
                         <c:if test="${user!=null}">
-                            <a href="LogOutServlet" role="button" style="padding-right:0">
-                                <span class="btn btn-large btn-success">Logout</span>
-                            </a>
-                        </c:if>  
+                            <a href="LogOutServlet" role="button" style="padding-right:0"><span
+                                    class="btn btn-large btn-success">Logout</span></a>
+                        </c:if>
                     </li>
                 </ul>
             </div>
