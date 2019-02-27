@@ -79,7 +79,8 @@ public class SignUpServlet extends HttpServlet {
             }
             user.setBirthDate(day + "/" + month + "/" + year);
             if(daoUser.signUp(user, inputStream, size)){
-                req.getRequestDispatcher("login.jsp").forward(req, resp);
+                resp.sendRedirect("Interesting.jsp?userId="+daoUser.getLastUserId());
+//                req.getRequestDispatcher().forward(req, resp);
             }else{
                 req.getRequestDispatcher("register.jsp?error").forward(req, resp);
             }
