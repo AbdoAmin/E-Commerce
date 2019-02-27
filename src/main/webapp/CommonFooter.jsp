@@ -17,7 +17,7 @@
             </div>
             <div class="span3">
                 <h5>INFORMATION</h5>
-                <a href="contact.html">CONTACT</a>
+                <a href="contact.jsp">CONTACT</a>
                 <a href="${pageContext.request.contextPath}/register.jsp">REGISTRATION</a>
             </div>
             <div class="span3">

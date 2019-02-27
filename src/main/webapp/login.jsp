@@ -41,12 +41,6 @@
                                     </div>
                                 </c:if>
 
-
-                                <div class="control-group">
-                                    <div class="controls">
-                                        <input type="submit" class="btn" value="Sign in" />
-                                        OR <a href="register.jsp" class="btn">Register Now!</a>
-                                    </div>
                                     <div class="control-group">
                                         <div class="controls">
                                             <input type="submit" class="btn" value="Sign in" />
