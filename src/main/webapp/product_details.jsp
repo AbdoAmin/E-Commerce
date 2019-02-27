@@ -60,7 +60,7 @@
 
                                         <div class="controls">
                                             <input type="hidden" name="id" value="${requestScope.product.id}"/>
-                                            <input type="number" class="span1" min="1" max="${requestScope.product.quantity}" placeholder="Qty." name="quantity">
+                                            <input type="number" class="span1" min="1" max="${requestScope.product.quantity}" placeholder="Qty." name="quantity" required>
                                             <button type="submit" href="javascript:document.submitForm.submit()" class="btn btn-large btn-primary pull-right"> Add to cart <i class=" icon-shopping-cart"></i></button>
                                         </div>
                                     </div>

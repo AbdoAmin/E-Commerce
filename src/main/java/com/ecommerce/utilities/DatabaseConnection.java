@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public class DatabaseConnection {
 
     private static final ArrayList<DatabaseConnection> INSTANCES = new ArrayList<>();
-    private static final int MAX_CONCURRENCY_USERS = 10;
+    private static final int MAX_CONCURRENCY_USERS = 1;
     private int currentUsageNumber;
     private Connection con;
 
@@ -36,7 +36,7 @@ public class DatabaseConnection {
         try {
             this.currentUsageNumber = 0;
             Class.forName("oracle.jdbc.driver.OracleDriver");
-            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "ecommerce", "123");
+            con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "admin", "admin");
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
