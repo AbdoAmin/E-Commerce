@@ -29,7 +29,7 @@
                             <div class="control-group">
                                 <label class="control-label" for="inputFname1">Image<sup>*</sup></label>
                                 <div class="controls">
-                                    <input type="file" name="image1" />
+                                    <input type="file" name="image1" required/>
                                 </div>
                             </div>
                             <div class="control-group">
@@ -54,31 +54,31 @@
                             <div class="control-group">
                                 <label class="control-label" for="inputFname1">Name<sup>*</sup></label>
                                 <div class="controls">
-                                    <input type="text" id="inputFname1" placeholder="Name" name="name">
+                                    <input type="text" id="inputFname1" placeholder="Name" name="name" required>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label" for="inputLnam">Price<sup>*</sup></label>
                                 <div class="controls">
-                                    <input type="text" id="inputLnam" placeholder="Price" name="price">
+                                    <input type="text" id="inputLnam" placeholder="Price" name="price" required>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label" for="input_email">Discount <sup>*</sup></label>
                                 <div class="controls">
-                                    <input type="text" id="input_email" placeholder="Discount" name="discount">
+                                    <input type="text" id="input_email" placeholder="Discount" name="discount" required>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label" for="inputPassword1">Quantity <sup>*</sup></label>
                                 <div class="controls">
-                                    <input type="text" id="inputPassword1" placeholder="Quantity" name="quantity">
+                                    <input type="text" id="inputPassword1" placeholder="Quantity" name="quantity" required>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">Category Name<sup>*</sup></label>
                                 <div class="controls">
-                                    <select name="categoryId">
+                                    <select name="categoryId" required>
                                         <c:forEach items="${categories}" var="category">
                                             <option value="${category.categoryId}">${category.categoryName}</option>
                                         </c:forEach>

@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html lang="en">
     <jsp:include page="/HomeServlet" />
 
@@ -22,7 +23,7 @@
                     <!--${err==null}-->
                     <!-- Sidebar end=============================================== -->
                     <div class="span9">
-                        <c:if test="${user != null}">
+                        <c:if test="${user != null && fn:length(user.interests) >0 }">
                             <div class="well well-small">
                                 <h4>Featured Products <small class="pull-right">200+ featured products</small></h4>
                                 <div class="row-fluid">
@@ -34,7 +35,7 @@
                                                         <!--need to small for-->
                                                     <c:forEach items="${productsOfInterest}" var="product" begin="${starter}" end="${starter+3}" varStatus="loop">
                                                         <li class="span3">
-                                                            <div class="thumbnail">
+                                                            <div class="thumbnail" style="height: 15rem; display: flex; flex-direction: column; justify-content: flex-end; padding-top: 2rem">
                                                                 <i class="tag"></i>
                                                                 <a href="${pageContext.request.contextPath}/product_details.jsp?productID=${product.id}"><img
                                                                         src="data:image/jpeg;base64,${product.mainProductImage}" alt=""></a>

@@ -47,7 +47,6 @@ public class DAOCategories {
                     .prepareStatement("INSERT INTO Categories (CATEGORY_NAME) VALUES(?)");
             s.setString(1, categoryName);
             int result = s.executeUpdate();
-            s.close();
             databaseConnection.close();
             return result > 0;
         } catch (SQLException ex) {
@@ -64,7 +63,6 @@ public class DAOCategories {
             s.setString(1, category.getCategoryName());
             s.setInt(2, category.getCategoryId());
             int result = s.executeUpdate();
-            s.close();
             databaseConnection.close();
             return result > 0;
         } catch (SQLException ex) {
@@ -81,7 +79,6 @@ public class DAOCategories {
                     .prepareStatement("DELETE FROM Categories WHERE CATEGORY_ID=?");
             s.setInt(1, categoryId);
             int result = s.executeUpdate();
-            s.close();
             databaseConnection.close();
             return result > 0;
         } catch (SQLException ex) {
@@ -98,7 +95,6 @@ public class DAOCategories {
                     .prepareStatement("DELETE FROM Categories WHERE CATEGORY_NAME=?");
             s.setString(1, categoryName);
             int result = s.executeUpdate();
-            s.close();
             databaseConnection.close();
             return result > 0;
         } catch (SQLException ex) {
@@ -115,7 +111,6 @@ public class DAOCategories {
             s.setInt(1, categoryId);
             ResultSet result = s.executeQuery();
             boolean found=result.next();
-            s.close();
             databaseConnection.close();
             return found? result.getString("CATEGORY_NAME"):"";
         } catch (SQLException ex) {
@@ -132,7 +127,6 @@ public class DAOCategories {
             s.setString(1, categoryName);
             ResultSet result = s.executeQuery();
             boolean found=result.next();
-            s.close();
             databaseConnection.close();
             return found? result.getString("CATEGORY_NAME"):"";
         } catch (SQLException ex) {

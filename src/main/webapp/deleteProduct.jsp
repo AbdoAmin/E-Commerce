@@ -27,7 +27,7 @@
                                 <form class="form-horizontal" method="POST"
                                       action="${pageContext.request.contextPath}/DeleteProductServlet">
                                     <h4>Choose one product to delete it</h4>
-                                    <select class="srchTxt" name="productId" style="margin-left: 15% !important;">
+                                    <select class="srchTxt" name="productId" style="margin-left: 15% !important;" required>
                                         <c:forEach items="${products}" var="product">
                                             <option value="${product.id}">${product.name}</option>
                                         </c:forEach>

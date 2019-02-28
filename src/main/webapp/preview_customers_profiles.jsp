@@ -21,7 +21,7 @@
             <div class="container">
                 <div class="row">
                     <!-- Sidebar ================================================== -->
-                    <jsp:include page="/CommonBody.jsp" />
+                    <jsp:include page="/adminSideBar.jsp" />
                     <!-- Sidebar end=============================================== -->
 
                     <div class="span9">
@@ -30,15 +30,14 @@
                             <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
                             <jsp:include page="/GetAllHistoryServlet"/>
                             <table class="table table-bordered">
-                                <
                                 <thead>
                                     <tr>
-                                        <td>Profile Image</td>
-                                        <td>First Name</td>
-                                        <td>Last Name</td>
-                                        <td>Job</td>
-                                        <td>Email</td>
-                                        <td>Phone</td>
+                                        <th>Profile Image</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Job</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
                                     </tr>
                                 </thead>
                                 <tbody>

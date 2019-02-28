@@ -80,6 +80,7 @@ public class AddProductServlet extends HttpServlet {
                             }
                         }
                     }
+                resp.sendRedirect("addProduct.jsp");
                 }
             } catch (FileUploadException ex) {
             Logger.getLogger(AddProductServlet.class.getName()).log(Level.SEVERE, null, ex);

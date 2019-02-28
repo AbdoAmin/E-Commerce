@@ -3,7 +3,7 @@
 
 <div id="sidebar" class="span3">
     <ul id="sideManu" class="nav nav-tabs nav-stacked">
-        <li><a href="${pageContext.request.contextPath}/addProduct.jsp">Customers Profiles</a></li>
+        <li><a href="${pageContext.request.contextPath}/preview_customers_profiles.jsp">Customers Profiles</a></li>
         <li><a href="${pageContext.request.contextPath}/TempHistory.jsp">Order history</a></li>
         <li><a href="${pageContext.request.contextPath}/addProduct.jsp">Add product</a></li> 
         <li><a href="${pageContext.request.contextPath}/editProduct.jsp">Edit product</a></li>

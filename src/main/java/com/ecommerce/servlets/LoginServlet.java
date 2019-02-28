@@ -48,14 +48,15 @@ public class LoginServlet extends HttpServlet {
 
         User user = daoUser.signIn(userLogin);
         if (user != null) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user", user);
+            session.setMaxInactiveInterval(30 * 60);
+            
             if (user.getPrivilege().equalsIgnoreCase("admin")) {
                 response.sendRedirect("admin.jsp");
             } else {
         
             DaoProduct daoProduct = new DaoProduct();
-            HttpSession session = request.getSession(true);
-            session.setAttribute("user", user);
-            session.setMaxInactiveInterval(30 * 60);
 
             //Abdo Edit Ew3a..
             DaoCart dAOCart = new DaoCart();

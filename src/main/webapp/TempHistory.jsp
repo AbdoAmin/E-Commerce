@@ -38,9 +38,9 @@
 
                                 <thead>
                                     <tr>
-                                        <td>Order History ID</td>
-                                        <td>Order Date</td>
-                                        <td>User ID</td>
+                                        <th>Order History ID</th>
+                                        <th>Order Date</th>
+                                        <th>User ID</th>
 
 
                                     </tr>

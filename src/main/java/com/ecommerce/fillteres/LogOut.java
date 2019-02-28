@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Tahoon
  */
 
-@WebFilter(filterName = "LogOut",urlPatterns = {"/login.jsp"})
+@WebFilter(filterName = "LogOut",urlPatterns = {"/login.jsp","/register.jsp"})
 public class LogOut implements Filter {
 
     @Override

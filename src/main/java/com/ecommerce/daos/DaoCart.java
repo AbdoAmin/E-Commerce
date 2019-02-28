@@ -181,7 +181,6 @@ public class DaoCart {
                 CartItem item = new CartItem(product, rs.getInt("QUANTITY"));
                 cart.addItem(item);
             }
-            rs.close();
             pst.close();
             connection.close();
         } catch (SQLException ex) {
